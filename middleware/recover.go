@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"context"
-	"github.com/dinhlockt02/cs_video_call_app_server/common"
-	"github.com/dinhlockt02/cs_video_call_app_server/components/appcontext"
+	"cs_chat_app_server/common"
+	"cs_chat_app_server/components/appcontext"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"net/http"
