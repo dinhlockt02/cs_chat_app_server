@@ -4,7 +4,10 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
+	"cs_chat_app_server/components/hasher"
+	"cs_chat_app_server/components/tokenprovider/jwt"
 	"cs_chat_app_server/middleware"
+	v1route "cs_chat_app_server/route/v1"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
@@ -14,6 +17,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -24,6 +28,7 @@ func init() {
 	var err error
 
 	common.AppDatabase = os.Getenv("MONGO_DB")
+	common.AccessTokenExpiry, err = strconv.Atoi(os.Getenv("ACCESS_TOKEN_EXPIRY"))
 
 	if err != nil {
 		log.Panic().Msg(err.Error())
@@ -45,9 +50,17 @@ func main() {
 		}
 	}()
 
+	// Get token provider
+
+	tokenProvider := jwt.NewJwtTokenProvider(os.Getenv("SECRET"))
+
+	// Create bcrypt hasher
+
+	bcryptHasher := hasher.NewBcryptHasher()
+
 	// Create app context
 
-	appCtx := appcontext.NewAppContext(client)
+	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher)
 
 	envport := os.Getenv("SERVER_PORT")
 	if envport == "" {
@@ -60,12 +73,15 @@ func main() {
 	r.Use(gin.Recovery())
 
 	r.Use(middleware.Recover(appCtx))
-	
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
+
+	v1route.InitRoute(r, appCtx)
+
 	if err := r.Run(port); err != nil {
 		log.Panic().Msg(err.Error())
 	}
