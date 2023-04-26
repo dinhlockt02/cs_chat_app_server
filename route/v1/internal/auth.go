@@ -1,4 +1,4 @@
-package internal
+package routeinternal
 
 import (
 	"cs_chat_app_server/components/appcontext"

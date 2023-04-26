@@ -9,6 +9,7 @@ import (
 func InitRoute(e *gin.Engine, appCtx appcontext.AppContext) {
 	v1 := e.Group("/v1")
 	{
-		internal.InitAuthRoute(v1, appCtx)
+		routeinternal.InitAuthRoute(v1, appCtx)
+		routeinternal.InitUserRoute(v1, appCtx)
 	}
 }
