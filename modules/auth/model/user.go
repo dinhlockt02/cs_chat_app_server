@@ -1,7 +1,6 @@
 package authmodel
 
 import (
-	"cs_chat_app_server/common"
 	"errors"
 )
 
@@ -17,4 +16,6 @@ func (User) CollectionName() string {
 	return "users"
 }
 
-var ErrUserNotFound = common.ErrEntityNotFound("User", errors.New("user not found"))
+var ErrUserNotFound = errors.New("user not found")
+var ErrPasswordNotSet = errors.New("password have not set")
+var ErrEmailOrPasswordNotMatch = errors.New("email or password is not match")

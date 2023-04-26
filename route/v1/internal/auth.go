@@ -10,5 +10,6 @@ func InitAuthRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 	auth := g.Group("/auth")
 	{
 		auth.POST("/register", authgin.Register(appCtx))
+		auth.POST("/login", authgin.Login(appCtx))
 	}
 }
