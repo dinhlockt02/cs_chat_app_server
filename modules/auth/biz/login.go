@@ -66,7 +66,7 @@ func (biz *loginBiz) Login(ctx context.Context, data *authmodel.LoginUser, devic
 
 	isMatch, err := biz.passwordHasher.Compare(data.Password, existedUser.Password)
 	if err != nil {
-		return nil, common.ErrInternal(err)
+		return nil, err
 	}
 
 	if !isMatch {

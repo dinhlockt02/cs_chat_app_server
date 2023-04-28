@@ -54,9 +54,7 @@ func (biz *registerBiz) Register(ctx context.Context, data *authmodel.RegisterUs
 		"email": data.Email,
 	})
 	if err != nil {
-		if err != authmodel.ErrUserNotFound {
-			return nil, err
-		}
+		return nil, err
 	}
 	if existedUser != nil {
 		return nil, common.ErrInvalidRequest(authmodel.ErrUserExists)

@@ -13,7 +13,7 @@ func (s *mongoStore) Find(ctx context.Context, filter map[string]interface{}) (*
 	result := s.database.Collection(findUser.CollectionName()).FindOne(ctx, filter)
 	if err := result.Err(); err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, authmodel.ErrUserNotFound
+			return nil, nil
 		}
 		return nil, common.ErrInternal(err)
 	}
