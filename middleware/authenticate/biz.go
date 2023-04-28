@@ -8,7 +8,7 @@ import (
 )
 
 type AuthMiddlewareMongoStore interface {
-	FindOne(ctx context.Context, filter map[string]interface{}) (*User, error)
+	FindOne(ctx context.Context, filter map[string]interface{}) (*Device, error)
 }
 
 type authMiddlewareBiz struct {
@@ -26,7 +26,7 @@ func NewAuthMiddlewareBiz(
 	}
 }
 
-func (biz *authMiddlewareBiz) Authenticate(ctx context.Context, token string) (*User, error) {
+func (biz *authMiddlewareBiz) Authenticate(ctx context.Context, token string) (*Device, error) {
 	tokenPayload, err := biz.tokenProvider.Validate(token)
 	if err != nil {
 		return nil, common.NewFullErrorResponse(http.StatusUnauthorized,
@@ -37,23 +37,24 @@ func (biz *authMiddlewareBiz) Authenticate(ctx context.Context, token string) (*
 		)
 	}
 
-	id, err := common.ToObjectId(tokenPayload.UserId)
+	id, err := common.ToObjectId(tokenPayload.Id)
 	if err != nil {
 		return nil, common.ErrInvalidRequest(err)
 	}
-	user, err := biz.store.FindOne(ctx, map[string]interface{}{
+
+	device, err := biz.store.FindOne(ctx, map[string]interface{}{
 		"_id": id,
 	})
 	if err != nil {
 		return nil, common.ErrInternal(err)
 	}
 
-	if user == nil {
+	if device == nil {
 		return nil, common.NewFullErrorResponse(http.StatusUnauthorized,
 			nil,
 			"unauthorized",
 			"user not found",
 			"UnauthorizedError")
 	}
-	return user, nil
+	return device, nil
 }

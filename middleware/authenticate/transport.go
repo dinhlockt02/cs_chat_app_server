@@ -25,11 +25,11 @@ func Authentication(appCtx appcontext.AppContext) gin.HandlerFunc {
 
 		store := NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		biz := NewAuthMiddlewareBiz(store, appCtx.TokenProvider())
-		user, err := biz.Authenticate(c.Request.Context(), authorizationHeader[1])
+		device, err := biz.Authenticate(c.Request.Context(), authorizationHeader[1])
 		if err != nil {
 			panic(err)
 		}
-		c.Set(common.CurrentUser, user)
+		c.Set(common.CurrentUser, device)
 		c.Next()
 	}
 }

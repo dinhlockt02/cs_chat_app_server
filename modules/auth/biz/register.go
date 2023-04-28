@@ -82,7 +82,7 @@ func (biz *registerBiz) Register(ctx context.Context, data *authmodel.RegisterUs
 	}
 
 	accessToken, err := biz.tokenProvider.Generate(
-		&tokenprovider.TokenPayload{UserId: user.Id},
+		&tokenprovider.TokenPayload{Id: *device.Id},
 		common.AccessTokenExpiry,
 	)
 

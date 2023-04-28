@@ -86,7 +86,7 @@ func (biz *loginBiz) Login(ctx context.Context, data *authmodel.LoginUser, devic
 	}
 
 	accessToken, err := biz.tokenProvider.Generate(
-		&tokenprovider.TokenPayload{UserId: existedUser.Id},
+		&tokenprovider.TokenPayload{Id: *device.Id},
 		common.AccessTokenExpiry,
 	)
 

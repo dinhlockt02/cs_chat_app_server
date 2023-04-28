@@ -4,14 +4,19 @@ import (
 	"cs_chat_app_server/common"
 )
 
-type User struct {
-	common.MongoId `bson:",inline"`
+type Device struct {
+	common.MongoId `bson:",inline" json:",inline"`
+	UserId         string `json:"user_id" bson:"user_id"`
 }
 
-func (User) CollectionName() string {
-	return "users"
+func (Device) CollectionName() string {
+	return "devices"
 }
 
-func (u *User) GetId() string {
+func (u *Device) GetId() string {
+	return u.UserId
+}
+
+func (u *Device) GetDeviceId() string {
 	return *u.Id
 }
