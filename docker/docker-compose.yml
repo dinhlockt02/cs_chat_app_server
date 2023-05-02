@@ -1,0 +1,39 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - cs-video-call-app:/bitnami/mongodb
+    env_file:
+      - ./docker.env
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    env_file:
+      - docker.env
+  redis:
+    image: docker.io/bitnami/redis:7.0
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'cs-video-call-app-redis:/bitnami/redis/data'
+  server:
+    image: dinhlockt02/cs_chat_app_server:dev-bulleye-slim
+    env_file:
+      - docker.server.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./service-account-key.json:/app/service-account-key.json:ro
+    command: ["/app/main"]
+volumes:
+  cs-video-call-app:
+  cs-video-call-app-redis:
