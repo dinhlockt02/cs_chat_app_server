@@ -4,11 +4,13 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
+	fbs "cs_chat_app_server/components/firebase"
 	"cs_chat_app_server/components/hasher"
 	"cs_chat_app_server/components/mailer"
 	"cs_chat_app_server/components/tokenprovider/jwt"
 	"cs_chat_app_server/middleware"
 	v1route "cs_chat_app_server/route/v1"
+	firebase "firebase.google.com/go/v4"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
@@ -17,6 +19,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"google.golang.org/api/option"
 	"net/http"
 	"os"
 	"strconv"
@@ -74,9 +77,18 @@ func main() {
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
+
+	// Create Firebase App
+	opt := option.WithCredentialsFile("./service-account-key.json")
+	fa, err := firebase.NewApp(context.Background(), nil, opt)
+	if err != nil {
+		log.Panic().Msg(err.Error())
+	}
+	app := fbs.NewFirebaseApp(fa)
+
 	// Create app context
 
-	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher, sendgridMailer, redisClient)
+	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher, sendgridMailer, redisClient, app)
 
 	envport := os.Getenv("SERVER_PORT")
 	if envport == "" {

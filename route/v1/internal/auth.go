@@ -17,6 +17,6 @@ func InitAuthRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		auth.POST("/send-verify-email", authmiddleware.Authentication(appCtx), authgin.SendVerifyEmail(appCtx))
 		auth.GET("/verify-email", authgin.VerifyEmail(appCtx))
 		auth.POST("/access-token", authgin.NewAccessToken(appCtx))
-
+		auth.POST("/login-with-firebase", authgin.LoginWithFirebase(appCtx))
 	}
 }

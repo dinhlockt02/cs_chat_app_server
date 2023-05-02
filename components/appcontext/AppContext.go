@@ -1,6 +1,7 @@
 package appcontext
 
 import (
+	fbs "cs_chat_app_server/components/firebase"
 	"cs_chat_app_server/components/hasher"
 	"cs_chat_app_server/components/mailer"
 	"cs_chat_app_server/components/tokenprovider"
@@ -14,6 +15,7 @@ type AppContext interface {
 	Hasher() hasher.Hasher
 	Mailer() mailer.Mailer
 	RedisClient() *redis.Client
+	FirebaseApp() fbs.FirebaseApp
 }
 
 type appContext struct {
@@ -22,6 +24,7 @@ type appContext struct {
 	hasher        hasher.Hasher
 	mailer        mailer.Mailer
 	redisClient   *redis.Client
+	fa            fbs.FirebaseApp
 }
 
 func NewAppContext(
@@ -30,6 +33,7 @@ func NewAppContext(
 	hasher hasher.Hasher,
 	mailer mailer.Mailer,
 	redisClient *redis.Client,
+	fa fbs.FirebaseApp,
 ) *appContext {
 	return &appContext{
 		mongoClient:   mongoClient,
@@ -37,6 +41,7 @@ func NewAppContext(
 		hasher:        hasher,
 		mailer:        mailer,
 		redisClient:   redisClient,
+		fa:            fa,
 	}
 }
 
@@ -58,4 +63,8 @@ func (a *appContext) Mailer() mailer.Mailer {
 
 func (a *appContext) RedisClient() *redis.Client {
 	return a.redisClient
+}
+
+func (a *appContext) FirebaseApp() fbs.FirebaseApp {
+	return a.fa
 }
