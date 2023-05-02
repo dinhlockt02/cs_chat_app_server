@@ -25,7 +25,7 @@ func (u *RegisterUser) Process() error {
 	var errs = make([]error, 0)
 
 	if !common.EmailRegexp.Match([]byte(u.Email)) {
-		errs = append(errs, errors.New("invalid email"))
+		errs = append(errs, errors.New("invalid mailer"))
 	}
 
 	if len(strings.TrimSpace(u.Password)) < 8 {

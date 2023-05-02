@@ -34,6 +34,7 @@ func Register(appCtx appcontext.AppContext) gin.HandlerFunc {
 		authStore := authstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		biz := authbiz.NewRegisterBiz(appCtx.TokenProvider(), appCtx.Hasher(), deviceStore, authStore)
 		result, err := biz.Register(context.Request.Context(), &body.Data, &body.Device)
+
 		if err != nil {
 			panic(err)
 			return

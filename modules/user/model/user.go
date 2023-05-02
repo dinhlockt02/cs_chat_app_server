@@ -10,7 +10,7 @@ type User struct {
 	common.MongoId        `json:",inline" bson:",inline,omitempty"`
 	common.MongoUpdatedAt `json:",inline" bson:",inline,omitempty"`
 	Name                  string     `json:"name" bson:"name"`
-	Email                 string     `json:"email" bson:"email"`
+	Email                 string     `json:"mailer" bson:"mailer"`
 	Password              string     `bson:"password" json:"-"`
 	Avatar                string     `json:"avatar" bson:"avatar"`
 	Address               string     `bson:"address" json:"address"`

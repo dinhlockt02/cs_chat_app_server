@@ -5,11 +5,13 @@ import (
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	"cs_chat_app_server/components/hasher"
+	"cs_chat_app_server/components/mailer"
 	"cs_chat_app_server/components/tokenprovider/jwt"
 	"cs_chat_app_server/middleware"
 	v1route "cs_chat_app_server/route/v1"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -58,9 +60,23 @@ func main() {
 
 	bcryptHasher := hasher.NewBcryptHasher()
 
+	// Create mailer
+
+	sendgridMailer := mailer.NewSendGridMailer(
+		os.Getenv("SENDGRID_SENDER_NAME"),
+		os.Getenv("SENDGRID_SENDER_EMAIL"),
+		os.Getenv("SENDGRID_API_KEY"),
+	)
+
+	// Create redis client
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
 	// Create app context
 
-	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher)
+	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher, sendgridMailer, redisClient)
 
 	envport := os.Getenv("SERVER_PORT")
 	if envport == "" {
