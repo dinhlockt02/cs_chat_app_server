@@ -29,7 +29,8 @@ func NewAuthMiddlewareBiz(
 func (biz *authMiddlewareBiz) Authenticate(ctx context.Context, token string) (*Device, error) {
 	tokenPayload, err := biz.tokenProvider.Validate(token)
 	if err != nil {
-		return nil, common.NewFullErrorResponse(http.StatusUnauthorized,
+		return nil, common.NewFullErrorResponse(
+			http.StatusUnauthorized,
 			err,
 			"unauthorized",
 			err.Error(),
@@ -45,6 +46,7 @@ func (biz *authMiddlewareBiz) Authenticate(ctx context.Context, token string) (*
 	device, err := biz.store.FindOne(ctx, map[string]interface{}{
 		"_id": id,
 	})
+
 	if err != nil {
 		return nil, common.ErrInternal(err)
 	}
@@ -56,5 +58,6 @@ func (biz *authMiddlewareBiz) Authenticate(ctx context.Context, token string) (*
 			"user not found",
 			"UnauthorizedError")
 	}
+
 	return device, nil
 }

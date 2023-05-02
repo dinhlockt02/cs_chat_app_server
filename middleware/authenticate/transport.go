@@ -14,11 +14,13 @@ func Authentication(appCtx appcontext.AppContext) gin.HandlerFunc {
 		authorizationHeader := strings.Split(c.GetHeader("Authorization"), " ")
 
 		if len(authorizationHeader) != 2 || authorizationHeader[0] != "Bearer" {
-			var unauthorizedError = common.NewFullErrorResponse(http.StatusUnauthorized,
+			var unauthorizedError = common.NewFullErrorResponse(
+				http.StatusUnauthorized,
 				nil,
 				"unauthorized",
 				"Invalid header",
-				"UnauthorizedError")
+				"UnauthorizedError",
+			)
 
 			panic(unauthorizedError)
 		}
