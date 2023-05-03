@@ -2,7 +2,7 @@ package v1route
 
 import (
 	"cs_chat_app_server/components/appcontext"
-	"cs_chat_app_server/route/v1/internal"
+	routeinternal "cs_chat_app_server/route/v1/internal"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,5 +11,6 @@ func InitRoute(e *gin.Engine, appCtx appcontext.AppContext) {
 	{
 		routeinternal.InitAuthRoute(v1, appCtx)
 		routeinternal.InitUserRoute(v1, appCtx)
+		routeinternal.InitFriendRoute(v1, appCtx)
 	}
 }

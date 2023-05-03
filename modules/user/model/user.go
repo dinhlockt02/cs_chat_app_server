@@ -10,7 +10,7 @@ type User struct {
 	common.MongoId        `json:",inline" bson:",inline,omitempty"`
 	common.MongoUpdatedAt `json:",inline" bson:",inline,omitempty"`
 	Name                  string     `json:"name" bson:"name"`
-	Email                 string     `json:"mailer" bson:"mailer"`
+	Email                 string     `json:"email" bson:"email"`
 	Password              string     `bson:"password" json:"-"`
 	Avatar                string     `json:"avatar" bson:"avatar"`
 	Address               string     `bson:"address" json:"address"`
@@ -33,3 +33,4 @@ func (u *User) Process() {
 }
 
 var ErrUserNotFound = errors.New("user not found")
+var ErrUserBeBlocked = errors.New("user has been blocked")

@@ -51,7 +51,7 @@ func (biz *registerBiz) Register(ctx context.Context, data *authmodel.RegisterUs
 	}
 
 	existedUser, err := biz.authStore.Find(ctx, map[string]interface{}{
-		"mailer": data.Email,
+		"email": data.Email,
 	})
 	if err != nil {
 		return nil, err

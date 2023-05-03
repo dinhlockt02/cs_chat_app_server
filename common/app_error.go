@@ -78,4 +78,8 @@ func ErrEntityNotFound(entity string, err error) *AppError {
 	return NewFullErrorResponse(http.StatusNotFound, err, fmt.Sprintf("%v not found", entity), err.Error(), "ErrNotfound")
 }
 
+func ErrForbidden(err error) *AppError {
+	return NewFullErrorResponse(http.StatusForbidden, err, fmt.Sprintf("Forbidden Request"), err.Error(), "ErrForbidden")
+}
+
 var ErrInvalidObjectId = errors.New("invalid object id")
