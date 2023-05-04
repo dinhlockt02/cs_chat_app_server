@@ -6,7 +6,7 @@ import (
 )
 
 type MongoId struct {
-	Id *string `bson:"_id" json:"id"`
+	Id *string `bson:"_id,omitempty" json:"id,omitempty"`
 }
 
 type MongoUpdatedAt struct {

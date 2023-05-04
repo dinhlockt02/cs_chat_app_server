@@ -4,14 +4,13 @@ import (
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	authmiddleware "cs_chat_app_server/middleware/authenticate"
-	"encoding/json"
+	pchatskt "cs_chat_app_server/modules/personal_chat/transport/socket"
 	"github.com/gin-gonic/gin"
 	"github.com/gobwas/ws"
-	"github.com/rs/zerolog/log"
 )
 
 func InitSocketRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
-	g.GET("/ws", authmiddleware.Authentication(appCtx), func(c *gin.Context) {
+	g.GET("/ws/chat", authmiddleware.Authentication(appCtx), func(c *gin.Context) {
 		conn, _, _, err := ws.UpgradeHTTP(c.Request, c.Writer)
 		if err != nil {
 			panic(common.ErrInternal(err))
@@ -22,19 +21,6 @@ func InitSocketRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		if err != nil {
 			panic(common.ErrInternal(err))
 		}
-		appCtx.Socket().Receive(conn, handler)
+		appCtx.Socket().Receive(conn, c, pchatskt.SendMessageHandler(appCtx))
 	})
-}
-
-func handler(data []byte) {
-	type message struct {
-		Test string `json:"test"`
-	}
-	var msg message
-	err := json.Unmarshal(data, &msg)
-	if err != nil {
-		log.Error().Msg(err.Error())
-		return
-	}
-	log.Info().Msg(msg.Test)
 }

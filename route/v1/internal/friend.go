@@ -4,6 +4,7 @@ import (
 	"cs_chat_app_server/components/appcontext"
 	authmiddleware "cs_chat_app_server/middleware/authenticate"
 	friendgin "cs_chat_app_server/modules/friend/transport/gin"
+	pchatgin "cs_chat_app_server/modules/personal_chat/transport/gin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,5 +25,8 @@ func InitFriendRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		friend.DELETE("/:id", friendgin.Unfriend(appCtx))
 		friend.PUT("/:id/block", friendgin.Block(appCtx))
 		friend.PUT("/:id/unblock", friendgin.Unblock(appCtx))
+		{
+			friend.GET("/:id/chat", pchatgin.ListMessage(appCtx))
+		}
 	}
 }

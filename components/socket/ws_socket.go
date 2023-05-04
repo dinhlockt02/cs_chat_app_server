@@ -3,6 +3,7 @@ package socket
 import (
 	"cs_chat_app_server/common"
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 	"net"
@@ -57,7 +58,7 @@ func (w *wsSocket) Send(userId string, message interface{}) error {
 		return nil
 	}
 	for i, _ := range w.conns[userId] {
-		err = wsutil.WriteServerMessage(w.conns[userId][i], ws.OpBinary, b)
+		err = wsutil.WriteServerMessage(w.conns[userId][i], ws.OpText, b)
 		if err != nil {
 			continue
 		}
@@ -65,14 +66,14 @@ func (w *wsSocket) Send(userId string, message interface{}) error {
 	return nil
 }
 
-func (w *wsSocket) Receive(conn net.Conn, handler func(data []byte)) {
+func (w *wsSocket) Receive(conn net.Conn, ginContext *gin.Context, handler SocketHandler) {
 	go func() {
 		for {
 			msg, _, err := wsutil.ReadClientData(conn)
 			if err != nil {
 				break
 			}
-			handler(msg)
+			handler(newContext(conn, ginContext), msg)
 		}
 	}()
 }
