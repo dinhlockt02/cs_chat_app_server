@@ -4,6 +4,7 @@ import (
 	fbs "cs_chat_app_server/components/firebase"
 	"cs_chat_app_server/components/hasher"
 	"cs_chat_app_server/components/mailer"
+	"cs_chat_app_server/components/socket"
 	"cs_chat_app_server/components/tokenprovider"
 	"github.com/redis/go-redis/v9"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -16,6 +17,7 @@ type AppContext interface {
 	Mailer() mailer.Mailer
 	RedisClient() *redis.Client
 	FirebaseApp() fbs.FirebaseApp
+	Socket() socket.Socket
 }
 
 type appContext struct {
@@ -25,6 +27,7 @@ type appContext struct {
 	mailer        mailer.Mailer
 	redisClient   *redis.Client
 	fa            fbs.FirebaseApp
+	socket        socket.Socket
 }
 
 func NewAppContext(
@@ -34,6 +37,7 @@ func NewAppContext(
 	mailer mailer.Mailer,
 	redisClient *redis.Client,
 	fa fbs.FirebaseApp,
+	socket socket.Socket,
 ) *appContext {
 	return &appContext{
 		mongoClient:   mongoClient,
@@ -42,6 +46,7 @@ func NewAppContext(
 		mailer:        mailer,
 		redisClient:   redisClient,
 		fa:            fa,
+		socket:        socket,
 	}
 }
 
@@ -67,4 +72,8 @@ func (a *appContext) RedisClient() *redis.Client {
 
 func (a *appContext) FirebaseApp() fbs.FirebaseApp {
 	return a.fa
+}
+
+func (a *appContext) Socket() socket.Socket {
+	return a.socket
 }

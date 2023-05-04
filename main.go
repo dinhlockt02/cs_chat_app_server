@@ -7,6 +7,7 @@ import (
 	fbs "cs_chat_app_server/components/firebase"
 	"cs_chat_app_server/components/hasher"
 	"cs_chat_app_server/components/mailer"
+	"cs_chat_app_server/components/socket"
 	"cs_chat_app_server/components/tokenprovider/jwt"
 	"cs_chat_app_server/middleware"
 	v1route "cs_chat_app_server/route/v1"
@@ -86,9 +87,12 @@ func main() {
 	}
 	app := fbs.NewFirebaseApp(fa)
 
+	// Create socket
+	wsSocket := socket.NewWSSocket()
+
 	// Create app context
 
-	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher, sendgridMailer, redisClient, app)
+	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher, sendgridMailer, redisClient, app, wsSocket)
 
 	envport := os.Getenv("SERVER_PORT")
 	if envport == "" {
