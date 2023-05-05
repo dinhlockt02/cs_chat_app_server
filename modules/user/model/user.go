@@ -13,10 +13,10 @@ type User struct {
 	Email                 string     `json:"email" bson:"email"`
 	Password              string     `bson:"password" json:"-"`
 	Avatar                string     `json:"avatar" bson:"avatar"`
-	Address               string     `bson:"address" json:"address"`
 	Phone                 string     `json:"phone" bson:"phone"`
 	Gender                string     `json:"gender" bson:"gender"`
 	Birthday              *time.Time `json:"birthday" bson:"birthday"`
+	Bio                   string     `json:"bio" bson:"bio"`
 }
 
 func (User) EntityName() string {
