@@ -31,22 +31,31 @@ func NewFindUserRepo(
 }
 
 func (repo *findUserRepo) FindUser(ctx context.Context, requesterId string, filter map[string]interface{}) (*usermodel.User, error) {
-
+	var isFriend = new(bool)
 	{
-
 		user, err := repo.friendStore.FindUser(ctx, filter)
 
-		if err != nil {
-			return nil, err
-		}
+		if *user.Id == requesterId {
+			isFriend = nil
+		} else {
+			if err != nil {
+				return nil, err
+			}
 
-		if user == nil {
-			return nil, common.ErrEntityNotFound("User", usermodel.ErrUserNotFound)
-		}
+			if user == nil {
+				return nil, common.ErrEntityNotFound("User", usermodel.ErrUserNotFound)
+			}
 
-		for _, blockedId := range user.BlockedUser {
-			if blockedId == requesterId {
-				return nil, common.ErrForbidden(usermodel.ErrUserBeBlocked)
+			for _, blockedId := range user.BlockedUser {
+				if blockedId == requesterId {
+					return nil, common.ErrForbidden(usermodel.ErrUserBeBlocked)
+				}
+			}
+
+			for _, friendId := range user.Friends {
+				if friendId == requesterId {
+					*isFriend = true
+				}
 			}
 		}
 	}
@@ -55,6 +64,8 @@ func (repo *findUserRepo) FindUser(ctx context.Context, requesterId string, filt
 	if err != nil {
 		return nil, err
 	}
+
+	user.IsFriend = isFriend
 
 	return user, nil
 }

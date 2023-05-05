@@ -12,7 +12,7 @@ func InitFriendRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 
 	friend := g.Group("/friend", authmiddleware.Authentication(appCtx))
 	{
-		friend.GET("/", friendgin.FindFriend(appCtx))
+		friend.GET("/", friendgin.ListFriend(appCtx))
 		friendRequest := friend.Group("/request")
 		{
 			friendRequest.GET("/sent", friendgin.GetSentRequest(appCtx))

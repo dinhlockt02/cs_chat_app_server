@@ -17,6 +17,7 @@ type User struct {
 	Gender                string     `json:"gender" bson:"gender"`
 	Birthday              *time.Time `json:"birthday" bson:"birthday"`
 	Bio                   string     `json:"bio" bson:"bio"`
+	IsFriend              *bool      `json:"is_friend,omitempty"`
 }
 
 func (User) EntityName() string {

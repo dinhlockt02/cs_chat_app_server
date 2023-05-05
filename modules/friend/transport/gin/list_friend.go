@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func FindFriend(appCtx appcontext.AppContext) gin.HandlerFunc {
+func ListFriend(appCtx appcontext.AppContext) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		u, _ := context.Get(common.CurrentUser)
 		requester := u.(common.Requester)

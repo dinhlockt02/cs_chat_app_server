@@ -8,20 +8,20 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type FindFriendFriendStore interface {
+type ListFriendFriendStore interface {
 	FindFriend(ctx context.Context, filter map[string]interface{}) ([]friendmodel.FriendUser, error)
 	FindUser(ctx context.Context, filter map[string]interface{}) (*friendmodel.User, error)
 }
 
-type findFriendBiz struct {
-	friendStore FindFriendFriendStore
+type listFriendBiz struct {
+	friendStore ListFriendFriendStore
 }
 
-func NewFindFriendBiz(friendStore FindFriendFriendStore) *findFriendBiz {
-	return &findFriendBiz{friendStore: friendStore}
+func NewFindFriendBiz(friendStore ListFriendFriendStore) *listFriendBiz {
+	return &listFriendBiz{friendStore: friendStore}
 }
 
-func (biz *findFriendBiz) FindFriend(ctx context.Context, userId string) ([]friendmodel.FriendUser, error) {
+func (biz *listFriendBiz) FindFriend(ctx context.Context, userId string) ([]friendmodel.FriendUser, error) {
 	id, _ := primitive.ObjectIDFromHex(userId)
 	user, err := biz.friendStore.FindUser(ctx, map[string]interface{}{
 		"_id": id,
