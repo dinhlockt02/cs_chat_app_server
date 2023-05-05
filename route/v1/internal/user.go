@@ -14,6 +14,6 @@ func InitUserRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		user.GET("", usergin.FindUser(appCtx))
 		user.GET("/self", usergin.GetSelf(appCtx))
 		user.GET("/:id", usergin.GetSelf(appCtx))
-		user.PUT("/self", usergin.UpdateSelf(appCtx))
+		user.PATCH("/self", usergin.UpdateSelf(appCtx))
 	}
 }
