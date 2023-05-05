@@ -4,6 +4,7 @@ import (
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	pchatbiz "cs_chat_app_server/modules/personal_chat/biz"
+	pchatmdl "cs_chat_app_server/modules/personal_chat/model"
 	pchatstore "cs_chat_app_server/modules/personal_chat/store"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -16,14 +17,9 @@ func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 		requester := u.(common.Requester)
 		requesterId := requester.GetId()
 
-		var paging common.Paging[string]
+		var paging pchatmdl.Paging
 
 		err := context.ShouldBind(&paging)
-		if err != nil {
-			panic(common.ErrInvalidRequest(err))
-		}
-
-		err = paging.MongoProcess()
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}

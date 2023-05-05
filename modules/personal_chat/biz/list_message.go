@@ -7,7 +7,11 @@ import (
 )
 
 type ListMessagePersonalChatStore interface {
-	List(ctx context.Context, filter map[string]interface{}, paging common.Paging[string]) ([]pchatmdl.PersonalChatItem, error)
+	List(
+		ctx context.Context,
+		filter map[string]interface{},
+		paging pchatmdl.Paging,
+	) ([]pchatmdl.PersonalChatItem, error)
 }
 
 type listMessageBiz struct {
@@ -24,7 +28,7 @@ func NewListMessageBiz(
 
 func (biz *listMessageBiz) List(ctx context.Context,
 	filter map[string]interface{},
-	paging common.Paging[string],
+	paging pchatmdl.Paging,
 ) ([]pchatmdl.PersonalChatItem, error) {
 	list, err := biz.personalChatStore.List(ctx, filter, paging)
 	if err != nil {
