@@ -19,3 +19,4 @@ func (User) CollectionName() string {
 var ErrUserNotFound = errors.New("user not found")
 var ErrPasswordNotSet = errors.New("password have not set")
 var ErrEmailOrPasswordNotMatch = errors.New("email or password is not match")
+var ErrPasswordNotMatch = errors.New("password is not match")

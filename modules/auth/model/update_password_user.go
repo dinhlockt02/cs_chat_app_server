@@ -8,7 +8,8 @@ import (
 )
 
 type UpdatePasswordUser struct {
-	Password              string `bson:"password" json:"password"`
+	OldPassword           string `json:"old_password"`
+	NewPassword           string `bson:"password" json:"new_password"`
 	common.MongoUpdatedAt `bson:",inline"`
 }
 
@@ -19,12 +20,20 @@ func (UpdatePasswordUser) CollectionName() string {
 func (u *UpdatePasswordUser) Process() error {
 	var errs = make([]error, 0)
 
-	if len(strings.TrimSpace(u.Password)) < 8 {
-		errs = append(errs, errors.New("password must be at least 8 character"))
+	if len(strings.TrimSpace(u.OldPassword)) < 8 {
+		errs = append(errs, errors.New("old password must be at least 8 character"))
 	}
 
-	if len(strings.TrimSpace(u.Password)) > 50 {
-		errs = append(errs, errors.New("password must be at most 50 character"))
+	if len(strings.TrimSpace(u.OldPassword)) > 50 {
+		errs = append(errs, errors.New("old password must be at most 50 character"))
+	}
+
+	if len(strings.TrimSpace(u.NewPassword)) < 8 {
+		errs = append(errs, errors.New("new password must be at least 8 character"))
+	}
+
+	if len(strings.TrimSpace(u.NewPassword)) > 50 {
+		errs = append(errs, errors.New("new password must be at most 50 character"))
 	}
 
 	now := time.Now()

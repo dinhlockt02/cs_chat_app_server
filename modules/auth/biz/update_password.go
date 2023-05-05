@@ -40,12 +40,18 @@ func (biz *updatePasswordBiz) Update(ctx context.Context, filter map[string]inte
 		return common.ErrEntityNotFound("User", authmodel.ErrUserNotFound)
 	}
 
-	hashedPassword, err := biz.passwordHasher.Hash(data.Password)
+	if equal, err := biz.passwordHasher.Compare(data.OldPassword, existedUser.Password); err != nil {
+		return common.ErrInternal(err)
+	} else if !equal {
+		return common.ErrForbidden(authmodel.ErrPasswordNotMatch)
+	}
+
+	hashedPassword, err := biz.passwordHasher.Hash(data.NewPassword)
 	if err != nil {
 		return common.ErrInternal(err)
 	}
 
-	data.Password = hashedPassword
+	data.NewPassword = hashedPassword
 
 	err = biz.authStore.Update(ctx, filter, data)
 	if err != nil {
