@@ -5,6 +5,7 @@ import (
 	"cs_chat_app_server/components/appcontext"
 	pchatbiz "cs_chat_app_server/modules/personal_chat/biz"
 	pchatmdl "cs_chat_app_server/modules/personal_chat/model"
+	pchatrepo "cs_chat_app_server/modules/personal_chat/repository"
 	pchatstore "cs_chat_app_server/modules/personal_chat/store"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -51,7 +52,8 @@ func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 		}
 
 		store := pchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
-		biz := pchatbiz.NewListMessageBiz(store)
+		repo := pchatrepo.NewListMessageRepo(store)
+		biz := pchatbiz.NewListMessageBiz(repo)
 		list, err := biz.List(context.Request.Context(), filter, paging)
 
 		if err != nil {

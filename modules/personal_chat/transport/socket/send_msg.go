@@ -7,6 +7,7 @@ import (
 	"cs_chat_app_server/components/socket"
 	pchatbiz "cs_chat_app_server/modules/personal_chat/biz"
 	pchatmdl "cs_chat_app_server/modules/personal_chat/model"
+	pchatrepo "cs_chat_app_server/modules/personal_chat/repository"
 	pchatstore "cs_chat_app_server/modules/personal_chat/store"
 	"encoding/json"
 )
@@ -26,8 +27,9 @@ func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 			panic(common.ErrInvalidRequest(err))
 		}
 		store := pchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
-		biz := pchatbiz.NewSendMessageBiz(store, appCtx.Socket())
-		item.Sender = requester.GetId()
+		repo := pchatrepo.NewCreateMessageRepo(store)
+		biz := pchatbiz.NewSendMessageBiz(repo, appCtx.Socket())
+		item.SenderId = requester.GetId()
 		if err = biz.Send(context.Background(), &item); err != nil {
 			panic(err)
 		}

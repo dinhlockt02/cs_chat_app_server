@@ -16,8 +16,10 @@ const (
 type PersonalChatItem struct {
 	common.MongoId        `bson:",inline" json:",inline,omitempty"`
 	Type                  MessageType `json:"type" bson:"type"`
-	Sender                string      `bson:"sender" json:"sender"`
-	Receiver              string      `json:"receiver" bson:"receiver"`
+	SenderId              string      `bson:"sender" json:"sender_id"`
+	ReceiverId            string      `json:"receiver_id" bson:"receiver"`
+	Sender                *User       `bson:"-" json:"sender"`
+	Receiver              *User       `json:"receiver" bson:"-"`
 	Message               string      `bson:"message" json:"message"`
 	Optional              *string     `bson:"optional,omitempty" json:"optional,omitempty"`
 	common.MongoCreatedAt `bson:",inline" json:",inline"`

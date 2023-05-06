@@ -6,23 +6,22 @@ import (
 	pchatmdl "cs_chat_app_server/modules/personal_chat/model"
 )
 
-type ListMessagePersonalChatStore interface {
-	List(
-		ctx context.Context,
+type ListMessagePersonalRepo interface {
+	List(ctx context.Context,
 		filter map[string]interface{},
 		paging pchatmdl.Paging,
 	) ([]pchatmdl.PersonalChatItem, error)
 }
 
 type listMessageBiz struct {
-	personalChatStore ListMessagePersonalChatStore
+	personalChatRepo ListMessagePersonalRepo
 }
 
 func NewListMessageBiz(
-	personalChatStore ListMessagePersonalChatStore,
+	personalChatRepo ListMessagePersonalRepo,
 ) *listMessageBiz {
 	return &listMessageBiz{
-		personalChatStore: personalChatStore,
+		personalChatRepo: personalChatRepo,
 	}
 }
 
@@ -30,7 +29,7 @@ func (biz *listMessageBiz) List(ctx context.Context,
 	filter map[string]interface{},
 	paging pchatmdl.Paging,
 ) ([]pchatmdl.PersonalChatItem, error) {
-	list, err := biz.personalChatStore.List(ctx, filter, paging)
+	list, err := biz.personalChatRepo.List(ctx, filter, paging)
 	if err != nil {
 		return nil, common.ErrInternal(err)
 	}
