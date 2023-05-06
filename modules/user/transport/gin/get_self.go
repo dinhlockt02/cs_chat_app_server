@@ -3,6 +3,7 @@ package usergin
 import (
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
+	friendrepo "cs_chat_app_server/modules/friend/repository"
 	friendstore "cs_chat_app_server/modules/friend/store"
 	userbiz "cs_chat_app_server/modules/user/biz"
 	userrepo "cs_chat_app_server/modules/user/repository"
@@ -20,7 +21,8 @@ func GetSelf(appCtx appcontext.AppContext) gin.HandlerFunc {
 		userStore := userstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		friendStore := friendstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 
-		findUserRepo := userrepo.NewFindUserRepo(userStore, friendStore)
+		friendRepo := friendrepo.NewFindUserRepository(friendStore)
+		findUserRepo := userrepo.NewFindUserRepo(userStore, friendRepo)
 		findUserBiz := userbiz.NewFindUserBiz(findUserRepo)
 
 		id, err := primitive.ObjectIDFromHex(requester.GetId())

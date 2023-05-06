@@ -2,6 +2,7 @@ package usermodel
 
 import (
 	"cs_chat_app_server/common"
+	friendmodel "cs_chat_app_server/modules/friend/model"
 	"errors"
 	"time"
 )
@@ -9,15 +10,15 @@ import (
 type User struct {
 	common.MongoId        `json:",inline" bson:",inline,omitempty"`
 	common.MongoUpdatedAt `json:",inline" bson:",inline,omitempty"`
-	Name                  string     `json:"name" bson:"name"`
-	Email                 string     `json:"email" bson:"email"`
-	Password              string     `bson:"password" json:"-"`
-	Avatar                string     `json:"avatar" bson:"avatar"`
-	Phone                 string     `json:"phone" bson:"phone"`
-	Gender                string     `json:"gender" bson:"gender"`
-	Birthday              *time.Time `json:"birthday" bson:"birthday"`
-	Bio                   string     `json:"bio" bson:"bio"`
-	IsFriend              *bool      `json:"is_friend,omitempty"`
+	Name                  string               `json:"name" bson:"name"`
+	Email                 string               `json:"email" bson:"email"`
+	Password              string               `bson:"password" json:"-"`
+	Avatar                string               `json:"avatar" bson:"avatar"`
+	Phone                 string               `json:"phone" bson:"phone"`
+	Gender                string               `json:"gender" bson:"gender"`
+	Birthday              *time.Time           `json:"birthday" bson:"birthday"`
+	Bio                   string               `json:"bio" bson:"bio"`
+	Relation              friendmodel.Relation `json:"relation"`
 }
 
 func (User) EntityName() string {

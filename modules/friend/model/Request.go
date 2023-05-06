@@ -2,7 +2,6 @@ package friendmodel
 
 import (
 	"cs_chat_app_server/common"
-	"errors"
 	"time"
 )
 
@@ -22,10 +21,6 @@ type Request struct {
 func (Request) CollectionName() string {
 	return "requests"
 }
-
-var ErrRequestExists = errors.New("request exists")
-var ErrRequestNotFound = errors.New("request not found")
-var ErrHasBeenFriend = errors.New("has been friend")
 
 func (r *Request) Process() {
 	now := time.Now()

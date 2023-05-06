@@ -2,7 +2,6 @@ package userrepo
 
 import (
 	"context"
-	"cs_chat_app_server/common"
 	friendmodel "cs_chat_app_server/modules/friend/model"
 	usermodel "cs_chat_app_server/modules/user/model"
 )
@@ -11,53 +10,30 @@ type FindUserUserStore interface {
 	Find(ctx context.Context, filter map[string]interface{}) (*usermodel.User, error)
 }
 
-type FindUserFriendStore interface {
-	FindUser(ctx context.Context, filter map[string]interface{}) (*friendmodel.User, error)
+type FindUserFriendRepository interface {
+	FindUser(ctx context.Context, requesterId string, filter map[string]interface{}) (*friendmodel.User, error)
 }
 
 type findUserRepo struct {
-	userStore   FindUserUserStore
-	friendStore FindUserFriendStore
+	userStore  FindUserUserStore
+	friendRepo FindUserFriendRepository
 }
 
 func NewFindUserRepo(
 	userStore FindUserUserStore,
-	friendStore FindUserFriendStore,
+	friendRepo FindUserFriendRepository,
 ) *findUserRepo {
 	return &findUserRepo{
-		userStore:   userStore,
-		friendStore: friendStore,
+		userStore:  userStore,
+		friendRepo: friendRepo,
 	}
 }
 
 func (repo *findUserRepo) FindUser(ctx context.Context, requesterId string, filter map[string]interface{}) (*usermodel.User, error) {
-	var isFriend = new(bool)
-	{
-		user, err := repo.friendStore.FindUser(ctx, filter)
+	fuser, err := repo.friendRepo.FindUser(ctx, requesterId, filter)
 
-		if *user.Id == requesterId {
-			isFriend = nil
-		} else {
-			if err != nil {
-				return nil, err
-			}
-
-			if user == nil {
-				return nil, common.ErrEntityNotFound("User", usermodel.ErrUserNotFound)
-			}
-
-			for _, blockedId := range user.BlockedUser {
-				if blockedId == requesterId {
-					return nil, common.ErrForbidden(usermodel.ErrUserBeBlocked)
-				}
-			}
-
-			for _, friendId := range user.Friends {
-				if friendId == requesterId {
-					*isFriend = true
-				}
-			}
-		}
+	if err != nil {
+		return nil, err
 	}
 
 	user, err := repo.userStore.Find(ctx, filter)
@@ -65,7 +41,7 @@ func (repo *findUserRepo) FindUser(ctx context.Context, requesterId string, filt
 		return nil, err
 	}
 
-	user.IsFriend = isFriend
+	user.Relation = fuser.Relation
 
 	return user, nil
 }
