@@ -18,6 +18,8 @@ type User struct {
 	Gender                string               `json:"gender" bson:"gender"`
 	Birthday              *time.Time           `json:"birthday" bson:"birthday"`
 	Bio                   string               `json:"bio" bson:"bio"`
+	CommonFriend          []string             `json:"-"`
+	CommonFriendCount     *int                 `json:"common_friend_count,omitempty"`
 	Relation              friendmodel.Relation `json:"relation"`
 }
 

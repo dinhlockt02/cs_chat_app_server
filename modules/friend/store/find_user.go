@@ -7,6 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// FindUser is a method for finding a User
+// which is filtered by a map[string] interface
 func (s *mongoStore) FindUser(ctx context.Context, filter map[string]interface{}) (*friendmodel.User, error) {
 	var user friendmodel.User
 	result := s.database.Collection(user.CollectionName()).FindOne(ctx, filter)

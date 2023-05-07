@@ -9,7 +9,6 @@ import (
 type FindUserFriendStore interface {
 	FindRequest(ctx context.Context, userId string, otherId string) (*friendmodel.Request, error)
 	FindUser(ctx context.Context, filter map[string]interface{}) (*friendmodel.User, error)
-	NewFilterById(id string) (map[string]interface{}, error)
 }
 
 type findUserRepository struct {
@@ -20,6 +19,12 @@ func NewFindUserRepository(friendstore FindUserFriendStore) *findUserRepository 
 	return &findUserRepository{friendstore: friendstore}
 }
 
+// FindUser is a method of finding a user
+// It requires requesterId, which is the id of the requester,
+// and filter which will be used for filtered user.
+//
+// It will use the requesterId to query the relation of user with requester
+// The relation is an enum provided in [friendmodel] package
 func (repo *findUserRepository) FindUser(ctx context.Context, requesterId string, filter map[string]interface{}) (*friendmodel.User, error) {
 	user, err := repo.friendstore.FindUser(ctx, filter)
 	if err != nil {
@@ -48,13 +53,14 @@ func (repo *findUserRepository) FindUser(ctx context.Context, requesterId string
 		}
 	}
 
-	requesterFilter, err := repo.friendstore.NewFilterById(requesterId)
+	filter = make(map[string]interface{})
+	err = common.AddIdToFilter(filter, requesterId)
 
 	if err != nil {
 		return nil, err
 	}
 
-	requester, err := repo.friendstore.FindUser(ctx, requesterFilter)
+	requester, err := repo.friendstore.FindUser(ctx, filter)
 
 	if err != nil {
 		return nil, err
