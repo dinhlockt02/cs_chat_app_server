@@ -54,7 +54,7 @@ func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 		store := pchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		repo := pchatrepo.NewListMessageRepo(store)
 		biz := pchatbiz.NewListMessageBiz(repo)
-		list, err := biz.List(context.Request.Context(), filter, paging)
+		list, err := biz.List(context.Request.Context(), requesterId, filter, paging)
 
 		if err != nil {
 			panic(err)

@@ -26,10 +26,14 @@ func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
+
 		store := pchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		repo := pchatrepo.NewCreateMessageRepo(store)
 		biz := pchatbiz.NewSendMessageBiz(repo, appCtx.Socket())
+
 		item.SenderId = requester.GetId()
+		//receiverId, _ := c.GetContext().Get(common.CurrentFriendId)
+		//item.ReceiverId, _ = receiverId.(string)
 		if err = biz.Send(context.Background(), &item); err != nil {
 			panic(err)
 		}

@@ -25,13 +25,24 @@ func NewListMessageBiz(
 	}
 }
 
-func (biz *listMessageBiz) List(ctx context.Context,
+func (biz *listMessageBiz) List(
+	ctx context.Context,
+	requesterId string,
 	filter map[string]interface{},
 	paging pchatmdl.Paging,
 ) ([]pchatmdl.PersonalChatItem, error) {
 	list, err := biz.personalChatRepo.List(ctx, filter, paging)
 	if err != nil {
 		return nil, common.ErrInternal(err)
+	}
+	t := true
+	f := false
+	for i := range list {
+		if list[i].SenderId == requesterId {
+			list[i].IsMe = &t
+		} else {
+			list[i].IsMe = &f
+		}
 	}
 	return list, nil
 }

@@ -22,11 +22,14 @@ func GetUser(appCtx appcontext.AppContext) gin.HandlerFunc {
 		findUserRepo := userrepo.NewFindUserRepo(userStore, friendRepo)
 		findUserBiz := userbiz.NewFindUserBiz(findUserRepo)
 
+		u, _ := context.Get(common.CurrentUser)
+		requester := u.(common.Requester)
+
 		id, err := primitive.ObjectIDFromHex(context.Param("id"))
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
-		user, err := findUserBiz.FindUser(context.Request.Context(), id.Hex(), map[string]interface{}{
+		user, err := findUserBiz.FindUser(context.Request.Context(), requester.GetId(), map[string]interface{}{
 			"_id": id,
 		})
 		if err != nil {

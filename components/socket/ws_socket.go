@@ -22,31 +22,31 @@ func NewWSSocket() *wsSocket {
 	}
 }
 
-func (w *wsSocket) AddConn(userId string, conn net.Conn) error {
+func (w *wsSocket) AddConn(topic string, conn net.Conn) error {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
-	if _, ok := w.conns[userId]; ok {
-		w.conns[userId] = append(w.conns[userId], conn)
+	if _, ok := w.conns[topic]; ok {
+		w.conns[topic] = append(w.conns[topic], conn)
 	} else {
-		w.conns[userId] = []net.Conn{conn}
+		w.conns[topic] = []net.Conn{conn}
 	}
 	return nil
 }
 
-func (w *wsSocket) RemoveConn(userId string, conn net.Conn) error {
+func (w *wsSocket) RemoveConn(topic string, conn net.Conn) error {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
-	if _, ok := w.conns[userId]; ok {
-		for i, _ := range w.conns[userId] {
-			if w.conns[userId][i] == conn {
-				w.conns[userId] = append(w.conns[userId][:i], w.conns[userId][i+1:]...)
+	if _, ok := w.conns[topic]; ok {
+		for i, _ := range w.conns[topic] {
+			if w.conns[topic][i] == conn {
+				w.conns[topic] = append(w.conns[topic][:i], w.conns[topic][i+1:]...)
 			}
 		}
 	}
 	return nil
 }
 
-func (w *wsSocket) Send(userId string, message interface{}) error {
+func (w *wsSocket) Send(topic string, message interface{}) error {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
 	b, err := json.Marshal(message)
@@ -54,11 +54,11 @@ func (w *wsSocket) Send(userId string, message interface{}) error {
 		return common.ErrInternal(err)
 	}
 
-	if _, ok := w.conns[userId]; !ok {
+	if _, ok := w.conns[topic]; !ok {
 		return nil
 	}
-	for i, _ := range w.conns[userId] {
-		err = wsutil.WriteServerMessage(w.conns[userId][i], ws.OpText, b)
+	for i, _ := range w.conns[topic] {
+		err = wsutil.WriteServerMessage(w.conns[topic][i], ws.OpText, b)
 		if err != nil {
 			continue
 		}

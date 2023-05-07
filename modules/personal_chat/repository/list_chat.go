@@ -30,7 +30,8 @@ func NewListMessageRepo(
 
 // TODO: Cache User Data
 
-func (repo *listMessageRepo) List(ctx context.Context,
+func (repo *listMessageRepo) List(
+	ctx context.Context,
 	filter map[string]interface{},
 	paging pchatmdl.Paging,
 ) ([]pchatmdl.PersonalChatItem, error) {

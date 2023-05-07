@@ -37,9 +37,15 @@ func (biz *sendMessageBiz) Send(ctx context.Context, item *pchatmdl.PersonalChat
 	if err != nil {
 		return common.ErrInternal(err)
 	}
+
+	t := true
+	f := false
+
 	if item.SenderId != item.ReceiverId {
+		item.IsMe = &t
 		err = biz.skt.Send(item.SenderId, item)
 	}
+	item.IsMe = &f
 	err = biz.skt.Send(item.ReceiverId, item)
 	if err != nil {
 		return common.ErrInternal(err)

@@ -7,6 +7,7 @@ const (
 )
 
 const CurrentUser = "CurrentUser"
+const CurrentFriendId = "CurrentFriendId"
 
 var AppDatabase string
 var AccessTokenExpiry int
