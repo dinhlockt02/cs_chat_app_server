@@ -33,7 +33,7 @@ func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 		if err = biz.Send(context.Background(), &item); err != nil {
 			panic(err)
 		}
-		c.Response(item)
+		//c.Response()
 		return
 	}
 }
