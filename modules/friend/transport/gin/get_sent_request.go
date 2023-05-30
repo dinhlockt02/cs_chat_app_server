@@ -4,7 +4,9 @@ import (
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	friendbiz "cs_chat_app_server/modules/friend/biz"
+	friendrepo "cs_chat_app_server/modules/friend/repository"
 	friendstore "cs_chat_app_server/modules/friend/store"
+	requeststore "cs_chat_app_server/modules/request/store"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,7 +19,9 @@ func GetSentRequest(appCtx appcontext.AppContext) gin.HandlerFunc {
 		senderId := requester.GetId()
 
 		friendStore := friendstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
-		getSentRequestBiz := friendbiz.NewGetSentRequestBiz(friendStore)
+		requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+		friendRepo := friendrepo.NewFriendRepository(friendStore, requestStore)
+		getSentRequestBiz := friendbiz.NewGetSentRequestBiz(friendRepo)
 		result, err := getSentRequestBiz.GetSentRequest(context.Request.Context(), senderId)
 		if err != nil {
 			panic(err)

@@ -4,32 +4,33 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	friendmodel "cs_chat_app_server/modules/friend/model"
+	friendrepo "cs_chat_app_server/modules/friend/repository"
 )
 
-type RejectRequestFriendStore interface {
-	DeleteRequest(ctx context.Context, requestId string) error
-	FindRequest(ctx context.Context, userId string, otherId string) (*friendmodel.Request, error)
-}
-
 type rejectRequestBiz struct {
-	friendStore RejectRequestFriendStore
+	friendRepo friendrepo.Repository
 }
 
-func NewRejectRequestBiz(friendStore RejectRequestFriendStore) *rejectRequestBiz {
+func NewRejectRequestBiz(friendRepo friendrepo.Repository) *rejectRequestBiz {
 	return &rejectRequestBiz{
-		friendStore: friendStore,
+		friendRepo: friendRepo,
 	}
 }
 
 func (biz *rejectRequestBiz) RejectRequest(ctx context.Context, senderId string, receiverId string) error {
-	existedRequest, err := biz.friendStore.FindRequest(ctx, senderId, receiverId)
+	existedRequest, err := biz.friendRepo.FindRequest(ctx, senderId, receiverId)
 	if err != nil {
 		return err
 	}
 	if existedRequest == nil {
 		return common.ErrInvalidRequest(friendmodel.ErrRequestNotFound)
 	}
-	err = biz.friendStore.DeleteRequest(ctx, *existedRequest.Id)
+	filter := make(map[string]interface{})
+	err = common.AddIdFilter(filter, *existedRequest.Id)
+	if err != nil {
+		return err
+	}
+	err = biz.friendRepo.DeleteRequest(ctx, filter)
 	if err != nil {
 		return err
 	}

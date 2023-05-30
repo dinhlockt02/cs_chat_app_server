@@ -4,32 +4,33 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	friendmodel "cs_chat_app_server/modules/friend/model"
+	friendrepo "cs_chat_app_server/modules/friend/repository"
 )
 
-type RecallRequestFriendStore interface {
-	DeleteRequest(ctx context.Context, requestId string) error
-	FindRequest(ctx context.Context, userId string, otherId string) (*friendmodel.Request, error)
-}
-
 type recallRequestBiz struct {
-	friendStore RecallRequestFriendStore
+	friendRepo friendrepo.Repository
 }
 
-func NewRecallRequestBiz(friendStore RecallRequestFriendStore) *recallRequestBiz {
+func NewRecallRequestBiz(friendRepo friendrepo.Repository) *recallRequestBiz {
 	return &recallRequestBiz{
-		friendStore: friendStore,
+		friendRepo: friendRepo,
 	}
 }
 
 func (biz *recallRequestBiz) RecallRequest(ctx context.Context, senderId string, receiverId string) error {
-	existedRequest, err := biz.friendStore.FindRequest(ctx, senderId, receiverId)
+	existedRequest, err := biz.friendRepo.FindRequest(ctx, senderId, receiverId)
 	if err != nil {
 		return err
 	}
 	if existedRequest == nil {
 		return common.ErrInvalidRequest(friendmodel.ErrRequestNotFound)
 	}
-	err = biz.friendStore.DeleteRequest(ctx, *existedRequest.Id)
+	filter := make(map[string]interface{})
+	err = common.AddIdFilter(filter, *existedRequest.Id)
+	if err != nil {
+		return err
+	}
+	err = biz.friendRepo.DeleteRequest(ctx, filter)
 	if err != nil {
 		return err
 	}

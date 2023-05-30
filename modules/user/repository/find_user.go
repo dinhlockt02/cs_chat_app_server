@@ -3,7 +3,7 @@ package userrepo
 import (
 	"context"
 	"cs_chat_app_server/common"
-	friendmodel "cs_chat_app_server/modules/friend/model"
+	friendrepo "cs_chat_app_server/modules/friend/repository"
 	usermodel "cs_chat_app_server/modules/user/model"
 )
 
@@ -11,18 +11,14 @@ type FindUserUserStore interface {
 	Find(ctx context.Context, filter map[string]interface{}) (*usermodel.User, error)
 }
 
-type FindUserFriendRepository interface {
-	FindUser(ctx context.Context, requesterId string, filter map[string]interface{}) (*friendmodel.User, error)
-}
-
 type findUserRepo struct {
 	userStore  FindUserUserStore
-	friendRepo FindUserFriendRepository
+	friendRepo friendrepo.Repository
 }
 
 func NewFindUserRepo(
 	userStore FindUserUserStore,
-	friendRepo FindUserFriendRepository,
+	friendRepo friendrepo.Repository,
 ) *findUserRepo {
 	return &findUserRepo{
 		userStore:  userStore,
@@ -31,7 +27,7 @@ func NewFindUserRepo(
 }
 
 func (repo *findUserRepo) FindUser(ctx context.Context, requesterId string, filter map[string]interface{}) (*usermodel.User, error) {
-	fuser, err := repo.friendRepo.FindUser(ctx, requesterId, filter)
+	fuser, err := repo.friendRepo.FindUser(ctx, filter, friendrepo.WithRelation(requesterId))
 
 	if err != nil {
 		return nil, err
@@ -46,12 +42,12 @@ func (repo *findUserRepo) FindUser(ctx context.Context, requesterId string, filt
 
 	filter = map[string]interface{}{}
 
-	err = common.AddIdToFilter(filter, requesterId)
+	err = common.AddIdFilter(filter, requesterId)
 	if err != nil {
 		return nil, err
 	}
 
-	requester, err := repo.friendRepo.FindUser(ctx, requesterId, filter)
+	requester, err := repo.friendRepo.FindUser(ctx, filter)
 
 	requesterFriendMap := make(map[string]interface{}, len(requester.Friends))
 

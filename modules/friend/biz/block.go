@@ -35,14 +35,12 @@ func (biz *blockBiz) Block(ctx context.Context, userId string, blockedId string)
 	if user == nil {
 		return common.ErrEntityNotFound("User", errors.New("user not found"))
 	}
-	// Remove if is friend
 	for i := range user.Friends {
 		if user.Friends[i] == blockedId {
 			user.Friends = append(user.Friends[:i], user.Friends[i+1:]...)
 			break
 		}
 	}
-	// Exists if blocked
 	for i := range user.BlockedUser {
 		if user.BlockedUser[i] == blockedId {
 			return nil
@@ -56,7 +54,7 @@ func (biz *blockBiz) Block(ctx context.Context, userId string, blockedId string)
 		return err
 	}
 
-	id, _ = common.ToObjectId(blockedId)
+	id, _ = primitive.ObjectIDFromHex(blockedId)
 	blockedUser, err := biz.friendStore.FindUser(ctx, map[string]interface{}{
 		"_id": id,
 	})
@@ -66,7 +64,6 @@ func (biz *blockBiz) Block(ctx context.Context, userId string, blockedId string)
 	if blockedUser == nil {
 		return common.ErrEntityNotFound("User", errors.New("receiver not found"))
 	}
-	// Remove if being friend
 	for i := range blockedUser.Friends {
 		if blockedUser.Friends[i] == userId {
 			blockedUser.Friends = append(blockedUser.Friends[:i], blockedUser.Friends[i+1:]...)

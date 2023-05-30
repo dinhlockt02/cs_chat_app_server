@@ -4,6 +4,7 @@ import (
 	fbs "cs_chat_app_server/components/firebase"
 	"cs_chat_app_server/components/hasher"
 	"cs_chat_app_server/components/mailer"
+	notirepo "cs_chat_app_server/components/notification/repository"
 	"cs_chat_app_server/components/socket"
 	"cs_chat_app_server/components/tokenprovider"
 	"github.com/redis/go-redis/v9"
@@ -18,6 +19,7 @@ type AppContext interface {
 	RedisClient() *redis.Client
 	FirebaseApp() fbs.FirebaseApp
 	Socket() socket.Socket
+	Notification() notirepo.NotificationRepository
 }
 
 type appContext struct {
@@ -28,6 +30,7 @@ type appContext struct {
 	redisClient   *redis.Client
 	fa            fbs.FirebaseApp
 	socket        socket.Socket
+	notification  notirepo.NotificationRepository
 }
 
 func NewAppContext(
@@ -38,6 +41,7 @@ func NewAppContext(
 	redisClient *redis.Client,
 	fa fbs.FirebaseApp,
 	socket socket.Socket,
+	notification notirepo.NotificationRepository,
 ) *appContext {
 	return &appContext{
 		mongoClient:   mongoClient,
@@ -47,6 +51,7 @@ func NewAppContext(
 		redisClient:   redisClient,
 		fa:            fa,
 		socket:        socket,
+		notification:  notification,
 	}
 }
 
@@ -76,4 +81,8 @@ func (a *appContext) FirebaseApp() fbs.FirebaseApp {
 
 func (a *appContext) Socket() socket.Socket {
 	return a.socket
+}
+
+func (a *appContext) Notification() notirepo.NotificationRepository {
+	return a.notification
 }

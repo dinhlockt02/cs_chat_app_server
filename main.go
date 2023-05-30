@@ -7,6 +7,9 @@ import (
 	fbs "cs_chat_app_server/components/firebase"
 	"cs_chat_app_server/components/hasher"
 	"cs_chat_app_server/components/mailer"
+	notirepo "cs_chat_app_server/components/notification/repository"
+	notiservice "cs_chat_app_server/components/notification/service"
+	notistore "cs_chat_app_server/components/notification/store"
 	"cs_chat_app_server/components/socket"
 	"cs_chat_app_server/components/tokenprovider/jwt"
 	"cs_chat_app_server/middleware"
@@ -90,9 +93,27 @@ func main() {
 	// Create socket
 	wsSocket := socket.NewWSSocket()
 
+	// Create notification service
+	firebaseNotificationClient, err := fa.Messaging(context.Background())
+	if err != nil {
+		log.Panic().Err(err)
+	}
+	ntsv := notiservice.NewFirebaseNotificationService(firebaseNotificationClient)
+	store := notistore.NewMongoStore(client.Database(common.AppDatabase))
+	notification := notirepo.NewNotificationRepository(ntsv, store)
+
 	// Create app context
 
-	appCtx := appcontext.NewAppContext(client, tokenProvider, bcryptHasher, sendgridMailer, redisClient, app, wsSocket)
+	appCtx := appcontext.NewAppContext(
+		client,
+		tokenProvider,
+		bcryptHasher,
+		sendgridMailer,
+		redisClient,
+		app,
+		wsSocket,
+		notification,
+	)
 
 	envport := os.Getenv("SERVER_PORT")
 	if envport == "" {

@@ -5,6 +5,7 @@ import (
 	"cs_chat_app_server/components/appcontext"
 	friendrepo "cs_chat_app_server/modules/friend/repository"
 	friendstore "cs_chat_app_server/modules/friend/store"
+	requeststore "cs_chat_app_server/modules/request/store"
 	userbiz "cs_chat_app_server/modules/user/biz"
 	userrepo "cs_chat_app_server/modules/user/repository"
 	userstore "cs_chat_app_server/modules/user/store"
@@ -17,8 +18,8 @@ func GetUser(appCtx appcontext.AppContext) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		userStore := userstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		friendStore := friendstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
-
-		friendRepo := friendrepo.NewFindUserRepository(friendStore)
+		requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+		friendRepo := friendrepo.NewFriendRepository(friendStore, requestStore)
 		findUserRepo := userrepo.NewFindUserRepo(userStore, friendRepo)
 		findUserBiz := userbiz.NewFindUserBiz(findUserRepo)
 
