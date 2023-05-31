@@ -3,6 +3,7 @@ package userbiz
 import (
 	"context"
 	"cs_chat_app_server/common"
+	"cs_chat_app_server/components/pubsub"
 	usermodel "cs_chat_app_server/modules/user/model"
 )
 
@@ -13,10 +14,17 @@ type UpdateUserStore interface {
 
 type updateUserBiz struct {
 	updateUserStore UpdateUserStore
+	ps              pubsub.PubSub
 }
 
-func NewUpdateUserBiz(updateUserStore UpdateUserStore) *updateUserBiz {
-	return &updateUserBiz{updateUserStore: updateUserStore}
+func NewUpdateUserBiz(
+	updateUserStore UpdateUserStore,
+	ps pubsub.PubSub,
+) *updateUserBiz {
+	return &updateUserBiz{
+		updateUserStore: updateUserStore,
+		ps:              ps,
+	}
 }
 
 func (biz *updateUserBiz) Update(ctx context.Context, filter map[string]interface{}, data *usermodel.UpdateUser) error {
@@ -37,5 +45,7 @@ func (biz *updateUserBiz) Update(ctx context.Context, filter map[string]interfac
 	if err != nil {
 		return err
 	}
+
+	_ = biz.ps.Publish(ctx, common.TopicUserUpdateProfile, *existedUser.Id)
 	return nil
 }

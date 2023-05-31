@@ -10,10 +10,12 @@ import (
 	notirepo "cs_chat_app_server/components/notification/repository"
 	notiservice "cs_chat_app_server/components/notification/service"
 	notistore "cs_chat_app_server/components/notification/store"
+	redispubsub "cs_chat_app_server/components/pubsub/redis"
 	"cs_chat_app_server/components/socket"
 	"cs_chat_app_server/components/tokenprovider/jwt"
 	"cs_chat_app_server/middleware"
 	v1route "cs_chat_app_server/route/v1"
+	"cs_chat_app_server/subscriber"
 	firebase "firebase.google.com/go/v4"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -82,6 +84,10 @@ func main() {
 		DB:       0,                           // use default DB
 	})
 
+	// Create pubsub
+
+	pubsub := redispubsub.NewRedisPubSub(redisClient)
+
 	// Create Firebase App
 	opt := option.WithCredentialsFile("./service-account-key.json")
 	fa, err := firebase.NewApp(context.Background(), nil, opt)
@@ -113,7 +119,10 @@ func main() {
 		app,
 		wsSocket,
 		notification,
+		pubsub,
 	)
+
+	subscriber.Setup(appCtx, context.Background())
 
 	envport := os.Getenv("SERVER_PORT")
 	if envport == "" {

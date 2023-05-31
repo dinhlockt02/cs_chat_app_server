@@ -2,6 +2,9 @@ package userstore
 
 import "go.mongodb.org/mongo-driver/mongo"
 
+type Store interface {
+}
+
 type mongoStore struct {
 	database *mongo.Database
 }

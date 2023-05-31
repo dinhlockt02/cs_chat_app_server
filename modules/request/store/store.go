@@ -11,6 +11,11 @@ type Store interface {
 	FindRequest(ctx context.Context, filter map[string]interface{}) (*requestmdl.Request, error)
 	DeleteRequest(ctx context.Context, filter map[string]interface{}) error
 	CreateRequest(ctx context.Context, request *requestmdl.Request) error
+	UpdateRequests(
+		ctx context.Context,
+		filter map[string]interface{},
+		data *requestmdl.UpdateRequest,
+	) error
 }
 
 type mongoStore struct {

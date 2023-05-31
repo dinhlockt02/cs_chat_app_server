@@ -25,7 +25,7 @@ func UpdateSelf(appCtx appcontext.AppContext) gin.HandlerFunc {
 		}
 
 		userStore := userstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
-		updateUserBiz := userbiz.NewUpdateUserBiz(userStore)
+		updateUserBiz := userbiz.NewUpdateUserBiz(userStore, appCtx.PubSub())
 
 		id, err := primitive.ObjectIDFromHex(requester.GetId())
 		if err != nil {
