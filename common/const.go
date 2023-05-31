@@ -11,3 +11,9 @@ const CurrentFriendId = "CurrentFriendId"
 
 var AppDatabase string
 var AccessTokenExpiry int
+
+// GroupCollectionName declares names of collections in the mongodb database
+const (
+	GroupCollectionName = "groups"
+	UserCollectionName  = "users"
+)
