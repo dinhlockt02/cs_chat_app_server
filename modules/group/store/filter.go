@@ -12,3 +12,10 @@ func GetGroupIdInIdListFilter(ids ...string) map[string]interface{} {
 	}
 	return common.GetInFilter("_id", mongoIds...)
 }
+
+func GetMemberIdInGroupMembersFilter(id string) map[string]interface{} {
+	return map[string]interface{}{
+		"members": id,
+	}
+
+}

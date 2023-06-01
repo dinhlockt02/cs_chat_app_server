@@ -8,7 +8,7 @@ import (
 type Group struct {
 	common.MongoId `json:",inline,omitempty" bson:",inline,omitempty"`
 	Name           string   `bson:"name" json:"name"`
-	Members        []string `bson:"members" json:"members,omitempty"`
+	Members        []string `bson:"members,omitempty" json:"members,omitempty"`
 	ImageUrl       *string  `json:"image_url" bson:"image_url"`
 }
 

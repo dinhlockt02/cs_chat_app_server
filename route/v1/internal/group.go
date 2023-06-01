@@ -15,6 +15,7 @@ func InitGroupRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		{
 			groupRequest.GET("/sent", groupgin.GetSentRequest(appCtx))
 			groupRequest.GET("/received", groupgin.GetReceiveRequest(appCtx))
+
 			groupRequest.POST("/:groupId/accept", groupgin.AcceptRequest(appCtx))
 			groupRequest.DELETE("/:groupId/reject", groupgin.RejectRequest(appCtx))
 
@@ -23,5 +24,7 @@ func InitGroupRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		}
 		group.POST("", groupgin.CreateGroup(appCtx))
 		group.GET("", groupgin.ListGroup(appCtx))
+		group.PUT("/:groupId", groupgin.UpdateGroup(appCtx))
+
 	}
 }
