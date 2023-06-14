@@ -29,6 +29,6 @@ func GetSentRequest(appCtx appcontext.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusCreated, gin.H{"data": reqs})
+		c.JSON(http.StatusOK, gin.H{"data": reqs})
 	}
 }

@@ -16,6 +16,12 @@ func AddIdFilter(filter map[string]interface{}, id string) error {
 	return nil
 }
 
+func GetIdFilter(id string) (map[string]interface{}, error) {
+	m := make(map[string]interface{})
+	err := AddIdFilter(m, id)
+	return m, err
+}
+
 func GetOrFilter(filters ...map[string]interface{}) map[string]interface{} {
 	return map[string]interface{}{
 		"$or": filters,

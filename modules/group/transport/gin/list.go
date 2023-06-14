@@ -28,6 +28,6 @@ func ListGroup(appCtx appcontext.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusCreated, gin.H{"data": groups})
+		c.JSON(http.StatusOK, gin.H{"data": groups})
 	}
 }

@@ -7,6 +7,7 @@ import (
 	friendgin "cs_chat_app_server/modules/friend/transport/gin"
 	pchatgin "cs_chat_app_server/modules/personal_chat/transport/gin"
 	pchatskt "cs_chat_app_server/modules/personal_chat/transport/socket"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gobwas/ws"
 )
@@ -30,7 +31,7 @@ func InitFriendRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		friend.PUT("/:id/unblock", friendgin.Unblock(appCtx))
 		{
 			friend.GET("/:id/chat", pchatgin.ListMessage(appCtx))
-			friend.GET(":id/chat/ws", friendWebsocketChatHandler(appCtx))
+			friend.GET("/:id/chat/ws", friendWebsocketChatHandler(appCtx))
 		}
 	}
 }

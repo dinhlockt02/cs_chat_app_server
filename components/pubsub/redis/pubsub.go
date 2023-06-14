@@ -3,6 +3,8 @@ package redispubsub
 import (
 	"context"
 	"cs_chat_app_server/components/pubsub"
+	"encoding/json"
+
 	"github.com/redis/go-redis/v9"
 )
 
@@ -15,7 +17,11 @@ func NewRedisPubSub(client *redis.Client) *RedisPubSub {
 }
 
 func (ps *RedisPubSub) Publish(ctx context.Context, topic pubsub.Topic, data string) error {
-	return ps.client.Publish(ctx, string(topic), data).Err()
+	marshaled, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	return ps.client.Publish(ctx, string(topic), marshaled).Err()
 }
 
 func (ps *RedisPubSub) Subscribe(ctx context.Context, topic pubsub.Topic) <-chan string {
@@ -26,7 +32,12 @@ func (ps *RedisPubSub) Subscribe(ctx context.Context, topic pubsub.Topic) <-chan
 	ch := _pubsub.Channel()
 	go func() {
 		for msg := range ch {
-			c <- msg.Payload
+			var data string
+			err := json.Unmarshal([]byte(msg.Payload), &data)
+			if err != nil {
+				continue
+			}
+			c <- data
 		}
 	}()
 

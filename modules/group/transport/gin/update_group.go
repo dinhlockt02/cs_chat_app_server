@@ -41,6 +41,6 @@ func UpdateGroup(appCtx appcontext.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusCreated, gin.H{"data": true})
+		c.JSON(http.StatusOK, gin.H{"data": true})
 	}
 }

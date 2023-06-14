@@ -8,4 +8,6 @@ import (
 func Setup(appCtx appcontext.AppContext, ctx context.Context) {
 	UpdateRequestWhenUserUpdateProfile(appCtx, ctx)
 	UpdateRequestWhenGroupUpdated(appCtx, ctx)
+	NotifyUserWhenNewGroupMessageReceived(appCtx, ctx)
+	NotifyUserWhenNewPersonalMessageReceived(appCtx, ctx)
 }
