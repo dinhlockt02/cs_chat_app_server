@@ -8,9 +8,10 @@ import (
 type MessageType string
 
 const (
-	image MessageType = "image"
-	text  MessageType = "text"
-	video MessageType = "video"
+	image  MessageType = "image"
+	text               = "text"
+	video              = "video"
+	record             = "record"
 )
 
 type PersonalChatItem struct {
@@ -25,6 +26,7 @@ type PersonalChatItem struct {
 	ThumbnailUrl          *string     `bson:"thumbnail_url,omitempty" json:"thumbnail_url,omitempty"`
 	VideoUrl              *string     `bson:"video_url,omitempty" json:"video_url,omitempty"`
 	ImageUrl              *string     `bson:"image_url,omitempty" json:"image_url,omitempty"`
+	RecordUrl             *string     `bson:"record_url,omitempty" json:"record_url,omitempty"`
 	common.MongoCreatedAt `bson:",inline" json:",inline"`
 	IsMe                  *bool `json:"is_me,omitempty"`
 }
@@ -46,5 +48,10 @@ func (p *PersonalChatItem) Process() error {
 	if p.Type != image {
 		p.ImageUrl = nil
 	}
+
+	if p.Type != record {
+		p.RecordUrl = nil
+	}
+
 	return nil
 }
