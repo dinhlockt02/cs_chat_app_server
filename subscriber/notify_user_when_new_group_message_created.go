@@ -18,6 +18,7 @@ func NotifyUserWhenNewGroupMessageReceived(appCtx appcontext.AppContext, ctx con
 	groupChatStore := gchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 	go func() {
 		for messageId := range ch {
+
 			go func(ctx context.Context, messageId string) {
 				defer common.Recovery()
 

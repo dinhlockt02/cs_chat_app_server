@@ -4,6 +4,7 @@ import (
 	"context"
 	"cs_chat_app_server/components/pubsub"
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -32,6 +33,9 @@ func (ps *RedisPubSub) Subscribe(ctx context.Context, topic pubsub.Topic) <-chan
 	ch := _pubsub.Channel()
 	go func() {
 		for msg := range ch {
+
+			log.Debug().Msgf("New %v Received", string(topic))
+
 			var data string
 			err := json.Unmarshal([]byte(msg.Payload), &data)
 			if err != nil {

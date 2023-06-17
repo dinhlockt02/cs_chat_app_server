@@ -5,6 +5,7 @@ import (
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	"cs_chat_app_server/components/socket"
+	"cs_chat_app_server/middleware"
 	pchatbiz "cs_chat_app_server/modules/personal_chat/biz"
 	pchatmdl "cs_chat_app_server/modules/personal_chat/model"
 	pchatrepo "cs_chat_app_server/modules/personal_chat/repository"
@@ -14,11 +15,7 @@ import (
 
 func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 	return func(c *socket.Context, data []byte) {
-		defer func() {
-			if err := recover(); err != nil {
-				c.Response(err)
-			}
-		}()
+		defer middleware.RecoverSocket(c)
 		u, _ := c.GetContext().Get(common.CurrentUser)
 		requester := u.(common.Requester)
 		var item pchatmdl.PersonalChatItem

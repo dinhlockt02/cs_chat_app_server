@@ -23,7 +23,7 @@ type GroupChatItem struct {
 	Message               string      `bson:"message" json:"message"`
 	Optional              *string     `bson:"optional,omitempty" json:"optional,omitempty"`
 	common.MongoCreatedAt `bson:",inline" json:",inline"`
-	IsMe                  *bool `json:"is_me,omitempty"`
+	IsMe                  *bool `json:"is_me,omitempty" bson:"-"`
 }
 
 func (p *GroupChatItem) CollectionName() string {

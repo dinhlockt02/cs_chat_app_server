@@ -38,13 +38,15 @@ func InitFriendRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 
 func friendWebsocketChatHandler(appCtx appcontext.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		id := c.Param("id")
+		if _, err := common.ToObjectId(id); err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+
 		conn, _, _, err := ws.UpgradeHTTP(c.Request, c.Writer)
 		if err != nil {
 			panic(common.ErrInternal(err))
-		}
-		id := c.Param("id")
-		if _, err = common.ToObjectId(id); err != nil {
-			panic(common.ErrInvalidRequest(err))
 		}
 
 		c.Set(common.CurrentFriendId, id)
