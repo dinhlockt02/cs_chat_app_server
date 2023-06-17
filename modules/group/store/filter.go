@@ -19,3 +19,14 @@ func GetMemberIdInGroupMembersFilter(id string) map[string]interface{} {
 	}
 
 }
+
+func GetUserIdInIdListFilter(ids ...string) map[string]interface{} {
+	mongoIds := make([]interface{}, 0, len(ids))
+	for i := range ids {
+		mongoId, err := common.ToObjectId(ids[i])
+		if err == nil {
+			mongoIds = append(mongoIds, mongoId)
+		}
+	}
+	return common.GetInFilter("_id", mongoIds...)
+}

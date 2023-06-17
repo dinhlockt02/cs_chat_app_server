@@ -51,6 +51,7 @@ type Repository interface {
 		ctx context.Context,
 		filter map[string]interface{},
 	) ([]requestmdl.Request, error)
+	FindUsers(ctx context.Context, filter map[string]interface{}) ([]groupmdl.User, error)
 }
 
 type groupRepository struct {
