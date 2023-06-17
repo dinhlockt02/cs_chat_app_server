@@ -14,6 +14,13 @@ import (
 
 func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 	return func(context *gin.Context) {
+		var typeFilter map[string]interface{}
+		mt := context.Query("type")
+
+		if len(mt) > 0 {
+			typeFilter = pchatstore.GetMessageTypeFilter(mt)
+		}
+
 		u, _ := context.Get(common.CurrentUser)
 		requester := u.(common.Requester)
 		requesterId := requester.GetId()
@@ -49,6 +56,10 @@ func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 					},
 				},
 			},
+		}
+
+		if typeFilter != nil {
+			filter = common.GetAndFilter(filter, typeFilter)
 		}
 
 		store := pchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))

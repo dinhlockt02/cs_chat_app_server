@@ -42,3 +42,9 @@ func (s *mongoStore) AddIdFilter(id string, filter map[string]interface{}) error
 	filter["_id"] = _id
 	return nil
 }
+
+func GetMessageTypeFilter(messageType string) map[string]interface{} {
+	return map[string]interface{}{
+		"type": messageType,
+	}
+}

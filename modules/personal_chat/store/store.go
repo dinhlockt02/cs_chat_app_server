@@ -35,3 +35,9 @@ func GetReceiverFilter(receiverId string) map[string]interface{} {
 		"receiver": receiverId,
 	}
 }
+
+func GetMessageTypeFilter(messageType string) map[string]interface{} {
+	return map[string]interface{}{
+		"type": messageType,
+	}
+}

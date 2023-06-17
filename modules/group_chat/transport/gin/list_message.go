@@ -7,6 +7,7 @@ import (
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
 	gchatrepo "cs_chat_app_server/modules/group_chat/repository"
 	gchatstore "cs_chat_app_server/modules/group_chat/store"
+	pchatstore "cs_chat_app_server/modules/personal_chat/store"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
@@ -14,6 +15,14 @@ import (
 
 func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 	return func(context *gin.Context) {
+
+		var typeFilter map[string]interface{}
+		mt := context.Query("type")
+
+		if len(mt) > 0 {
+			typeFilter = pchatstore.GetMessageTypeFilter(mt)
+		}
+
 		u, _ := context.Get(common.CurrentUser)
 		requester := u.(common.Requester)
 		requesterId := requester.GetId()
@@ -33,6 +42,10 @@ func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 
 		filter := map[string]interface{}{
 			"group": groupId,
+		}
+
+		if typeFilter != nil {
+			filter = common.GetAndFilter(filter, typeFilter)
 		}
 
 		store := gchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
