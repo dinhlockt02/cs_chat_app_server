@@ -1,0 +1,1845 @@
+{
+	"info": {
+		"_postman_id": "5eacf782-0c58-4b35-9b47-46a93fc68568",
+		"name": "Chat App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18854090"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"email\": \"loctrandinh02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/auth/register",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": {\n        \"email\": \"loctrandinh02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{domain}}/v1/auth/register",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:54:15 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "466"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"access_token\": {\n            \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODMyNTg4NTUsImlhdCI6MTY4MzI1NTI1NSwicGF5bG9hZCI6eyJpZCI6IjY0NTQ2ZmQ3ZDY4YTU4YmVmZWJlMTM2ZCJ9fQ.gqkC3iE-zv5RIp8kwglCrVwCMZ9OnQ7WayISY4XvcPs\",\n            \"createdAt\": \"2023-05-05T09:54:15.926878+07:00\",\n            \"expiredAt\": \"2023-05-05T10:54:15.926878+07:00\"\n        },\n        \"refresh_token\": {\n            \"token\": \"64546fd7d68a58befebe136d\",\n            \"createdAt\": \"2023-05-05T09:54:15.926871+07:00\"\n        },\n        \"email_verified\": false,\n        \"profile_updated\": false\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Access Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"64546fabd68a58befebe136b\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/auth/access-token",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"access-token"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Access Token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refresh_token\": \"64546fabd68a58befebe136b\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{domain}}/v1/auth/access-token",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"access-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:56:17 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "302"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODMyNTg5NzcsImlhdCI6MTY4MzI1NTM3NywicGF5bG9hZCI6eyJpZCI6IjY0NTQ2ZmFiZDY4YTU4YmVmZWJlMTM2YiJ9fQ.KeX5T975mTwtfcvNkJCeupi0dShzLVrwu0yN5edz0Mg\",\n        \"createdAt\": \"2023-05-05T09:56:17.715064+07:00\",\n        \"expiredAt\": \"2023-05-05T10:56:17.715064+07:00\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"email\": \"loctrandinh02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/auth/login",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": {\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{domain}}/v1/auth/login",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:53:31 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "465"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"access_token\": {\n            \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODMyNTg4MTEsImlhdCI6MTY4MzI1NTIxMSwicGF5bG9hZCI6eyJpZCI6IjY0NTQ2ZmFiZDY4YTU4YmVmZWJlMTM2YiJ9fQ.e8DpAuvx9X3vmnk1R4RrPHj_szgZGNq2zl6-5O16EKQ\",\n            \"createdAt\": \"2023-05-05T09:53:31.236737+07:00\",\n            \"expiredAt\": \"2023-05-05T10:53:31.236737+07:00\"\n        },\n        \"refresh_token\": {\n            \"token\": \"64546fabd68a58befebe136b\",\n            \"createdAt\": \"2023-05-05T09:53:31.236737+07:00\"\n        },\n        \"email_verified\": false,\n        \"profile_updated\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/auth/logout",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"new_password\": \"12345678\" ,\n    \"old_password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/auth/update-password",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"update-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login With Firebase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id_token\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImU3OTMwMjdkYWI0YzcwNmQ2ODg0NGI4MDk2ZTBlYzQzMjYyMjIwMDAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY3MtY2hhdC1hcHAtZWFjOGEiLCJhdWQiOiJjcy1jaGF0LWFwcC1lYWM4YSIsImF1dGhfdGltZSI6MTY4MzAwMDczNSwidXNlcl9pZCI6IkRWcFlYT0hUTjhlSUlMdlpNOUd3Zkx0aTVCWDIiLCJzdWIiOiJEVnBZWE9IVE44ZUlJTHZaTTlHd2ZMdGk1QlgyIiwiaWF0IjoxNjgzMDAwNzM1LCJleHAiOjE2ODMwMDQzMzUsImVtYWlsIjoiZGluaGxvY2t0MDJAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImRpbmhsb2NrdDAyQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aFOdxM8xRULu4GN9J8ptC5HpSlyMT_iWTRBz6uEj-EbvQO4lZadTgHLrIzeZtlk1o3UJiBbBwlNARPKxfRWQ_H1BQ5bwHbJb6JsGHlHaELeNOlivDY2cuw-bYnhCdn-hXIebBLH6a-nECERGUoc_uypOtI_Tz-cfNctMknhD0BD5AIetUAAVC4HoikFMYDyHnunE1p-2U9ULmwrS0jn-sMKFFkb6QIP8qGSsz6111ih3MlepsrHzPH7Vyaq8O18WzuJ4X_Hi5pCBijvZvcf10bEG1IjijoeXrEKBPKKQkCz9_BSlvl0ow6_tYOQUKLIkvcxQBbEnrcFhNBlWaVFCsA\",\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/auth/login-with-firebase",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login-with-firebase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send verify email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/auth/send-verify-email",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"send-verify-email"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Friend",
+			"item": [
+				{
+					"name": "Send Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/request/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								"request",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "647614f9925c9f5c6244034a"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Send Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/friend/request/:id",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"friend",
+										"request",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64546fd7d68a58befebe136c"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:55:07 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "13"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "ListChat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/:id/chat?type=image",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								":id",
+								"chat"
+							],
+							"query": [
+								{
+									"key": "last_id",
+									"value": "64572db0b63d5b2a576fcd63",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "image"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "64844370db7e0099f9534c9b"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "ListChat Default",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/friend/:id/chat",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"friend",
+										":id",
+										"chat"
+									],
+									"query": [
+										{
+											"key": "last_id",
+											"value": "6454710bd68a58befebe1371",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "20",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "asc",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6454587f9dd90845786b5f00"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 04:36:04 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "754"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": \"6454710cd68a58befebe1373\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:24.811Z\"\n        },\n        {\n            \"id\": \"6454710cd68a58befebe1372\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:24.204Z\"\n        },\n        {\n            \"id\": \"6454710bd68a58befebe1371\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:23.677Z\"\n        },\n        {\n            \"id\": \"6454710ad68a58befebe1370\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:22.928Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "List Friend",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "List Friend",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/friend/",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"friend",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:58:38 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "119"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": \"6454587f9dd90845786b5f00\",\n            \"avatar\": \"http://google.com/vvv.jpg\",\n            \"name\": \"jane doe\",\n            \"last_seen_at\": null\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Unfriend",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6452706e5857b512d61c0992"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Block",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/:id/block",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								":id",
+								"block"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6452706e5857b512d61c0992"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/:id/unblock",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								":id",
+								"unblock"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6447f494b04f1e5384c890b3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sent Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/request/sent",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								"request",
+								"sent"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Sent Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/friend/request/sent",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"friend",
+										"request",
+										"sent"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:55:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "217"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"sender\": {\n                \"id\": \"6454587f9dd90845786b5f00\",\n                \"name\": \"jane doe\",\n                \"avatar\": \"http://google.com/vvv.jpg\"\n            },\n            \"receiver\": {\n                \"id\": \"64546fd7d68a58befebe136c\",\n                \"name\": \"\",\n                \"avatar\": \"\"\n            },\n            \"created_at\": \"2023-05-05T02:55:07.438Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Recall Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/request/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								"request",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "647614f9925c9f5c6244034a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Received Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/request/received",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								"request",
+								"received"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Received Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/friend/request/received",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"friend",
+										"request",
+										"received"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:55:26 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "217"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"sender\": {\n                \"id\": \"6454587f9dd90845786b5f00\",\n                \"name\": \"jane doe\",\n                \"avatar\": \"http://google.com/vvv.jpg\"\n            },\n            \"receiver\": {\n                \"id\": \"64546fd7d68a58befebe136c\",\n                \"name\": \"\",\n                \"avatar\": \"\"\n            },\n            \"created_at\": \"2023-05-05T02:55:07.438Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Accept Received Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/request/:userId/accept",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								"request",
+								":userId",
+								"accept"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "645622d9fca8c1077d9f3971"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Received Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/friend/request/:id/reject",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"friend",
+								"request",
+								":id",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "647614f9925c9f5c6244034a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Update Self",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"jane doe\",\n    \"gender\": \"other\",\n    \"phone\": \"98765\",\n    \"birthday\": \"2003-02-20T17:00:00.000Z\",\n    \"bio\": \"Hello world\",\n    \"avatar\": \"http://google.com/vvv.jpg\"\n}\n\n\n// {\n//     \"avatar\": \"http://google.com/vvv.jpg\"\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/user/self",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"self"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User detail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/user?email=dinhlockt02@gmail.com",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "dinhlockt02@gmail.com"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "User detail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/user?email=20520236@gmail.com",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"user"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "20520236@gmail.com"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 14:15:51 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "273"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"6454587f9dd90845786b5f00\",\n        \"updated_at\": \"2023-05-05T01:16:33.682Z\",\n        \"name\": \"jane doe\",\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"avatar\": \"http://google.com/vvv.jpg\",\n        \"phone\": \"98765\",\n        \"gender\": \"other\",\n        \"birthday\": \"2003-02-20T17:00:00Z\",\n        \"bio\": \"Hello world\",\n        \"is_friend\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "User By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/user/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "64565703f808e92830040b11"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "User By Id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/user/:id",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64546fd7d68a58befebe136c"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:57:13 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "256"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"6454587f9dd90845786b5f00\",\n        \"updated_at\": \"2023-05-05T01:16:33.682Z\",\n        \"name\": \"jane doe\",\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"avatar\": \"http://google.com/vvv.jpg\",\n        \"phone\": \"98765\",\n        \"gender\": \"other\",\n        \"birthday\": \"2003-02-20T17:00:00Z\",\n        \"bio\": \"Hello world\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Self",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/user/self",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"self"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Self",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/v1/user/self",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"self"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 May 2023 02:56:56 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "256"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"6454587f9dd90845786b5f00\",\n        \"updated_at\": \"2023-05-05T01:16:33.682Z\",\n        \"name\": \"jane doe\",\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"avatar\": \"http://google.com/vvv.jpg\",\n        \"phone\": \"98765\",\n        \"gender\": \"other\",\n        \"birthday\": \"2003-02-20T17:00:00Z\",\n        \"bio\": \"Hello world\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Group",
+			"item": [
+				{
+					"name": "Create Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\",\n    \"members\": [\"647614f9925c9f5c6244034a\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/group",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/group/:groupId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								":groupId"
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": "64769843e357b4207464fb87"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Groups",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/group",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Group Details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/group/:groupId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								":groupId"
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": "6489e123931cbf0d0f309c83"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sent Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/request/sent",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								"request",
+								"sent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Receive Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/request/received",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								"request",
+								"received"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/request/:groupId/reject",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								"request",
+								":groupId",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send group request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/request/:groupId/:friendId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								"request",
+								":groupId",
+								":friendId"
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": "6472f3f6a5f7e6abcf08318d"
+								},
+								{
+									"key": "friendId",
+									"value": "6472bedcc769e4b744c78858"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recall group request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/request/:groupId/:friendId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								"request",
+								":groupId",
+								":friendId"
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": "6472f3f6a5f7e6abcf08318d"
+								},
+								{
+									"key": "friendId",
+									"value": "6472bedcc769e4b744c78858"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/request/:groupId/accept",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								"request",
+								":groupId",
+								"accept"
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListChat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/:id/chat?limit=20&type=text",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								":id",
+								"chat"
+							],
+							"query": [
+								{
+									"key": "last_id",
+									"value": "64572db0b63d5b2a576fcd63",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "order",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "text"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6489e123931cbf0d0f309c83"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Device",
+			"item": [
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"xiaomi 4\",\n        \"push_notification_token\": \"test 4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/device",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Devices",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/device",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Device",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test 4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/device/:deviceId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"device",
+								":deviceId"
+							],
+							"variable": [
+								{
+									"key": "deviceId",
+									"value": "6484439adb7e0099f9534c9e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DOMAIN}}/ping",
+					"host": [
+						"{{DOMAIN}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
