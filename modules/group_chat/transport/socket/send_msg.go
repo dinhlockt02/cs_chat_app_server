@@ -16,7 +16,7 @@ import (
 func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 	return func(c *socket.Context, data []byte) {
 		defer middleware.RecoverSocket(c)
-		u, _ := c.GetContext().Get(common.CurrentUser)
+		u := c.GetContext().Value(common.CurrentUser)
 		requester := u.(common.Requester)
 		var item gchatmdl.GroupChatItem
 		err := json.Unmarshal(data, &item)
@@ -29,7 +29,7 @@ func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 		biz := gchatbiz.NewSendMessageBiz(repo, appCtx.PubSub())
 
 		item.SenderId = requester.GetId()
-		receiverId, _ := c.GetContext().Get(common.CurrentGroupId)
+		receiverId := c.GetContext().Value(common.CurrentGroupId)
 		item.GroupId, _ = receiverId.(string)
 		if err = biz.Send(context.Background(), &item); err != nil {
 			panic(err)

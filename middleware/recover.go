@@ -49,22 +49,14 @@ func RecoverSocket(c *socket.Context) {
 			return
 		}
 		if appErr, ok := err.(*common.AppError); ok {
+			log.Error().Stack().Err(appErr).Msg("")
 			c.Response(appErr)
-			if gin.Mode() == gin.DebugMode {
-				panic(err)
-			} else if appErr.StatusCode >= http.StatusInternalServerError {
-				log.Error().Err(appErr)
-			}
 			return
 		}
 
 		appErr := common.ErrInternal(err.(error))
+		log.Error().Stack().Err(appErr).Msg("")
 		c.Response(appErr)
-		if gin.Mode() == gin.DebugMode {
-			panic(err)
-		} else {
-			log.Error().Err(err.(error))
-		}
 		return
 	}
 }

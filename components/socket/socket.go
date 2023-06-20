@@ -1,7 +1,7 @@
 package socket
 
 import (
-	"github.com/gin-gonic/gin"
+	"context"
 	"net"
 )
 
@@ -11,5 +11,5 @@ type Socket interface {
 	AddConn(topic string, conn net.Conn) error
 	RemoveConn(topic string, conn net.Conn) error
 	Send(topic string, message interface{}) error
-	Receive(conn net.Conn, ginContext *gin.Context, handler SocketHandler)
+	Receive(conn net.Conn, context context.Context, handler SocketHandler)
 }

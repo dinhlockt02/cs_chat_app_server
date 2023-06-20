@@ -11,16 +11,18 @@ import (
 	pchatrepo "cs_chat_app_server/modules/personal_chat/repository"
 	pchatstore "cs_chat_app_server/modules/personal_chat/store"
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 )
 
 func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 	return func(c *socket.Context, data []byte) {
 		defer middleware.RecoverSocket(c)
-		u, _ := c.GetContext().Get(common.CurrentUser)
+		u := c.GetContext().Value(common.CurrentUser)
 		requester := u.(common.Requester)
 		var item pchatmdl.PersonalChatItem
 		err := json.Unmarshal(data, &item)
 		if err != nil {
+			log.Error().Err(err).Msg("invalid request")
 			panic(common.ErrInvalidRequest(err))
 		}
 
@@ -29,9 +31,10 @@ func SendMessageHandler(appCtx appcontext.AppContext) socket.SocketHandler {
 		biz := pchatbiz.NewSendMessageBiz(repo, appCtx.PubSub())
 
 		item.SenderId = requester.GetId()
-		receiverId, _ := c.GetContext().Get(common.CurrentFriendId)
-		item.ReceiverId, _ = receiverId.(string)
+		receiverId := c.GetContext().Value(common.CurrentFriendId)
+		item.ReceiverId = receiverId.(string)
 		if err = biz.Send(context.Background(), &item); err != nil {
+			log.Error().Err(err).Msg("pchatskt.SendMessageHandler: send message failed")
 			panic(err)
 		}
 		//c.Response(map[string]interface{}{

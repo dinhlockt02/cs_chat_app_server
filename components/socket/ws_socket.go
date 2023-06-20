@@ -1,9 +1,9 @@
 package socket
 
 import (
+	"context"
 	"cs_chat_app_server/common"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 	"net"
@@ -66,14 +66,14 @@ func (w *wsSocket) Send(topic string, message interface{}) error {
 	return nil
 }
 
-func (w *wsSocket) Receive(conn net.Conn, ginContext *gin.Context, handler SocketHandler) {
+func (w *wsSocket) Receive(conn net.Conn, context context.Context, handler SocketHandler) {
 	go func() {
 		for {
 			msg, _, err := wsutil.ReadClientData(conn)
 			if err != nil {
 				break
 			}
-			handler(newContext(conn, ginContext), msg)
+			handler(newContext(conn, context), msg)
 		}
 	}()
 }

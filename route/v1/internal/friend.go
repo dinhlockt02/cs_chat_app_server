@@ -1,15 +1,16 @@
 package routeinternal
 
 import (
+	"context"
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	authmiddleware "cs_chat_app_server/middleware/authenticate"
 	friendgin "cs_chat_app_server/modules/friend/transport/gin"
 	pchatgin "cs_chat_app_server/modules/personal_chat/transport/gin"
 	pchatskt "cs_chat_app_server/modules/personal_chat/transport/socket"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gobwas/ws"
+	"github.com/rs/zerolog/log"
 )
 
 func InitFriendRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
@@ -38,8 +39,9 @@ func InitFriendRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 
 func friendWebsocketChatHandler(appCtx appcontext.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		log.Debug().Msg("New connection connected")
 		id := c.Param("id")
+
 		if _, err := common.ToObjectId(id); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
@@ -49,15 +51,15 @@ func friendWebsocketChatHandler(appCtx appcontext.AppContext) gin.HandlerFunc {
 			panic(common.ErrInternal(err))
 		}
 
-		c.Set(common.CurrentFriendId, id)
-
+		ctx := context.WithValue(context.Background(), common.CurrentFriendId, id)
 		u, _ := c.Get(common.CurrentUser)
+		ctx = context.WithValue(ctx, common.CurrentUser, u)
 		requester, _ := u.(common.Requester)
 		err = appCtx.Socket().AddConn(requester.GetId(), conn)
 		if err != nil {
 			panic(common.ErrInternal(err))
 		}
 
-		appCtx.Socket().Receive(conn, c, pchatskt.SendMessageHandler(appCtx))
+		appCtx.Socket().Receive(conn, ctx, pchatskt.SendMessageHandler(appCtx))
 	}
 }
