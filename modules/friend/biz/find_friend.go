@@ -4,6 +4,9 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	friendmodel "cs_chat_app_server/modules/friend/model"
+	groupmdl "cs_chat_app_server/modules/group/model"
+	grouprepo "cs_chat_app_server/modules/group/repository"
+	groupstore "cs_chat_app_server/modules/group/store"
 	"errors"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -14,11 +17,18 @@ type FindFriendFriendStore interface {
 }
 
 type findFriendBiz struct {
-	friendStore FindFriendFriendStore
+	friendStore     FindFriendFriendStore
+	groupRepository grouprepo.Repository
 }
 
-func NewFindFriendBiz(friendStore FindFriendFriendStore) *findFriendBiz {
-	return &findFriendBiz{friendStore: friendStore}
+func NewFindFriendBiz(
+	friendStore FindFriendFriendStore,
+	groupRepository grouprepo.Repository,
+) *findFriendBiz {
+	return &findFriendBiz{
+		friendStore:     friendStore,
+		groupRepository: groupRepository,
+	}
 }
 
 func (biz *findFriendBiz) FindFriend(ctx context.Context, userId string) ([]friendmodel.FriendUser, error) {
@@ -48,6 +58,20 @@ func (biz *findFriendBiz) FindFriend(ctx context.Context, userId string) ([]frie
 			"$in": ids,
 		},
 	})
+
+	for i := range friends {
+		filter := common.GetAndFilter(
+			groupstore.GetMemberIdInGroupMembersFilter(*friends[i].Id),
+			groupstore.GetMemberIdInGroupMembersFilter(userId),
+			groupstore.GetTypeFilter(groupmdl.TypePersonal),
+		)
+		group, err := biz.groupRepository.FindGroup(ctx, filter)
+		if err != nil {
+			return nil, err
+		}
+
+		friends[i].Group = *group.Id
+	}
 	if err != nil {
 		return nil, err
 	}

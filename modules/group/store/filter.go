@@ -1,6 +1,9 @@
 package groupstore
 
-import "cs_chat_app_server/common"
+import (
+	"cs_chat_app_server/common"
+	groupmdl "cs_chat_app_server/modules/group/model"
+)
 
 func GetGroupIdInIdListFilter(ids ...string) map[string]interface{} {
 	mongoIds := make([]interface{}, 0, len(ids))
@@ -29,4 +32,10 @@ func GetUserIdInIdListFilter(ids ...string) map[string]interface{} {
 		}
 	}
 	return common.GetInFilter("_id", mongoIds...)
+}
+
+func GetTypeFilter(typ groupmdl.GroupType) map[string]interface{} {
+	return map[string]interface{}{
+		"type": typ,
+	}
 }

@@ -7,7 +7,6 @@ import (
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
 	gchatrepo "cs_chat_app_server/modules/group_chat/repository"
 	gchatstore "cs_chat_app_server/modules/group_chat/store"
-	pchatstore "cs_chat_app_server/modules/personal_chat/store"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
@@ -20,7 +19,7 @@ func ListMessage(appCtx appcontext.AppContext) gin.HandlerFunc {
 		mt := context.Query("type")
 
 		if len(mt) > 0 {
-			typeFilter = pchatstore.GetMessageTypeFilter(mt)
+			typeFilter = gchatstore.GetMessageTypeFilter(mt)
 		}
 
 		u, _ := context.Get(common.CurrentUser)

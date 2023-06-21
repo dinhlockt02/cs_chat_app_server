@@ -6,14 +6,7 @@ import (
 	"cs_chat_app_server/components/pubsub"
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
 	gchatrepo "cs_chat_app_server/modules/group_chat/repository"
-	pchatmdl "cs_chat_app_server/modules/personal_chat/model"
 )
-
-type SendMessagePersonalChatRepo interface {
-	Create(ctx context.Context,
-		personalChatItem *pchatmdl.PersonalChatItem,
-	) error
-}
 
 type sendMessageBiz struct {
 	groupChatRepo gchatrepo.Repository

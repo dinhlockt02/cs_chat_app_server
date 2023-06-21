@@ -5,11 +5,20 @@ import (
 	"errors"
 )
 
+type GroupType string
+
+const (
+	TypePersonal GroupType = "personal"
+	TypeGroup              = "group"
+)
+
 type Group struct {
 	common.MongoId `json:",inline,omitempty" bson:",inline,omitempty"`
-	Name           string   `bson:"name" json:"name"`
-	Members        []string `bson:"members,omitempty" json:"members,omitempty"`
-	ImageUrl       *string  `json:"image_url" bson:"image_url"`
+	Name           string    `bson:"name" json:"name"`
+	Members        []string  `bson:"members,omitempty" json:"members,omitempty"`
+	ImageUrl       *string   `json:"image_url" bson:"image_url"`
+	Type           GroupType `bson:"type" json:"type"`
+	Active         *bool     `json:"active,omitempty" bson:"active,omitempty"`
 }
 
 func (Group) CollectionName() string {

@@ -67,6 +67,7 @@ func (biz *acceptGroupRequestBiz) AcceptRequest(ctx context.Context, requesterId
 
 	// Update Group
 	group.Members = append(group.Members, requesterId)
+	group.Active = common.GetPointer(true)
 	filter = make(map[string]interface{})
 	err = common.AddIdFilter(filter, groupId)
 	if err != nil {

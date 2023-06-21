@@ -24,6 +24,9 @@ func (biz *createGroupBiz) Create(ctx context.Context, requester string, data *g
 		return common.ErrInvalidRequest(err)
 	}
 
+	data.Type = groupmdl.TypeGroup
+	data.Active = common.GetPointer(true)
+
 	userFilter := make(map[string]interface{})
 	_ = common.AddIdFilter(userFilter, requester)
 	user, err := biz.groupRepo.FindUser(ctx, userFilter)

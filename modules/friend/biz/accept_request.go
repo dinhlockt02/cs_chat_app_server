@@ -7,6 +7,9 @@ import (
 	notirepo "cs_chat_app_server/components/notification/repository"
 	friendmodel "cs_chat_app_server/modules/friend/model"
 	friendrepo "cs_chat_app_server/modules/friend/repository"
+	groupmdl "cs_chat_app_server/modules/group/model"
+	grouprepo "cs_chat_app_server/modules/group/repository"
+	groupstore "cs_chat_app_server/modules/group/store"
 	"errors"
 	"github.com/rs/zerolog/log"
 )
@@ -14,15 +17,18 @@ import (
 type acceptRequestBiz struct {
 	friendRepository friendrepo.Repository
 	notification     notirepo.NotificationRepository
+	groupRepository  grouprepo.Repository
 }
 
 func NewAcceptRequestBiz(
 	friendRepository friendrepo.Repository,
 	notification notirepo.NotificationRepository,
+	groupRepository grouprepo.Repository,
 ) *acceptRequestBiz {
 	return &acceptRequestBiz{
 		friendRepository: friendRepository,
 		notification:     notification,
+		groupRepository:  groupRepository,
 	}
 }
 
@@ -87,6 +93,38 @@ func (biz *acceptRequestBiz) AcceptRequest(ctx context.Context, senderId string,
 	err = biz.friendRepository.DeleteRequest(ctx, filter)
 	if err != nil {
 		return err
+	}
+
+	// Find group
+	group, err := biz.groupRepository.FindGroup(ctx,
+		common.GetAndFilter(
+			groupstore.GetUserIdInIdListFilter(receiverId, senderId),
+			groupstore.GetTypeFilter(groupmdl.TypePersonal),
+		),
+	)
+	if err != nil {
+		return err
+	}
+
+	if group == nil {
+		// Create group
+		err = biz.groupRepository.CreateGroup(ctx, &groupmdl.Group{
+			Members: []string{senderId, receiverId},
+			Type:    groupmdl.TypePersonal,
+			Active:  common.GetPointer(true),
+		})
+		if err != nil {
+			return err
+		}
+	} else {
+		group.Active = common.GetPointer(true)
+		err = biz.groupRepository.UpdateGroup(ctx, common.GetAndFilter(
+			groupstore.GetUserIdInIdListFilter(receiverId, senderId),
+			groupstore.GetTypeFilter(groupmdl.TypePersonal),
+		), group)
+		if err != nil {
+			return err
+		}
 	}
 
 	go func() {

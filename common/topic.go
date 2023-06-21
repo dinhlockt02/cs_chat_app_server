@@ -5,4 +5,5 @@ const (
 	TopicGroupUpdated              = "TopicGroupUpdated"
 	TopicNewGroupMessageCreated    = "TopicNewGroupMessageCreated"
 	TopicNewPersonalMessageCreated = "TopicNewPersonalMessageCreated"
+	TopicAcceptFriendRequest       = "TopicAcceptFriendRequest"
 )

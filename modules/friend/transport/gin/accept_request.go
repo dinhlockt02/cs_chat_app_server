@@ -6,6 +6,8 @@ import (
 	friendbiz "cs_chat_app_server/modules/friend/biz"
 	friendrepo "cs_chat_app_server/modules/friend/repository"
 	friendstore "cs_chat_app_server/modules/friend/store"
+	grouprepo "cs_chat_app_server/modules/group/repository"
+	groupstore "cs_chat_app_server/modules/group/store"
 	requeststore "cs_chat_app_server/modules/request/store"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -29,8 +31,11 @@ func AcceptRequest(appCtx appcontext.AppContext) gin.HandlerFunc {
 
 		friendStore := friendstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+		groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+		groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
+
 		friendRepo := friendrepo.NewFriendRepository(friendStore, requestStore)
-		acceptRequestBiz := friendbiz.NewAcceptRequestBiz(friendRepo, appCtx.Notification())
+		acceptRequestBiz := friendbiz.NewAcceptRequestBiz(friendRepo, appCtx.Notification(), groupRepo)
 		if err := acceptRequestBiz.AcceptRequest(context.Request.Context(), senderId, receiverId); err != nil {
 			panic(err)
 		}

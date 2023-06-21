@@ -5,15 +5,7 @@ import (
 	"cs_chat_app_server/common"
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
 	gchatrepo "cs_chat_app_server/modules/group_chat/repository"
-	pchatmdl "cs_chat_app_server/modules/personal_chat/model"
 )
-
-type ListMessagePersonalRepo interface {
-	List(ctx context.Context,
-		filter map[string]interface{},
-		paging pchatmdl.Paging,
-	) ([]pchatmdl.PersonalChatItem, error)
-}
 
 type listMessageBiz struct {
 	groupChatRepo gchatrepo.Repository

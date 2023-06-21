@@ -4,6 +4,9 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	friendmodel "cs_chat_app_server/modules/friend/model"
+	groupmdl "cs_chat_app_server/modules/group/model"
+	grouprepo "cs_chat_app_server/modules/group/repository"
+	groupstore "cs_chat_app_server/modules/group/store"
 	"errors"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -14,12 +17,16 @@ type UnfriendFriendStore interface {
 }
 
 type unfriendBiz struct {
-	friendStore UnfriendFriendStore
+	friendStore     UnfriendFriendStore
+	groupRepository grouprepo.Repository
 }
 
-func NewUnfriendBiz(friendStore UnfriendFriendStore) *unfriendBiz {
+func NewUnfriendBiz(
+	friendStore UnfriendFriendStore,
+	groupRepository grouprepo.Repository) *unfriendBiz {
 	return &unfriendBiz{
-		friendStore: friendStore,
+		friendStore:     friendStore,
+		groupRepository: groupRepository,
 	}
 }
 
@@ -69,6 +76,19 @@ func (biz *unfriendBiz) Unfriend(ctx context.Context, userId string, friendId st
 			}
 			break
 		}
+	}
+
+	// Set group inactive
+	filter := common.GetAndFilter(
+		groupstore.GetMemberIdInGroupMembersFilter(userId),
+		groupstore.GetMemberIdInGroupMembersFilter(friendId),
+		groupstore.GetTypeFilter(groupmdl.TypePersonal),
+	)
+	err = biz.groupRepository.UpdateGroup(ctx, filter, &groupmdl.Group{
+		Active: common.GetPointer(false),
+	})
+	if err != nil {
+		return err
 	}
 	return nil
 }

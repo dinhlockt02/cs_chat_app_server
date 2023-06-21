@@ -5,6 +5,9 @@ import (
 	"cs_chat_app_server/components/appcontext"
 	friendbiz "cs_chat_app_server/modules/friend/biz"
 	friendstore "cs_chat_app_server/modules/friend/store"
+	grouprepo "cs_chat_app_server/modules/group/repository"
+	groupstore "cs_chat_app_server/modules/group/store"
+	requeststore "cs_chat_app_server/modules/request/store"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
@@ -22,7 +25,10 @@ func Unfriend(appCtx appcontext.AppContext) gin.HandlerFunc {
 		}
 
 		friendStore := friendstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
-		unfriendBiz := friendbiz.NewUnfriendBiz(friendStore)
+		requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+		groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+		groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
+		unfriendBiz := friendbiz.NewUnfriendBiz(friendStore, groupRepo)
 		if err := unfriendBiz.Unfriend(context.Request.Context(), userId, friendId); err != nil {
 			panic(err)
 		}
