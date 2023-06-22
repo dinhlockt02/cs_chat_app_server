@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import ForgotPassword from './components/ForgotPassword';
+import ChangePassword from './components/ChangePassword';
 
 interface ResetPasswordFormData {
   password: string;
@@ -73,6 +74,8 @@ function App() {
       </div>
 
       <ForgotPassword />
+
+      <ChangePassword />
     </div>
   );
 }
