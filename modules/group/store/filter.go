@@ -18,7 +18,7 @@ func GetGroupIdInIdListFilter(ids ...string) map[string]interface{} {
 
 func GetMemberIdInGroupMembersFilter(id string) map[string]interface{} {
 	return map[string]interface{}{
-		"members": id,
+		"members.id": id,
 	}
 
 }

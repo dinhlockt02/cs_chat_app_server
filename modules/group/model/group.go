@@ -7,6 +7,12 @@ import (
 
 type GroupType string
 
+type GroupUser struct {
+	Id     string `json:"id" bson:"id"`
+	Name   string `json:"name" bson:"name"`
+	Avatar string `bson:"avatar" json:"avatar"`
+}
+
 const (
 	TypePersonal GroupType = "personal"
 	TypeGroup              = "group"
@@ -14,11 +20,12 @@ const (
 
 type Group struct {
 	common.MongoId `json:",inline,omitempty" bson:",inline,omitempty"`
-	Name           string    `bson:"name" json:"name"`
-	Members        []string  `bson:"members,omitempty" json:"members,omitempty"`
-	ImageUrl       *string   `json:"image_url" bson:"image_url"`
-	Type           GroupType `bson:"type" json:"type"`
-	Active         *bool     `json:"active,omitempty" bson:"active,omitempty"`
+	Name           string      `bson:"name" json:"name"`
+	Members        []GroupUser `bson:"members,omitempty" json:"members,omitempty"`
+	InvitedUsers   []string    `json:"invited_users,omitempty" bson:"-"`
+	ImageUrl       *string     `json:"image_url" bson:"image_url"`
+	Type           GroupType   `bson:"type" json:"type"`
+	Active         *bool       `json:"active,omitempty" bson:"active,omitempty"`
 }
 
 func (Group) CollectionName() string {

@@ -38,7 +38,7 @@ func GetGroup(appCtx appcontext.AppContext) gin.HandlerFunc {
 
 		isMember := false
 		for _, member := range group.Members {
-			if member == requester.GetId() {
+			if member.Id == requester.GetId() {
 				isMember = true
 			}
 		}
@@ -46,17 +46,13 @@ func GetGroup(appCtx appcontext.AppContext) gin.HandlerFunc {
 		if !isMember {
 			panic(common.ErrForbidden(errors.New("user is not a member of group")))
 		}
-
-		getGroupUsersBiz := groupbiz.NewGetGroupMembersBiz(groupRepo)
-
-		members, err := getGroupUsersBiz.GetGroupUsers(c.Request.Context(), group.Members...)
 		if err != nil {
 			panic(err)
 		}
 
 		c.JSON(http.StatusOK, gin.H{"data": gin.H{
 			"group_details": group,
-			"members":       members,
+			"members":       group.Members,
 		}})
 	}
 }

@@ -66,14 +66,14 @@ func NotifyUserWhenNewGroupMessageReceived(appCtx appcontext.AppContext, ctx con
 
 				t := true
 				f := false
-				for _, userId := range group.Members {
+				for _, member := range group.Members {
 
-					if userId == message.SenderId {
+					if member.Id == message.SenderId {
 						message.IsMe = &t
 					} else {
 						message.IsMe = &f
 					}
-					err = appCtx.Socket().Send(userId, message)
+					err = appCtx.Socket().Send(member.Id, message)
 					if err != nil {
 						log.Err(err).Msg(err.Error())
 					}

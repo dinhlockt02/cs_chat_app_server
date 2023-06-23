@@ -49,3 +49,14 @@ func GetInFilter(fieldName string, values ...interface{}) map[string]interface{}
 		},
 	}
 }
+
+func GetIdInIdListFilter(ids ...string) map[string]interface{} {
+	mongoIds := make([]interface{}, 0, len(ids))
+	for i := range ids {
+		mongoId, err := ToObjectId(ids[i])
+		if err == nil {
+			mongoIds = append(mongoIds, mongoId)
+		}
+	}
+	return GetInFilter("_id", mongoIds...)
+}

@@ -109,9 +109,17 @@ func (biz *acceptRequestBiz) AcceptRequest(ctx context.Context, senderId string,
 	if group == nil {
 		// Create group
 		err = biz.groupRepository.CreateGroup(ctx, &groupmdl.Group{
-			Members: []string{senderId, receiverId},
-			Type:    groupmdl.TypePersonal,
-			Active:  common.GetPointer(true),
+			Members: []groupmdl.GroupUser{{
+				Id:     senderId,
+				Name:   sender.Name,
+				Avatar: sender.Avatar,
+			}, {
+				Id:     receiverId,
+				Name:   receiver.Name,
+				Avatar: receiver.Avatar,
+			}},
+			Type:   groupmdl.TypePersonal,
+			Active: common.GetPointer(true),
 		})
 		if err != nil {
 			return err

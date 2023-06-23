@@ -25,7 +25,7 @@ func CreateGroup(appCtx appcontext.AppContext) gin.HandlerFunc {
 
 		requester := c.MustGet(common.CurrentUser).(common.Requester)
 
-		invitedMembers := data.Members
+		invitedMembers := data.InvitedUsers
 
 		groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))

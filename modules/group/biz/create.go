@@ -18,7 +18,6 @@ func NewCreateGroupBiz(groupRepo grouprepo.Repository) *createGroupBiz {
 
 // Create creates a group and add requester as a member.
 func (biz *createGroupBiz) Create(ctx context.Context, requester string, data *groupmdl.Group) error {
-	data.Members = []string{requester}
 
 	if err := data.Process(); err != nil {
 		return common.ErrInvalidRequest(err)
@@ -36,6 +35,12 @@ func (biz *createGroupBiz) Create(ctx context.Context, requester string, data *g
 	if user == nil {
 		return common.ErrEntityNotFound("User", errors.New("user not found"))
 	}
+
+	data.Members = []groupmdl.GroupUser{groupmdl.GroupUser{
+		Id:     requester,
+		Name:   user.Name,
+		Avatar: user.Avatar,
+	}}
 
 	if err = biz.groupRepo.CreateGroup(ctx, data); err != nil {
 		return err

@@ -5,6 +5,7 @@ import (
 	"cs_chat_app_server/common"
 	notirepo "cs_chat_app_server/components/notification/repository"
 	friendmodel "cs_chat_app_server/modules/friend/model"
+	groupmdl "cs_chat_app_server/modules/group/model"
 	grouprepo "cs_chat_app_server/modules/group/repository"
 	requeststore "cs_chat_app_server/modules/request/store"
 	"errors"
@@ -66,7 +67,11 @@ func (biz *acceptGroupRequestBiz) AcceptRequest(ctx context.Context, requesterId
 	}
 
 	// Update Group
-	group.Members = append(group.Members, requesterId)
+	group.Members = append(group.Members, groupmdl.GroupUser{
+		Id:     requesterId,
+		Name:   requester.Name,
+		Avatar: requester.Avatar,
+	})
 	group.Active = common.GetPointer(true)
 	filter = make(map[string]interface{})
 	err = common.AddIdFilter(filter, groupId)

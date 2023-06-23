@@ -8,7 +8,6 @@ import (
 	grouprepo "cs_chat_app_server/modules/group/repository"
 	groupstore "cs_chat_app_server/modules/group/store"
 	"errors"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type FindFriendFriendStore interface {
@@ -32,10 +31,11 @@ func NewFindFriendBiz(
 }
 
 func (biz *findFriendBiz) FindFriend(ctx context.Context, userId string) ([]friendmodel.FriendUser, error) {
-	id, _ := primitive.ObjectIDFromHex(userId)
-	user, err := biz.friendStore.FindUser(ctx, map[string]interface{}{
-		"_id": id,
-	})
+	filter, err := common.GetIdFilter(userId)
+	if err != nil {
+		return nil, err
+	}
+	user, err := biz.friendStore.FindUser(ctx, filter)
 
 	if err != nil {
 		return nil, err
@@ -45,22 +45,19 @@ func (biz *findFriendBiz) FindFriend(ctx context.Context, userId string) ([]frie
 		return nil, common.ErrEntityNotFound("User", errors.New("user not found"))
 	}
 
-	var ids = make([]primitive.ObjectID, 0, len(user.Friends))
-	for _, friend := range user.Friends {
-		id, err = primitive.ObjectIDFromHex(friend)
-		if err != nil {
-			return nil, common.ErrInternal(err)
-		}
-		ids = append(ids, id)
-	}
-	friends, err := biz.friendStore.FindFriend(ctx, map[string]interface{}{
-		"_id": map[string]interface{}{
-			"$in": ids,
-		},
-	})
+	//var ids = make([]primitive.ObjectID, 0, len(user.Friends))
+	//for _, friend := range user.Friends {
+	//	id, err := primitive.ObjectIDFromHex(friend)
+	//	if err != nil {
+	//		return nil, common.ErrInternal(err)
+	//	}
+	//	ids = append(ids, id)
+	//}
+	filter = common.GetIdInIdListFilter(user.Friends...)
+	friends, err := biz.friendStore.FindFriend(ctx, filter)
 
 	for i := range friends {
-		filter := common.GetAndFilter(
+		filter = common.GetAndFilter(
 			groupstore.GetMemberIdInGroupMembersFilter(*friends[i].Id),
 			groupstore.GetMemberIdInGroupMembersFilter(userId),
 			groupstore.GetTypeFilter(groupmdl.TypePersonal),
