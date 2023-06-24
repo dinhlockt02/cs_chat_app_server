@@ -39,3 +39,9 @@ func GetTypeFilter(typ groupmdl.GroupType) map[string]interface{} {
 		"type": typ,
 	}
 }
+
+func GetActiveFilter(active bool) map[string]interface{} {
+	return map[string]interface{}{
+		"active": active,
+	}
+}

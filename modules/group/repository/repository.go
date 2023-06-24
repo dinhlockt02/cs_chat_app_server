@@ -19,7 +19,8 @@ type Repository interface {
 	) error
 	List(
 		ctx context.Context,
-		filter map[string]interface{},
+		requester string,
+		groupFilter map[string]interface{},
 	) ([]groupmdl.Group, error)
 	FindUser(
 		ctx context.Context,

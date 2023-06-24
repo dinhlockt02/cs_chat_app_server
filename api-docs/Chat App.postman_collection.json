@@ -448,7 +448,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "64932c20edb65db0c4c729a6"
+									"value": "64932c24edb65db0c4c729a8"
 								}
 							]
 						}
@@ -878,7 +878,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "64932c24edb65db0c4c729a8"
+									"value": "64932c20edb65db0c4c729a6"
 								}
 							]
 						}
@@ -981,7 +981,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/v1/user?email=loctrandinh02@gmail.com",
+							"raw": "{{domain}}/v1/user?email=dinhlockt02@gmail.com",
 							"host": [
 								"{{domain}}"
 							],
@@ -992,7 +992,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "loctrandinh02@gmail.com"
+									"value": "dinhlockt02@gmail.com"
 								}
 							]
 						}
@@ -1309,6 +1309,13 @@
 							"path": [
 								"v1",
 								"group"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "personal",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -1593,7 +1600,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/v1/group/:id/chat?limit=20&type=text",
+							"raw": "{{domain}}/v1/group/:id/chat?last_id=6496a68af9abdd4c9611f49b&limit=2&type=text",
 							"host": [
 								"{{domain}}"
 							],
@@ -1606,12 +1613,11 @@
 							"query": [
 								{
 									"key": "last_id",
-									"value": "64572db0b63d5b2a576fcd63",
-									"disabled": true
+									"value": "6496a68af9abdd4c9611f49b"
 								},
 								{
 									"key": "limit",
-									"value": "20"
+									"value": "2"
 								},
 								{
 									"key": "order",
@@ -1626,7 +1632,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6489e123931cbf0d0f309c83"
+									"value": "6496a664f9abdd4c9611f496"
 								}
 							]
 						}

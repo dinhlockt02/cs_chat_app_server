@@ -45,3 +45,16 @@ func (g *Group) Process() error {
 	}
 	return nil
 }
+
+type ListGroupQuery struct {
+	Type *GroupType `form:"type"`
+}
+
+func (q *ListGroupQuery) ToMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	if q.Type != nil {
+		m["type"] = q.Type
+	}
+
+	return m
+}
