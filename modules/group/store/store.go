@@ -31,6 +31,10 @@ type Store interface {
 		filter map[string]interface{},
 		updatedGroup *groupmdl.Group,
 	) error
+	UpdateGroupMember(
+		ctx context.Context,
+		filter map[string]interface{},
+		updatedMember *groupmdl.GroupUser) error
 	FindUsers(ctx context.Context, filter map[string]interface{}) ([]groupmdl.User, error)
 }
 

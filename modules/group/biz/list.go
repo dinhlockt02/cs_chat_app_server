@@ -18,14 +18,6 @@ func NewListGroupBiz(groupRepo grouprepo.Repository) *createGroupBiz {
 
 func (biz *createGroupBiz) List(ctx context.Context, requesterId string, filters ...map[string]interface{}) ([]groupmdl.Group, error) {
 
-	//filter := make(map[string]interface{})
-	//_ = common.AddIdFilter(filter, requesterId)
-	//
-	//user, err := biz.groupRepo.FindUser(ctx, filter)
-	//if err != nil {
-	//	return nil, err
-	//}
-
 	filter := groupstore.GetMemberIdInGroupMembersFilter(requesterId)
 
 	for _, f := range filters {
