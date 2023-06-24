@@ -12,6 +12,7 @@ func InitAuthRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 	{
 		auth.POST("/register", authgin.Register(appCtx))
 		auth.POST("/login", authgin.Login(appCtx))
+		auth.POST("/forget-password", authgin.ForgetPassword(appCtx))
 		auth.POST("/update-password", authmiddleware.Authentication(appCtx), authgin.UpdatePassword(appCtx))
 		auth.POST("/logout", authmiddleware.Authentication(appCtx), authgin.Logout(appCtx))
 		auth.POST("/send-verify-email", authmiddleware.Authentication(appCtx), authgin.SendVerifyEmail(appCtx))
