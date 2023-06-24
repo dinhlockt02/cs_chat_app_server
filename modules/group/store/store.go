@@ -36,6 +36,10 @@ type Store interface {
 		filter map[string]interface{},
 		updatedMember *groupmdl.GroupUser) error
 	FindUsers(ctx context.Context, filter map[string]interface{}) ([]groupmdl.User, error)
+	UpdateLatestMessage(
+		ctx context.Context,
+		filter map[string]interface{},
+		latestMessage *groupmdl.GroupMessage) error
 }
 
 type mongoStore struct {

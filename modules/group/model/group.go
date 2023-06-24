@@ -13,6 +13,13 @@ type GroupUser struct {
 	Avatar string `bson:"avatar" json:"avatar"`
 }
 
+type GroupMessage struct {
+	Message               string `bson:"message" json:"message"`
+	SenderId              string `json:"sender_id" bson:"sender_id"`
+	SenderName            string `json:"sender_name" bson:"sender_name"`
+	common.MongoCreatedAt `bson:",inline" json:",inline"`
+}
+
 const (
 	TypePersonal GroupType = "personal"
 	TypeGroup              = "group"
@@ -20,12 +27,13 @@ const (
 
 type Group struct {
 	common.MongoId `json:",inline,omitempty" bson:",inline,omitempty"`
-	Name           string      `bson:"name" json:"name"`
-	Members        []GroupUser `bson:"members,omitempty" json:"members,omitempty"`
-	InvitedUsers   []string    `json:"invited_users,omitempty" bson:"-"`
-	ImageUrl       *string     `json:"image_url" bson:"image_url"`
-	Type           GroupType   `bson:"type" json:"type"`
-	Active         *bool       `json:"active,omitempty" bson:"active,omitempty"`
+	Name           string        `bson:"name" json:"name"`
+	Members        []GroupUser   `bson:"members,omitempty" json:"members,omitempty"`
+	InvitedUsers   []string      `json:"invited_users,omitempty" bson:"-"`
+	ImageUrl       *string       `json:"image_url" bson:"image_url"`
+	Type           GroupType     `bson:"type" json:"type"`
+	Active         *bool         `json:"active,omitempty" bson:"active,omitempty"`
+	LatestMessage  *GroupMessage `json:"latest_message,omitempty" bson:"latest_message,omitempty"`
 }
 
 func (Group) CollectionName() string {
