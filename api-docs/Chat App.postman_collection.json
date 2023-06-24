@@ -280,7 +280,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"new_password\": \"12345678\" ,\n    \"old_password\": \"123456789\"\n}",
+							"raw": "{\n    \"new_password\": \"123456789\" ,\n    \"old_password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -460,7 +460,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/v1/friend/:id/chat?type=image",
+							"raw": "{{domain}}/v1/friend/:id/chat",
 							"host": [
 								"{{domain}}"
 							],
@@ -485,16 +485,12 @@
 									"key": "order",
 									"value": "asc",
 									"disabled": true
-								},
-								{
-									"key": "type",
-									"value": "image"
 								}
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "64844370db7e0099f9534c9b"
+									"value": "645711f08e032e489fe7678a"
 								}
 							]
 						}
@@ -1378,53 +1374,6 @@
 					"response": []
 				},
 				{
-					"name": "Get Group Details",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/v1/group/:groupId",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"v1",
-								"group",
-								":groupId"
-							],
-							"variable": [
-								{
-									"key": "groupId",
-									"value": "6489e123931cbf0d0f309c83"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Sent Request",
 					"request": {
 						"auth": {
@@ -1656,7 +1605,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/v1/group/:id/chat?limit=20&type=text",
+							"raw": "{{domain}}/v1/group/:id/chat?limit=20",
 							"host": [
 								"{{domain}}"
 							],
@@ -1680,142 +1629,12 @@
 									"key": "order",
 									"value": "asc",
 									"disabled": true
-								},
-								{
-									"key": "type",
-									"value": "text"
 								}
 							],
 							"variable": [
 								{
 									"key": "id",
 									"value": "6489e123931cbf0d0f309c83"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Device",
-			"item": [
-				{
-					"name": "Update",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n        \"name\": \"xiaomi 4\",\n        \"push_notification_token\": \"test 4\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/v1/device",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"v1",
-								"device"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Devices",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/v1/device",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"v1",
-								"device"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Device",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test 4\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/v1/device/:deviceId",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"v1",
-								"device",
-								":deviceId"
-							],
-							"variable": [
-								{
-									"key": "deviceId",
-									"value": "6484439adb7e0099f9534c9e"
 								}
 							]
 						}
