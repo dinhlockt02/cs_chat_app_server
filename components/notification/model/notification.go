@@ -37,7 +37,7 @@ type NotificationActionType string
 
 const (
 	AcceptRequest        NotificationActionType = "accept-request"
-	ReceiveFriendRequest                        = "send-friend-request"
+	ReceiveFriendRequest                        = "receive-friend-request"
 )
 
 type Notification struct {
