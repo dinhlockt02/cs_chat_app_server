@@ -52,7 +52,7 @@ func (biz *forgetPasswordBiz) Execute(ctx context.Context, email string) error {
 	}
 
 	code := biz.getCode(email)
-
+	log.Debug().Msgf("code: %s", code)
 	link := os.Getenv("RESET_PASSWORD_URL") + code
 
 	err = biz.redisStore.SetForgetPasswordCode(ctx, code, email)
@@ -64,6 +64,7 @@ func (biz *forgetPasswordBiz) Execute(ctx context.Context, email string) error {
 	if receiver.Name != nil {
 		receiverName = *receiver.Name
 	}
+
 	go func() {
 		err = biz.mailer.Send(authmodel.ForgetPasswordEmail, receiver.Email, receiverName, authmodel.ForgetPasswordEmailBody(link))
 		if err != nil {

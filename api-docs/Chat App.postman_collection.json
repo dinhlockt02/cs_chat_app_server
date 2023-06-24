@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"email\": \"loctrandinh02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"raw": "{\n    \"data\": {\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,7 +166,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"email\": \"loctrandinh02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"raw": "{\n    \"data\": {\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -280,7 +280,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"new_password\": \"123456789\" ,\n    \"old_password\": \"12345678\"\n}",
+							"raw": "{\n    \"new_password\": \"12345678\" ,\n    \"old_password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -357,6 +357,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Forget password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"dinhlockt02@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/auth/forget-password",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"forget-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forget password Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"12345678\",\n    \"code\": \"1687580091465921000:dinhlockt02@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/auth/reset-password",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -392,7 +448,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "647614f9925c9f5c6244034a"
+									"value": "64932c20edb65db0c4c729a6"
 								}
 							]
 						}
@@ -441,121 +497,6 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": true\n}"
-						}
-					]
-				},
-				{
-					"name": "ListChat",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{domain}}/v1/friend/:id/chat",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"v1",
-								"friend",
-								":id",
-								"chat"
-							],
-							"query": [
-								{
-									"key": "last_id",
-									"value": "64572db0b63d5b2a576fcd63",
-									"disabled": true
-								},
-								{
-									"key": "limit",
-									"value": "20",
-									"disabled": true
-								},
-								{
-									"key": "order",
-									"value": "asc",
-									"disabled": true
-								}
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "645711f08e032e489fe7678a"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "ListChat Default",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{domain}}/v1/friend/:id/chat",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"v1",
-										"friend",
-										":id",
-										"chat"
-									],
-									"query": [
-										{
-											"key": "last_id",
-											"value": "6454710bd68a58befebe1371",
-											"disabled": true
-										},
-										{
-											"key": "limit",
-											"value": "20",
-											"disabled": true
-										},
-										{
-											"key": "order",
-											"value": "asc",
-											"disabled": true
-										}
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "6454587f9dd90845786b5f00"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 May 2023 04:36:04 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "754"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": \"6454710cd68a58befebe1373\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:24.811Z\"\n        },\n        {\n            \"id\": \"6454710cd68a58befebe1372\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:24.204Z\"\n        },\n        {\n            \"id\": \"6454710bd68a58befebe1371\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:23.677Z\"\n        },\n        {\n            \"id\": \"6454710ad68a58befebe1370\",\n            \"type\": \"text\",\n            \"sender\": \"64546fd7d68a58befebe136c\",\n            \"receiver\": \"6454587f9dd90845786b5f00\",\n            \"message\": \"Hello world\",\n            \"created_at\": \"2023-05-05T02:59:22.928Z\"\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -654,7 +595,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6452706e5857b512d61c0992"
+									"value": "64932c24edb65db0c4c729a8"
 								}
 							]
 						}
@@ -937,7 +878,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "645622d9fca8c1077d9f3971"
+									"value": "64932c24edb65db0c4c729a8"
 								}
 							]
 						}
@@ -1040,7 +981,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/v1/user?email=dinhlockt02@gmail.com",
+							"raw": "{{domain}}/v1/user?email=loctrandinh02@gmail.com",
 							"host": [
 								"{{domain}}"
 							],
@@ -1051,7 +992,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "dinhlockt02@gmail.com"
+									"value": "loctrandinh02@gmail.com"
 								}
 							]
 						}
@@ -1269,7 +1210,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\",\n    \"members\": [\"647614f9925c9f5c6244034a\"]\n}",
+							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\",\n    \"invited_users\": [\"647614f9925c9f5c6244034a\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1368,6 +1309,53 @@
 							"path": [
 								"v1",
 								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Group Details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/group/:groupId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								":groupId"
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": "6489e123931cbf0d0f309c83"
+								}
 							]
 						}
 					},
@@ -1605,7 +1593,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/v1/group/:id/chat?limit=20",
+							"raw": "{{domain}}/v1/group/:id/chat?limit=20&type=text",
 							"host": [
 								"{{domain}}"
 							],
@@ -1629,12 +1617,142 @@
 									"key": "order",
 									"value": "asc",
 									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "text"
 								}
 							],
 							"variable": [
 								{
 									"key": "id",
 									"value": "6489e123931cbf0d0f309c83"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Device",
+			"item": [
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"xiaomi 4\",\n        \"push_notification_token\": \"test 4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/device",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Devices",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/device",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Device",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test 4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/v1/device/:deviceId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"device",
+								":deviceId"
+							],
+							"variable": [
+								{
+									"key": "deviceId",
+									"value": "6484439adb7e0099f9534c9e"
 								}
 							]
 						}

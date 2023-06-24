@@ -39,7 +39,7 @@ func (s *redisStore) SetForgetPasswordCode(ctx context.Context, code string, ema
 	return nil
 }
 
-func (s *redisStore) GetForgetPasswordCode(ctx context.Context, code string) (string, error) {
+func (s *redisStore) GetForgetPasswordEmail(ctx context.Context, code string) (string, error) {
 	val, err := s.client.Get(ctx, forgetPasswordPrefix+code).Result()
 	return val, err
 }
