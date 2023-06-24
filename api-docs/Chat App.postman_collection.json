@@ -387,7 +387,7 @@
 					"response": []
 				},
 				{
-					"name": "Forget password Copy",
+					"name": "Reset password",
 					"request": {
 						"method": "POST",
 						"header": [],
