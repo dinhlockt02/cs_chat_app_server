@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
 interface ResetPasswordFormData {
-    password: string;
+    newPassword: string;
     confirmPassword: string;
 }
 
 function ForgotPassword() {
     const [formData, setFormData] = useState<ResetPasswordFormData>({
-        password: '',
+        newPassword: '',
         confirmPassword: '',
     });
 
@@ -24,10 +24,22 @@ function ForgotPassword() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (formData.password !== formData.confirmPassword) {
+        if (formData.newPassword !== formData.confirmPassword) {
             alert('Password not match')
         } else {
-            alert('Change password successful')
+            fetch('http://localhost:8080/v1/auth/reset-password', {
+                method: 'POST',
+                body: JSON.stringify(formData.newPassword)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert('Change password successful')
+                    console.log('Success', data)
+                })
+                .catch((error) => {
+                    alert('Change password unsuccessful')
+                    console.error('Error', error)
+                })
         }
     };
 
@@ -44,10 +56,10 @@ function ForgotPassword() {
                     <div className="password-input-container">
                         <input
                             type={passwordVisible ? 'text' : 'password'}
-                            id="password"
-                            name="password"
+                            id="newPassword"
+                            name="newPassword"
                             required
-                            value={formData.password}
+                            value={formData.newPassword}
                             onChange={handleInputChange}
                         />
                         <span
