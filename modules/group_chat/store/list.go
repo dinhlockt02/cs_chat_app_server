@@ -51,5 +51,10 @@ func (s *mongoStore) List(
 	if err != nil {
 		return nil, common.ErrInternal(err)
 	}
+
+	if *paging.Order == gchatmdl.DESC {
+		common.Reverse(rs)
+	}
+
 	return rs, nil
 }

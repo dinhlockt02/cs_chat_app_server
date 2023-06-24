@@ -21,6 +21,8 @@ type User struct {
 	CommonFriend          []string             `json:"-"`
 	CommonFriendCount     *int                 `json:"common_friend_count,omitempty"`
 	Relation              friendmodel.Relation `json:"relation"`
+	EmailVerified         *bool                `json:"email_verified,omitempty" bson:"email_verified,omitempty"`
+	ProfileUpdated        *bool                `json:"profile_updated,omitempty" bson:"profile_updated,omitempty"`
 }
 
 func (User) EntityName() string {

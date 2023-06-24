@@ -42,13 +42,13 @@ func (biz *forgetPasswordBiz) Execute(ctx context.Context, email string) error {
 		"email": email,
 	})
 
+	if err != nil {
+		return common.ErrInternal(err)
+	}
+
 	if receiver == nil {
 		log.Debug().Msgf("user %s not found", email)
 		return nil
-	}
-
-	if err != nil {
-		return common.ErrInternal(err)
 	}
 
 	code := biz.getCode(email)

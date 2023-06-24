@@ -9,7 +9,6 @@ type MessageType string
 
 const (
 	image  MessageType = "image"
-	text               = "text"
 	video              = "video"
 	record             = "record"
 )

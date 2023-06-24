@@ -1,6 +1,7 @@
 package routeinternal
 
 import (
+	"context"
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	authmiddleware "cs_chat_app_server/middleware/authenticate"
@@ -50,15 +51,20 @@ func groupWebsocketChatHandler(appCtx appcontext.AppContext) gin.HandlerFunc {
 			panic(common.ErrInternal(err))
 		}
 
+		ctx := context.Background()
+		ctx = context.WithValue(ctx, common.CurrentGroupId, id)
+
 		c.Set(common.CurrentGroupId, id)
 
 		u, _ := c.Get(common.CurrentUser)
+		ctx = context.WithValue(ctx, common.CurrentUser, u)
+
 		requester, _ := u.(common.Requester)
 		err = appCtx.Socket().AddConn(requester.GetId(), conn)
 		if err != nil {
 			panic(common.ErrInternal(err))
 		}
 
-		appCtx.Socket().Receive(conn, c, gchatskt.SendMessageHandler(appCtx))
+		appCtx.Socket().Receive(conn, ctx, gchatskt.SendMessageHandler(appCtx))
 	}
 }
