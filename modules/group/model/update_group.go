@@ -19,7 +19,7 @@ func (UpdateGroup) CollectionName() string {
 
 func (g *UpdateGroup) Process() error {
 	errs := common.ValidationError{}
-	if !common.URLRegexp.Match([]byte(*g.ImageUrl)) {
+	if g.ImageUrl != nil && !common.URLRegexp.Match([]byte(*g.ImageUrl)) {
 		errs = append(errs, errors.New("invalid group image url"))
 	}
 	if g.Name != nil && len(*g.Name) <= 0 {

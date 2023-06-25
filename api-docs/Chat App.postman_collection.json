@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"raw": "{\n    \"data\": {\n        \"email\": \"test@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,7 +166,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"raw": "{\n    \"data\": {\n        \"email\": \"loctrandinh02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -448,7 +448,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "64932c24edb65db0c4c729a8"
+									"value": "6497bb4d55f8777b7cacc489"
 								}
 							]
 						}
@@ -944,7 +944,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"jane doe\",\n    \"gender\": \"other\",\n    \"phone\": \"98765\",\n    \"birthday\": \"2003-02-20T17:00:00.000Z\",\n    \"bio\": \"Hello world\",\n    \"avatar\": \"http://google.com/vvv.jpg\"\n}\n\n\n// {\n//     \"avatar\": \"http://google.com/vvv.jpg\"\n// }",
+							"raw": "{\n    \"name\": \"jane doee\",\n    \"gender\": \"other\",\n    \"phone\": \"98765\",\n    \"birthday\": \"2003-02-20T17:00:00.000Z\",\n    \"bio\": \"Hello world\",\n    \"avatar\": \"http://google.com/vvv.jpg\"\n}\n\n\n// {\n//     \"avatar\": \"http://google.com/vvv.jpg\"\n// }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1247,7 +1247,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"group-name\",\n    \"image_url\": \"https://file-examples.com/wp-content/storage/2017/10/file_example_JPG_100kB.jpg\"\n}",
+							"raw": "{\n    \"name\": \"Jane\",\n    \"image_url\": \"http://example.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1267,7 +1267,7 @@
 							"variable": [
 								{
 									"key": "groupId",
-									"value": "64769843e357b4207464fb87"
+									"value": "64946afd73a685d2f5622f55"
 								}
 							]
 						}
@@ -1600,7 +1600,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/v1/group/:id/chat?last_id=6496a68af9abdd4c9611f49b&limit=2&type=text",
+							"raw": "{{domain}}/v1/group/:id/chat?limit=20&type=text",
 							"host": [
 								"{{domain}}"
 							],
@@ -1613,11 +1613,12 @@
 							"query": [
 								{
 									"key": "last_id",
-									"value": "6496a68af9abdd4c9611f49b"
+									"value": "6496a664f9abdd4c9611f496",
+									"disabled": true
 								},
 								{
 									"key": "limit",
-									"value": "2"
+									"value": "20"
 								},
 								{
 									"key": "order",
@@ -1759,6 +1760,45 @@
 								{
 									"key": "deviceId",
 									"value": "6484439adb7e0099f9534c9e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/search?term=jane",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"search"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "jane"
 								}
 							]
 						}
