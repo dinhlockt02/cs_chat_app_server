@@ -14,7 +14,7 @@ func (repo *GroupChatRepository) List(
 	filter map[string]interface{},
 	paging gchatmdl.Paging,
 ) ([]gchatmdl.GroupChatItem, error) {
-	list, err := repo.groupChatStore.List(ctx, filter, &paging)
+	list, err := repo.groupChatStore.List(ctx, filter, paging)
 	if err != nil {
 		return nil, common.ErrInternal(err)
 	}

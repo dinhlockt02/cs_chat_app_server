@@ -14,7 +14,7 @@ type Store interface {
 	List(
 		ctx context.Context,
 		filter map[string]interface{},
-		paging *gchatmdl.Paging,
+		paging gchatmdl.Paging,
 	) ([]gchatmdl.GroupChatItem, error)
 	FindMessage(
 		ctx context.Context,

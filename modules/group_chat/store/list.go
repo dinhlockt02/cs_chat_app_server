@@ -12,35 +12,32 @@ import (
 func (s *mongoStore) List(
 	ctx context.Context,
 	filter map[string]interface{},
-	paging *gchatmdl.Paging,
+	paging gchatmdl.Paging,
 ) ([]gchatmdl.GroupChatItem, error) {
 
-	opts := options.Find()
-	if paging != nil {
-		paging.Process()
+	paging.Process()
 
-		if paging.LastId != nil {
-			id, err := primitive.ObjectIDFromHex(*paging.LastId)
-			if err != nil {
-				return nil, common.ErrInvalidRequest(err)
-			}
-
-			if *paging.Order == gchatmdl.ASC {
-				filter["_id"] = map[string]interface{}{
-					"$gt": id,
-				}
-			} else {
-				filter["_id"] = map[string]interface{}{
-					"$lt": id,
-				}
-			}
+	if paging.LastId != nil {
+		id, err := primitive.ObjectIDFromHex(*paging.LastId)
+		if err != nil {
+			return nil, common.ErrInvalidRequest(err)
 		}
-		var sort = -1
+
 		if *paging.Order == gchatmdl.ASC {
-			sort = 1
+			filter["_id"] = map[string]interface{}{
+				"$gt": id,
+			}
+		} else {
+			filter["_id"] = map[string]interface{}{
+				"$lt": id,
+			}
 		}
-		opts.SetLimit(*paging.Limit).SetSort(bson.D{{"_id", sort}})
 	}
+	var sort = -1
+	if *paging.Order == gchatmdl.ASC {
+		sort = 1
+	}
+	opts := options.Find().SetLimit(*paging.Limit).SetSort(bson.D{{"_id", sort}})
 
 	cursor, err := s.database.
 		Collection((&gchatmdl.GroupChatItem{}).CollectionName()).
@@ -54,7 +51,7 @@ func (s *mongoStore) List(
 		return nil, common.ErrInternal(err)
 	}
 
-	if paging != nil && *paging.Order == gchatmdl.DESC {
+	if *paging.Order == gchatmdl.DESC {
 		common.Reverse(rs)
 	}
 

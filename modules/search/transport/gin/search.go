@@ -11,7 +11,9 @@ import (
 	groupmdl "cs_chat_app_server/modules/group/model"
 	grouprepo "cs_chat_app_server/modules/group/repository"
 	groupstore "cs_chat_app_server/modules/group/store"
+	gchatbiz "cs_chat_app_server/modules/group_chat/biz"
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
+	gchatrepo "cs_chat_app_server/modules/group_chat/repository"
 	gchatstore "cs_chat_app_server/modules/group_chat/store"
 	requeststore "cs_chat_app_server/modules/request/store"
 	"github.com/rs/zerolog/log"
@@ -103,8 +105,8 @@ func searchGroup(ctx context.Context, appCtx appcontext.AppContext, requester co
 
 func searchMessage(ctx context.Context, appCtx appcontext.AppContext, requester common.Requester, searchTerm string) ([]gchatmdl.GroupChatItem, error) {
 	store := gchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
-	//repo := gchatrepo.NewGroupChatRepository(store)
-	//biz := gchatbiz.NewListMessageBiz(repo)
+	repo := gchatrepo.NewGroupChatRepository(store)
+	biz := gchatbiz.NewListMessageBiz(repo)
 	groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 	requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 	groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
@@ -122,7 +124,6 @@ func searchMessage(ctx context.Context, appCtx appcontext.AppContext, requester 
 	}
 
 	paging := gchatmdl.Paging{}
-	paging.Process()
 
 	inFilter := common.GetInFilter("group", user.Groups...)
 	filter := common.GetAndFilter(
@@ -130,7 +131,7 @@ func searchMessage(ctx context.Context, appCtx appcontext.AppContext, requester 
 		inFilter,
 	)
 
-	list, err := store.List(ctx, filter, nil)
+	list, err := biz.List(ctx, requester.GetId(), filter, paging)
 
 	if err != nil {
 		log.Error().
