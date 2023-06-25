@@ -64,10 +64,12 @@ func (repo *notificationRepository) createNotification(ctx context.Context, noti
 			return
 		}
 
-		tokens := make([]string, len(devices))
+		tokens := make([]string, 0, len(devices))
 
-		for i, _ := range devices {
-			tokens[i] = devices[i].PushNotificationToken
+		for i := range devices {
+			if token := devices[i].PushNotificationToken; token != "" {
+				tokens = append(tokens, token)
+			}
 		}
 
 		if len(tokens) == 0 {
