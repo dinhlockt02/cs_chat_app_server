@@ -61,12 +61,17 @@ func (repo *notificationRepository) createNotification(ctx context.Context, noti
 		})
 		if e != nil {
 			log.Err(e)
+			return
 		}
 
 		tokens := make([]string, len(devices))
 
 		for i, _ := range devices {
 			tokens[i] = devices[i].PushNotificationToken
+		}
+
+		if len(tokens) == 0 {
+			return
 		}
 
 		e = repo.service.Push(context.Background(), tokens, noti)

@@ -8,11 +8,12 @@ import (
 )
 
 type Device struct {
-	Id        *string    `json:"id" bson:"_id,omitempty"`
-	CreatedAt *time.Time `bson:"created_at" json:"created_at,omitempty"`
-	UpdatedAt *time.Time `bson:"updated_at" json:"updated_at,omitempty"`
-	Name      string     `bson:"name" json:"name"`
-	UserId    string     `bson:"user_id" json:"-"`
+	Id                    *string    `json:"id" bson:"_id,omitempty"`
+	CreatedAt             *time.Time `bson:"created_at" json:"created_at,omitempty"`
+	UpdatedAt             *time.Time `bson:"updated_at" json:"updated_at,omitempty"`
+	Name                  string     `bson:"name" json:"name"`
+	UserId                string     `bson:"user_id" json:"-"`
+	PushNotificationToken string     `json:"push_notification_token" bson:"push_notification_token"`
 }
 
 func (d *Device) Process() error {

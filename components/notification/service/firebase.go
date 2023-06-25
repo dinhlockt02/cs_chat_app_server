@@ -46,11 +46,6 @@ func (service firebaseNotificationService) Push(ctx context.Context, token []str
 		Android: &messaging.AndroidConfig{
 			Priority: "high",
 			TTL:      &zeroDuration,
-			//Notification: &messaging.AndroidNotification{
-			//	Title:    title,
-			//	Body:     body,
-			//	ImageURL: *notification.Prep.Image,
-			//},
 		},
 		Notification: &messaging.Notification{
 			Title: title,
@@ -64,7 +59,8 @@ func (service firebaseNotificationService) Push(ctx context.Context, token []str
 
 	br, err := service.client.SendMulticast(ctx, msg)
 	if err != nil {
-		return common.ErrInternal(err)
+		log.Error().Err(err).Str("package", "notiservice.Push").Send()
+		return err
 	}
 	log.Info().Msgf("%v sent successfully", br.SuccessCount)
 	log.Info().Msgf("%v sent failed", br.FailureCount)
