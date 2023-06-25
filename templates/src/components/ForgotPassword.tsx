@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom'
 
 interface ResetPasswordFormData {
     newPassword: string;
     confirmPassword: string;
+}
+
+function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
 function ForgotPassword() {
@@ -22,24 +30,25 @@ function ForgotPassword() {
         setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
     };
 
+    let query = useQuery();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (formData.newPassword !== formData.confirmPassword) {
             alert('Password not match')
         } else {
-            fetch('http://localhost:8080/v1/auth/reset-password', {
-                method: 'POST',
-                body: JSON.stringify(formData.newPassword)
+            axios.post('http://localhost:8080/v1/auth/reset-password', {
+                password: formData.newPassword,
+                code: query.get("code")
             })
-                .then(res => res.json())
-                .then(data => {
+                .then(function (response) {
                     alert('Change password successful')
-                    console.log('Success', data)
+                    console.log(response);
                 })
-                .catch((error) => {
+                .catch(function (error) {
                     alert('Change password unsuccessful')
-                    console.error('Error', error)
-                })
+                    console.log(error);
+                });
         }
     };
 
