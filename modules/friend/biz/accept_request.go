@@ -129,7 +129,7 @@ func (biz *acceptRequestBiz) AcceptRequest(ctx context.Context, senderId string,
 		err = biz.groupRepository.UpdateGroup(ctx, common.GetAndFilter(
 			groupstore.GetUserIdInIdListFilter(receiverId, senderId),
 			groupstore.GetTypeFilter(groupmdl.TypePersonal),
-		), group)
+		), &groupmdl.UpdateGroup{Active: common.GetPointer(true)})
 		if err != nil {
 			return err
 		}

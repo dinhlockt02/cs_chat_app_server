@@ -9,6 +9,7 @@ import (
 	groupstore "cs_chat_app_server/modules/group/store"
 	requeststore "cs_chat_app_server/modules/request/store"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 	"net/http"
 )
 
@@ -21,8 +22,11 @@ func ListFriend(appCtx appcontext.AppContext) gin.HandlerFunc {
 		groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
 		findFriendBiz := friendbiz.NewFindFriendBiz(friendStore, groupRepo)
-		friends, err := findFriendBiz.FindFriend(context.Request.Context(), requester.GetId())
+		friends, err := findFriendBiz.FindFriend(context.Request.Context(), requester.GetId(), map[string]interface{}{})
 		if err != nil {
+			log.Error().Err(err).
+				Str("package", "friendgin.ListFriend").
+				Msgf("error while call findFriendBiz.FindFriend")
 			panic(err)
 		}
 		context.JSON(http.StatusOK, gin.H{"data": friends})

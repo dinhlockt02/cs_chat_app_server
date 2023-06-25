@@ -20,3 +20,13 @@ type MongoCreatedAt struct {
 func ToObjectId(hex string) (primitive.ObjectID, error) {
 	return primitive.ObjectIDFromHex(hex)
 }
+
+func GetTextSearch(value string, caseSensitive bool, diacriticSensitive bool) map[string]interface{} {
+	return map[string]interface{}{
+		"$text": map[string]interface{}{
+			"$search":             value,
+			"$caseSensitive":      caseSensitive,
+			"$diacriticSensitive": diacriticSensitive,
+		},
+	}
+}

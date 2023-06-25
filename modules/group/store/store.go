@@ -29,7 +29,7 @@ type Store interface {
 	UpdateGroup(
 		ctx context.Context,
 		filter map[string]interface{},
-		updatedGroup *groupmdl.Group,
+		updatedGroup *groupmdl.UpdateGroup,
 	) error
 	UpdateGroupMember(
 		ctx context.Context,

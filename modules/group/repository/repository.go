@@ -42,7 +42,7 @@ type Repository interface {
 	UpdateGroup(
 		ctx context.Context,
 		filter map[string]interface{},
-		updatedGroup *groupmdl.Group,
+		updatedGroup *groupmdl.UpdateGroup,
 	) error
 	DeleteRequest(
 		ctx context.Context,

@@ -67,18 +67,19 @@ func (biz *acceptGroupRequestBiz) AcceptRequest(ctx context.Context, requesterId
 	}
 
 	// Update Group
-	group.Members = append(group.Members, groupmdl.GroupUser{
+	updateGroup := &groupmdl.UpdateGroup{}
+	updateGroup.Members = append(group.Members, groupmdl.GroupUser{
 		Id:     requesterId,
 		Name:   requester.Name,
 		Avatar: requester.Avatar,
 	})
-	group.Active = common.GetPointer(true)
+	updateGroup.Active = common.GetPointer(true)
 	filter = make(map[string]interface{})
 	err = common.AddIdFilter(filter, groupId)
 	if err != nil {
 		return err
 	}
-	err = biz.groupRepo.UpdateGroup(ctx, filter, group)
+	err = biz.groupRepo.UpdateGroup(ctx, filter, updateGroup)
 	if err != nil {
 		return err
 	}

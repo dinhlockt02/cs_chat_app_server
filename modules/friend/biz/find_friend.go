@@ -30,8 +30,8 @@ func NewFindFriendBiz(
 	}
 }
 
-func (biz *findFriendBiz) FindFriend(ctx context.Context, userId string) ([]friendmodel.FriendUser, error) {
-	filter, err := common.GetIdFilter(userId)
+func (biz *findFriendBiz) FindFriend(ctx context.Context, requesterId string, ft map[string]interface{}) ([]friendmodel.FriendUser, error) {
+	filter, err := common.GetIdFilter(requesterId)
 	if err != nil {
 		return nil, err
 	}
@@ -45,21 +45,16 @@ func (biz *findFriendBiz) FindFriend(ctx context.Context, userId string) ([]frie
 		return nil, common.ErrEntityNotFound("User", errors.New("user not found"))
 	}
 
-	//var ids = make([]primitive.ObjectID, 0, len(user.Friends))
-	//for _, friend := range user.Friends {
-	//	id, err := primitive.ObjectIDFromHex(friend)
-	//	if err != nil {
-	//		return nil, common.ErrInternal(err)
-	//	}
-	//	ids = append(ids, id)
-	//}
 	filter = common.GetIdInIdListFilter(user.Friends...)
-	friends, err := biz.friendStore.FindFriend(ctx, filter)
+	friends, err := biz.friendStore.FindFriend(ctx, common.GetAndFilter(
+		filter,
+		ft,
+	))
 
 	for i := range friends {
 		filter = common.GetAndFilter(
 			groupstore.GetMemberIdInGroupMembersFilter(*friends[i].Id),
-			groupstore.GetMemberIdInGroupMembersFilter(userId),
+			groupstore.GetMemberIdInGroupMembersFilter(requesterId),
 			groupstore.GetTypeFilter(groupmdl.TypePersonal),
 		)
 		group, err := biz.groupRepository.FindGroup(ctx, filter)

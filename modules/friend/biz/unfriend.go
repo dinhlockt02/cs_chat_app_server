@@ -84,7 +84,7 @@ func (biz *unfriendBiz) Unfriend(ctx context.Context, userId string, friendId st
 		groupstore.GetMemberIdInGroupMembersFilter(friendId),
 		groupstore.GetTypeFilter(groupmdl.TypePersonal),
 	)
-	err = biz.groupRepository.UpdateGroup(ctx, filter, &groupmdl.Group{
+	err = biz.groupRepository.UpdateGroup(ctx, filter, &groupmdl.UpdateGroup{
 		Active: common.GetPointer(false),
 	})
 	if err != nil {

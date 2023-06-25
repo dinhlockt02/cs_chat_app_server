@@ -25,47 +25,61 @@ func UpdateGroupLatestMessageWhenNewGroupMessageReceived(appCtx appcontext.AppCo
 				// Extract message from messageId
 				filter, err := common.GetIdFilter(messageId)
 				if err != nil {
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg("can not create filter from messageId: " + messageId)
 					return
 				}
 
 				message, err := groupChatStore.FindMessage(ctx, filter)
 
 				if err != nil {
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg("error while find message: " + messageId)
 					return
 				}
 
 				if message == nil {
 					err = errors.New("message not found")
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg(err.Error())
 					return
 				}
 
 				// Get sender
 				filter, err = common.GetIdFilter(message.SenderId)
 				if err != nil {
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg("can not create filter from message.SenderId: " + message.SenderId)
 					return
 				}
 
 				sender, err := groupChatStore.FindUser(ctx, filter)
 
 				if err != nil {
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg("error while find sender: " + message.SenderId)
 					return
 				}
 
 				if sender == nil {
 					err = errors.New("sender not found")
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg(err.Error())
 					return
 				}
 
 				// Update group from groupId
 				filter, err = common.GetIdFilter(message.GroupId)
 				if err != nil {
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg("can not create filter from message.GroupId: " + message.GroupId)
 					return
 				}
 
@@ -76,7 +90,9 @@ func UpdateGroupLatestMessageWhenNewGroupMessageReceived(appCtx appcontext.AppCo
 					MongoCreatedAt: message.MongoCreatedAt,
 				})
 				if err != nil {
-					log.Error().Err(err).Msg(err.Error())
+					log.Error().
+						Str("package", "subscriber.UpdateGroupLatestMessageWhenNewGroupMessageReceived").
+						Err(err).Msg("error while update group: " + message.SenderId)
 					return
 				}
 

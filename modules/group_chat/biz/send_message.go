@@ -6,6 +6,7 @@ import (
 	"cs_chat_app_server/components/pubsub"
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
 	gchatrepo "cs_chat_app_server/modules/group_chat/repository"
+	"github.com/rs/zerolog/log"
 )
 
 type sendMessageBiz struct {
@@ -30,9 +31,17 @@ func (biz *sendMessageBiz) Send(ctx context.Context, item *gchatmdl.GroupChatIte
 
 	err := biz.groupChatRepo.Create(ctx, item)
 	if err != nil {
+		log.Error().
+			Err(err).
+			Str("package", "gchatbiz.Send").
+			Msg("error while biz.groupChatRepo.Create")
 		return common.ErrInternal(err)
 	}
 
+	log.Debug().
+		Err(err).
+		Str("package", "gchatbiz.Send").
+		Msg("publishing TopicNewGroupMessageCreated with payload: " + *item.Id)
 	biz.ps.Publish(ctx, common.TopicNewGroupMessageCreated, *item.Id)
 	return nil
 }

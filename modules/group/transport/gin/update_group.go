@@ -21,7 +21,7 @@ func UpdateGroup(appCtx appcontext.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		var data *groupmdl.Group
+		var data *groupmdl.UpdateGroup
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))

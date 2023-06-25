@@ -28,7 +28,7 @@ func NewUpdateGroupBiz(
 // If requester is not a group member, no error will be thrown
 //
 // Side effect: Update publish a common.TopicGroupUpdated
-func (biz *updateGroupBiz) Update(ctx context.Context, requester string, groupId string, group *groupmdl.Group) error {
+func (biz *updateGroupBiz) Update(ctx context.Context, requester string, groupId string, group *groupmdl.UpdateGroup) error {
 
 	filter := make(map[string]interface{})
 	err := common.AddIdFilter(filter, groupId)
@@ -38,9 +38,6 @@ func (biz *updateGroupBiz) Update(ctx context.Context, requester string, groupId
 	}
 
 	filter = common.GetAndFilter(filter, groupstore.GetMemberIdInGroupMembersFilter(requester))
-
-	group.Members = nil
-	group.Id = nil
 
 	err = biz.groupRepo.UpdateGroup(ctx, filter, group)
 	if err != nil {

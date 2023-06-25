@@ -8,7 +8,7 @@ import (
 func (repo *groupRepository) UpdateGroup(
 	ctx context.Context,
 	filter map[string]interface{},
-	updatedGroup *groupmdl.Group,
+	updatedGroup *groupmdl.UpdateGroup,
 ) error {
 	return repo.groupStore.UpdateGroup(ctx, filter, updatedGroup)
 }

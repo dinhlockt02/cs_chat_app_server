@@ -54,8 +54,6 @@ func groupWebsocketChatHandler(appCtx appcontext.AppContext) gin.HandlerFunc {
 		ctx := context.Background()
 		ctx = context.WithValue(ctx, common.CurrentGroupId, id)
 
-		c.Set(common.CurrentGroupId, id)
-
 		u, _ := c.Get(common.CurrentUser)
 		ctx = context.WithValue(ctx, common.CurrentUser, u)
 

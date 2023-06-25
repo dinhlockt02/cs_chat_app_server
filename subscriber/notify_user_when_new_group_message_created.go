@@ -25,24 +25,44 @@ func NotifyUserWhenNewGroupMessageReceived(appCtx appcontext.AppContext, ctx con
 				// Extract message from messageId
 				filter, err := common.GetIdFilter(messageId)
 				if err != nil {
-					panic(err)
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("cant create message id filter: " + messageId)
+					return
 				}
 
 				message, err := groupChatStore.FindMessage(ctx, filter)
 
 				if err != nil {
-					panic(err)
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("error while find message: " + messageId)
+					return
+				}
+
+				if message == nil {
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("message not found: " + messageId)
+					return
 				}
 
 				// Extract group from groupId
 				filter, err = common.GetIdFilter(message.GroupId)
 				if err != nil {
-					panic(err)
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("cant create group id filter: " + message.GroupId)
+					return
 				}
 
 				group, err := groupStore.FindGroup(ctx, filter)
 				if err != nil {
-					panic(err)
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("error while find group: " + messageId)
+					return
+				}
+
+				if group == nil {
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("message not found: " + messageId)
+					return
 				}
 
 				message.Group = &gchatmdl.Group{
@@ -54,12 +74,16 @@ func NotifyUserWhenNewGroupMessageReceived(appCtx appcontext.AppContext, ctx con
 				// Extract sender from message.SenderId
 				filter, err = common.GetIdFilter(message.SenderId)
 				if err != nil {
-					panic(err)
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("cant create sender id filter: " + message.SenderId)
+					return
 				}
 
 				message.Sender, err = groupChatStore.FindUser(ctx, filter)
 				if err != nil {
-					panic(err)
+					log.Error().Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+						Err(err).Msg("error while find sender: " + message.SenderId)
+					return
 				}
 
 				// Send socket and notification to each member
@@ -75,7 +99,9 @@ func NotifyUserWhenNewGroupMessageReceived(appCtx appcontext.AppContext, ctx con
 					}
 					err = appCtx.Socket().Send(member.Id, message)
 					if err != nil {
-						log.Err(err).Msg(err.Error())
+						log.Err(err).
+							Str("package", "subscriber.NotifyUserWhenNewGroupMessageReceived").
+							Msg(err.Error())
 					}
 				}
 
