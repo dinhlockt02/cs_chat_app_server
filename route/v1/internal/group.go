@@ -1,15 +1,11 @@
 package routeinternal
 
 import (
-	"context"
-	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
 	authmiddleware "cs_chat_app_server/middleware/authenticate"
 	groupgin "cs_chat_app_server/modules/group/transport/gin"
 	gchatgin "cs_chat_app_server/modules/group_chat/transport/gin"
-	gchatskt "cs_chat_app_server/modules/group_chat/transport/socket"
 	"github.com/gin-gonic/gin"
-	"github.com/gobwas/ws"
 )
 
 func InitGroupRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
@@ -33,36 +29,8 @@ func InitGroupRoute(g *gin.RouterGroup, appCtx appcontext.AppContext) {
 		group.PUT("/:groupId", groupgin.UpdateGroup(appCtx))
 		{
 			group.GET("/:groupId/chat", gchatgin.ListMessage(appCtx))
-			group.GET("/:groupId/chat/ws", groupWebsocketChatHandler(appCtx))
+			group.GET("/:groupId/chat/ws", gchatgin.GroupWebsocketChatHandler(appCtx))
 		}
 
-	}
-}
-
-func groupWebsocketChatHandler(appCtx appcontext.AppContext) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id := c.Param("groupId")
-		if _, err := common.ToObjectId(id); err != nil {
-			panic(common.ErrInvalidRequest(err))
-		}
-
-		conn, _, _, err := ws.UpgradeHTTP(c.Request, c.Writer)
-		if err != nil {
-			panic(common.ErrInternal(err))
-		}
-
-		ctx := context.Background()
-		ctx = context.WithValue(ctx, common.CurrentGroupId, id)
-
-		u, _ := c.Get(common.CurrentUser)
-		ctx = context.WithValue(ctx, common.CurrentUser, u)
-
-		requester, _ := u.(common.Requester)
-		err = appCtx.Socket().AddConn(requester.GetId(), conn)
-		if err != nil {
-			panic(common.ErrInternal(err))
-		}
-
-		appCtx.Socket().Receive(conn, ctx, gchatskt.SendMessageHandler(appCtx))
 	}
 }
