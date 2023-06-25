@@ -7,6 +7,7 @@ import (
 
 type UpdateGroup struct {
 	Name          *string       `bson:"name,omitempty" json:"name,omitempty"`
+	Members       []GroupUser   `bson:"members,omitempty" json:"members,omitempty"`
 	ImageUrl      *string       `json:"image_url,omitempty" bson:"image_url,omitempty"`
 	Active        *bool         `json:"active,omitempty" bson:"active,omitempty"`
 	LatestMessage *GroupMessage `json:"latest_message,omitempty" bson:"latest_message,omitempty"`
