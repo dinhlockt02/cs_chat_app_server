@@ -69,6 +69,7 @@ func NotifyUserWhenNewGroupMessageReceived(appCtx appcontext.AppContext, ctx con
 					MongoId:  group.MongoId,
 					Name:     group.Name,
 					ImageUrl: group.ImageUrl,
+					Type:     group.Type,
 				}
 
 				// Extract sender from message.SenderId
