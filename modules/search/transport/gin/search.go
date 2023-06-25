@@ -11,7 +11,10 @@ import (
 	groupmdl "cs_chat_app_server/modules/group/model"
 	grouprepo "cs_chat_app_server/modules/group/repository"
 	groupstore "cs_chat_app_server/modules/group/store"
+	gchatmdl "cs_chat_app_server/modules/group_chat/model"
+	gchatstore "cs_chat_app_server/modules/group_chat/store"
 	requeststore "cs_chat_app_server/modules/request/store"
+	"github.com/rs/zerolog/log"
 
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -27,7 +30,7 @@ func Search(appCtx appcontext.AppContext) gin.HandlerFunc {
 		requester := u.(common.Requester)
 
 		wg := sync.WaitGroup{}
-		wg.Add(2)
+		wg.Add(3)
 		rs := map[string]interface{}{}
 		go func() {
 			defer common.Recovery()
@@ -46,6 +49,16 @@ func Search(appCtx appcontext.AppContext) gin.HandlerFunc {
 				panic(err)
 			}
 			rs["groups"] = groups
+		}()
+
+		go func() {
+			defer common.Recovery()
+			defer wg.Done()
+			messages, err := searchMessage(c.Request.Context(), appCtx, requester, searchTerm)
+			if err != nil {
+				panic(err)
+			}
+			rs["messages"] = messages
 		}()
 
 		wg.Wait()
@@ -86,4 +99,46 @@ func searchGroup(ctx context.Context, appCtx appcontext.AppContext, requester co
 		panic(err)
 	}
 	return groups, nil
+}
+
+func searchMessage(ctx context.Context, appCtx appcontext.AppContext, requester common.Requester, searchTerm string) ([]gchatmdl.GroupChatItem, error) {
+	store := gchatstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+	//repo := gchatrepo.NewGroupChatRepository(store)
+	//biz := gchatbiz.NewListMessageBiz(repo)
+	groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+	requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
+	groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
+	idFilter, err := common.GetIdFilter(requester.GetId())
+
+	user, err := groupRepo.FindUser(ctx, idFilter)
+	if err != nil {
+		log.Error().Err(err).Str("package", "searchgin.searchMessage").Send()
+		return nil, err
+	}
+
+	if user == nil {
+		log.Debug().Err(err).Str("package", "searchgin.searchMessage").Msg("user not found")
+		return nil, nil
+	}
+
+	paging := gchatmdl.Paging{}
+	paging.Process()
+
+	inFilter := common.GetInFilter("group", user.Groups...)
+	filter := common.GetAndFilter(
+		common.GetTextSearch(searchTerm, false, true),
+		inFilter,
+	)
+
+	list, err := store.List(ctx, filter, nil)
+
+	if err != nil {
+		log.Error().
+			Err(err).
+			Str("package", "searchgin.searchMessage").
+			Send()
+		return nil, err
+	}
+
+	return list, nil
 }

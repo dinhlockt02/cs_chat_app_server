@@ -1,6 +1,8 @@
 package common
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 // AddIdFilter is an method that will add id filter to provied filter
 //
@@ -42,9 +44,9 @@ func GetExistsFilter(fieldName string, exists bool) map[string]interface{} {
 	}
 }
 
-func GetInFilter(fieldName string, values ...interface{}) map[string]interface{} {
+func GetInFilter[T any](fieldName string, values ...T) map[string]interface{} {
 	return map[string]interface{}{
-		fieldName: map[string]interface{}{
+		fieldName: map[string][]T{
 			"$in": values,
 		},
 	}
