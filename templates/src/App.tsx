@@ -6,7 +6,7 @@ import VerifyEmail from './components/VerifyEmail';
 function App() {
 
   return (
-    <div className="App">
+    <div>
       {/* <ForgotPassword /> */}
       <VerifyEmail />
     </div>

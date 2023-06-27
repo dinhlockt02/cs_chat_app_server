@@ -107,27 +107,42 @@ button[type='submit']:hover {
 	padding: 10px;
 }
 
-.msg {
+.notification-success {
+	border: 2px solid #28a745;
+	background-color: #d4edda;
+	padding: 20em;
 	margin: 0 auto;
-	margin-top: 15em;
-	width: 80%;
-	border-radius: 10px;
-	padding: 50px;
-	color: grey;
-}
-.msg-error {
-	border-color: #d32f2f;
-	background-color: #ef5350;
-	color: white;
-}
-.msg-alert {
-	border-color: #ef6c00;
-	background-color: #ff9800;
-	color: white;
+	box-sizing: border-box;
+	text-align: center;
 }
 
-.msg-info {
-	border-color: #0288d1;
-	background-color: #29b6f6;
-	color: white;
+.notification-success h2 {
+	font-size: 1.5rem;
+	color: #28a745;
+	margin-top: 0;
+}
+
+.notification-success p {
+	font-size: 1.2rem;
+	margin-bottom: 20px;
+}
+
+.notification-error {
+	border: 2px solid #dc3545;
+	background-color: #f8d7da;
+	padding: 20em;
+	margin: 0 auto;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.notification-error h2 {
+	font-size: 1.5rem;
+	color: #dc3545;
+	margin-top: 0;
+}
+
+.notification-error p {
+	font-size: 1.2rem;
+	margin-bottom: 20px;
 }
