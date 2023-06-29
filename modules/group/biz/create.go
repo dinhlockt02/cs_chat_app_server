@@ -36,7 +36,7 @@ func (biz *createGroupBiz) Create(ctx context.Context, requester string, data *g
 		return common.ErrEntityNotFound("User", errors.New("user not found"))
 	}
 
-	data.Members = []groupmdl.GroupUser{groupmdl.GroupUser{
+	data.Members = []groupmdl.GroupUser{{
 		Id:     requester,
 		Name:   user.Name,
 		Avatar: user.Avatar,

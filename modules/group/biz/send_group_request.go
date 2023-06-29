@@ -5,10 +5,12 @@ import (
 	"cs_chat_app_server/common"
 	notirepo "cs_chat_app_server/components/notification/repository"
 	friendmodel "cs_chat_app_server/modules/friend/model"
+	friendstore "cs_chat_app_server/modules/friend/store"
 	groupmdl "cs_chat_app_server/modules/group/model"
 	grouprepo "cs_chat_app_server/modules/group/repository"
 	requestmdl "cs_chat_app_server/modules/request/model"
 	requeststore "cs_chat_app_server/modules/request/store"
+	userstore "cs_chat_app_server/modules/user/store"
 	"errors"
 )
 
@@ -27,9 +29,10 @@ func (biz *sendGroupRequestBiz) SendRequest(ctx context.Context, requester strin
 	// TODO: Allow send request only if requester is a member of group
 
 	// Find exists request
-	requesterFilter := requeststore.GetRequestReceiverIdFilter(user)
+	receiverFilter := requeststore.GetRequestReceiverIdFilter(user)
+	senderFilter := requeststore.GetRequestSenderIdFilter(requester)
 	groupFilter := requeststore.GetRequestGroupIdFilter(*group.Id)
-	ft := common.GetAndFilter(requesterFilter, groupFilter)
+	ft := common.GetAndFilter(receiverFilter, groupFilter, senderFilter)
 	existedRequest, err := biz.groupRepo.FindRequest(ctx, ft)
 	if err != nil {
 		return err
@@ -39,22 +42,35 @@ func (biz *sendGroupRequestBiz) SendRequest(ctx context.Context, requester strin
 	}
 
 	// Find sender
-	filter := make(map[string]interface{})
-	err = common.AddIdFilter(filter, requester)
-	sender, err := biz.groupRepo.FindUser(ctx, filter)
+	filter, err := common.GetIdFilter(requester)
+	if err != nil {
+		return common.ErrInvalidRequest(err)
+	}
+	sender, err := biz.groupRepo.FindUser(ctx, common.GetAndFilter(
+		filter,
+		userstore.GetGroupsFilter(*group.Id),
+	))
 	if err != nil {
 		return err
 	}
 	if sender == nil {
-		return common.ErrEntityNotFound("User", errors.New("sender not found"))
+		return common.ErrEntityNotFound("User", errors.New("requester is not in group"))
 	}
 
 	// Find Receiver
 	filter = make(map[string]interface{})
 	err = common.AddIdFilter(filter, user)
-	receiver, err := biz.groupRepo.FindUser(ctx, filter)
+	receiver, err := biz.groupRepo.FindUser(ctx, common.GetAndFilter(
+		filter,
+		friendstore.GetFriendIdFilter(requester)))
 	if receiver == nil {
-		return common.ErrEntityNotFound("User", errors.New("receiver not found"))
+		return common.ErrEntityNotFound("User", errors.New("friend not found"))
+	}
+
+	for _, gid := range receiver.Groups {
+		if gid == *group.Id {
+			return common.ErrInvalidRequest(errors.New("friend has been in group"))
+		}
 	}
 
 	senderRequestUser := requestmdl.RequestUser{

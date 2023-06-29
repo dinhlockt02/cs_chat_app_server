@@ -19,3 +19,9 @@ type mongoStore struct {
 func NewMongoStore(database *mongo.Database) *mongoStore {
 	return &mongoStore{database: database}
 }
+
+func GetFriendIdFilter(id string) map[string]interface{} {
+	return map[string]interface{}{
+		"friends": id,
+	}
+}

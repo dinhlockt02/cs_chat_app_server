@@ -12,3 +12,9 @@ type mongoStore struct {
 func NewMongoStore(database *mongo.Database) *mongoStore {
 	return &mongoStore{database: database}
 }
+
+func GetGroupsFilter(id string) map[string]interface{} {
+	return map[string]interface{}{
+		"groups": id,
+	}
+}
