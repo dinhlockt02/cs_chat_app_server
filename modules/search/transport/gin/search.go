@@ -111,7 +111,7 @@ func searchMessage(ctx context.Context, appCtx appcontext.AppContext, requester 
 	requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 	groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
 
-	groups, err := groupRepo.List(ctx, requester.GetId(), map[string]interface{}{})
+	groups, err := groupRepo.List(ctx, requester.GetId(), groupstore.GetMemberIdInGroupMembersFilter(requester.GetId()))
 	if err != nil {
 		log.Error().Err(err).Str("package", "searchgin.searchMessage").Send()
 		return nil, err
