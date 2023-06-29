@@ -16,5 +16,6 @@ func InitRoute(e *gin.Engine, appCtx appcontext.AppContext) {
 		routeinternal.InitGroupRoute(v1, appCtx)
 		routeinternal.InitDeviceRoute(v1, appCtx)
 		routeinternal.InitSearchRoute(v1, appCtx)
+		routeinternal.InitNotificationRoute(v1, appCtx)
 	}
 }

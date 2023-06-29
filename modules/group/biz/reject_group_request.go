@@ -11,7 +11,7 @@ import (
 
 type rejectGroupRequestBiz struct {
 	groupRepo    grouprepo.Repository
-	notification notirepo.NotificationRepository
+	notification notirepo.NotificationServiceRepository
 }
 
 func NewRejectGroupRequestBiz(groupRepo grouprepo.Repository) *rejectGroupRequestBiz {

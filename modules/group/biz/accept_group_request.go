@@ -13,7 +13,7 @@ import (
 
 type acceptGroupRequestBiz struct {
 	groupRepo    grouprepo.Repository
-	notification notirepo.NotificationRepository
+	notification notirepo.NotificationServiceRepository
 }
 
 func NewAcceptGroupRequestBiz(groupRepo grouprepo.Repository) *acceptGroupRequestBiz {

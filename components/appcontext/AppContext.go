@@ -20,7 +20,7 @@ type AppContext interface {
 	RedisClient() *redis.Client
 	FirebaseApp() fbs.FirebaseApp
 	Socket() socket.Socket
-	Notification() notirepo.NotificationRepository
+	Notification() notirepo.NotificationServiceRepository
 	PubSub() pubsub.PubSub
 }
 
@@ -32,7 +32,7 @@ type appContext struct {
 	redisClient   *redis.Client
 	fa            fbs.FirebaseApp
 	socket        socket.Socket
-	notification  notirepo.NotificationRepository
+	notification  notirepo.NotificationServiceRepository
 	pubsub        pubsub.PubSub
 }
 
@@ -44,7 +44,7 @@ func NewAppContext(
 	redisClient *redis.Client,
 	fa fbs.FirebaseApp,
 	socket socket.Socket,
-	notification notirepo.NotificationRepository,
+	notification notirepo.NotificationServiceRepository,
 	pubsub pubsub.PubSub,
 ) *appContext {
 	return &appContext{
@@ -88,7 +88,7 @@ func (a *appContext) Socket() socket.Socket {
 	return a.socket
 }
 
-func (a *appContext) Notification() notirepo.NotificationRepository {
+func (a *appContext) Notification() notirepo.NotificationServiceRepository {
 	return a.notification
 }
 

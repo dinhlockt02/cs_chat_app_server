@@ -166,7 +166,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"email\": \"loctrandinh02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
+							"raw": "{\n    \"data\": {\n        \"email\": \"dinhlockt02@gmail.com\",\n        \"password\": \"12345678\"\n    },\n    \"device\": {\n        \"name\": \"xiaomi\",\n        \"push_notification_token\": \"test\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -944,7 +944,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"jane doee\",\n    \"gender\": \"other\",\n    \"phone\": \"98765\",\n    \"birthday\": \"2003-02-20T17:00:00.000Z\",\n    \"bio\": \"Hello world\",\n    \"avatar\": \"http://google.com/vvv.jpg\"\n}\n\n\n// {\n//     \"avatar\": \"http://google.com/vvv.jpg\"\n// }",
+							"raw": "{\n    \"name\": \"loc tran\",\n    \"gender\": \"other\",\n    \"phone\": \"98765\",\n    \"birthday\": \"2003-02-20T17:00:00.000Z\",\n    \"bio\": \"Hello world\",\n    \"avatar\": \"http://google.com/vvv.jpg\"\n}\n\n\n// {\n//     \"avatar\": \"http://google.com/vvv.jpg\"\n// }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1633,7 +1633,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6496a664f9abdd4c9611f496"
+									"value": "64946aff73a685d2f5622f56"
 								}
 							]
 						}
@@ -1799,6 +1799,102 @@
 								{
 									"key": "term",
 									"value": "jane"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/notification",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/notification",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/notification/:notificationId",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"notification",
+								":notificationId"
+							],
+							"variable": [
+								{
+									"key": "notificationId",
+									"value": "6496b1b67f10a3896ce6e25c"
 								}
 							]
 						}

@@ -5,7 +5,7 @@ import (
 	notimodel "cs_chat_app_server/components/notification/model"
 )
 
-type NotificationRepository interface {
+type NotificationServiceRepository interface {
 	// CreateAcceptFriendNotification is a method that will create, store and push notification
 	//
 	// It should be used when the subject accept the indirect (aka owner)'s friend request
@@ -25,4 +25,10 @@ type NotificationRepository interface {
 		subject *notimodel.NotificationObject,
 		prep *notimodel.NotificationObject,
 	) error
+}
+
+// NotificationRepository defines interface for query notifications
+type NotificationRepository interface {
+	List(ctx context.Context, filter map[string]interface{}) ([]notimodel.Notification, error)
+	Delete(ctx context.Context, filter map[string]interface{}) error
 }

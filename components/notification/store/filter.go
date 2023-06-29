@@ -23,3 +23,9 @@ func GetPrepFilter(id string) map[string]interface{} {
 		"prep.id": id,
 	}
 }
+
+func GetOwnerFilter(id string) map[string]interface{} {
+	return map[string]interface{}{
+		"owner": id,
+	}
+}

@@ -106,7 +106,7 @@ func main() {
 	}
 	ntsv := notiservice.NewFirebaseNotificationService(firebaseNotificationClient)
 	store := notistore.NewMongoStore(client.Database(common.AppDatabase))
-	notification := notirepo.NewNotificationRepository(ntsv, store)
+	notification := notirepo.NewNotificationServiceRepository(ntsv, store)
 
 	// Create app context
 

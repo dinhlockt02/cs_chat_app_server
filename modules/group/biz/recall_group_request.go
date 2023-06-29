@@ -11,7 +11,7 @@ import (
 
 type recallGroupRequestBiz struct {
 	groupRepo    grouprepo.Repository
-	notification notirepo.NotificationRepository
+	notification notirepo.NotificationServiceRepository
 }
 
 func NewRecallGroupRequestBiz(groupRepo grouprepo.Repository) *recallGroupRequestBiz {

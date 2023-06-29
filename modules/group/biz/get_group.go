@@ -11,7 +11,7 @@ import (
 
 type getGroupBiz struct {
 	groupRepo    grouprepo.Repository
-	notification notirepo.NotificationRepository
+	notification notirepo.NotificationServiceRepository
 }
 
 func NewGetGroupBiz(groupRepo grouprepo.Repository) *getGroupBiz {
