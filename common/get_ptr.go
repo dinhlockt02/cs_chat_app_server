@@ -1,5 +1,5 @@
 package common
 
-func GetPointer[T bool](value T) *T {
+func GetPointer[T any](value T) *T {
 	return &value
 }
