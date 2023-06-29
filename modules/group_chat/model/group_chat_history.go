@@ -11,6 +11,7 @@ const (
 	image  MessageType = "image"
 	video              = "video"
 	record             = "record"
+	file               = "file"
 )
 
 type GroupChatItem struct {
@@ -26,6 +27,7 @@ type GroupChatItem struct {
 	VideoUrl              *string     `bson:"video_url,omitempty" json:"video_url,omitempty"`
 	ImageUrl              *string     `bson:"image_url,omitempty" json:"image_url,omitempty"`
 	RecordUrl             *string     `bson:"record_url,omitempty" json:"record_url,omitempty"`
+	SizeImage             *int64      `bson:"size_image" json:"size_image"`
 	common.MongoCreatedAt `bson:",inline" json:",inline"`
 	IsMe                  *bool `json:"is_me,omitempty" bson:"-"`
 }
@@ -50,6 +52,10 @@ func (p *GroupChatItem) Process() error {
 
 	if p.Type != record {
 		p.RecordUrl = nil
+	}
+
+	if p.Type != file {
+		p.SizeImage = nil
 	}
 
 	return nil
