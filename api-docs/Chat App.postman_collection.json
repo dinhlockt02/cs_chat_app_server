@@ -1322,6 +1322,49 @@
 					"response": []
 				},
 				{
+					"name": "Leave group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/group/:groupId/leave",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"group",
+								":groupId",
+								"leave"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "personal",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "groupId",
+									"value": "6496b1d07f10a3896ce6e25e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Group Details",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
