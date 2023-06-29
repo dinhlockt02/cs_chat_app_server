@@ -18,7 +18,7 @@ func RejectRequest(appCtx appcontext.AppContext) gin.HandlerFunc {
 		requester := u.(common.Requester)
 
 		requesterId := requester.GetId()
-		groupId := context.Param("id")
+		groupId := context.Param("groupId")
 
 		if !primitive.IsValidObjectID(groupId) {
 			panic(common.ErrInvalidRequest(common.ErrInvalidObjectId))
