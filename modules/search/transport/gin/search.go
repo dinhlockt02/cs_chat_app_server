@@ -110,27 +110,26 @@ func searchMessage(ctx context.Context, appCtx appcontext.AppContext, requester 
 	groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 	requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 	groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
-	idFilter, err := common.GetIdFilter(requester.GetId())
 
-	user, err := groupRepo.FindUser(ctx, idFilter)
+	groups, err := groupRepo.List(ctx, requester.GetId(), map[string]interface{}{})
 	if err != nil {
 		log.Error().Err(err).Str("package", "searchgin.searchMessage").Send()
 		return nil, err
 	}
 
-	if user == nil {
-		log.Debug().Err(err).Str("package", "searchgin.searchMessage").Msg("user not found")
-		return nil, nil
+	groupsId := make([]string, 0, len(groups))
+
+	for _, group := range groups {
+		groupsId = append(groupsId, *group.Id)
 	}
 
-	paging := gchatmdl.Paging{}
-
-	inFilter := common.GetInFilter("group", user.Groups...)
+	inFilter := common.GetInFilter("group", groupsId...)
 	filter := common.GetAndFilter(
 		common.GetTextSearch(searchTerm, false, true),
 		inFilter,
 	)
 
+	paging := gchatmdl.Paging{}
 	list, err := biz.List(ctx, requester.GetId(), filter, paging)
 
 	if err != nil {

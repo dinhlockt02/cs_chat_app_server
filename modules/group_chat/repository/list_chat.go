@@ -5,6 +5,7 @@ import (
 	"cs_chat_app_server/common"
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
 	"errors"
+	"github.com/rs/zerolog/log"
 )
 
 // TODO: Cache User Data
@@ -23,8 +24,7 @@ func (repo *GroupChatRepository) List(
 		return nil, nil
 	}
 
-	idFilter, err := common.GetIdFilter(list[0].GroupId)
-	group, err := repo.groupChatStore.FindGroup(ctx, idFilter)
+	groupMap := make(map[string]*gchatmdl.Group)
 
 	var users = make(map[string]*gchatmdl.User)
 
@@ -46,7 +46,25 @@ func (repo *GroupChatRepository) List(
 		}
 
 		list[i].Sender = users[list[i].SenderId]
-		list[i].Group = group
+
+		if _, ok := groupMap[list[i].GroupId]; !ok {
+			idFilter, err := common.GetIdFilter(list[i].GroupId)
+			if err != nil {
+				log.Error().Err(err).Str("package", "gchatrepo.List").Send()
+				return nil, common.ErrInternal(err)
+			}
+			group, err := repo.groupChatStore.FindGroup(ctx, idFilter)
+			if err != nil {
+				log.Error().Err(err).Str("package", "gchatrepo.List").Send()
+				return nil, common.ErrInternal(err)
+			}
+			if group == nil {
+				log.Error().Err(err).Str("package", "gchatrepo.List").Send()
+				return nil, common.ErrInternal(errors.New("group not found"))
+			}
+			groupMap[list[i].GroupId] = group
+		}
+		list[i].Group = groupMap[list[i].GroupId]
 	}
 	return list, nil
 }
