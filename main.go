@@ -144,6 +144,9 @@ func main() {
 
 	v1route.InitRoute(r, appCtx)
 
+	r.StaticFile("/reset-password", "./templates/reset-password.html")
+	r.StaticFile("/verify/success", "./templates/verify-success.html")
+	r.StaticFile("/verify/failure", "./templates/verify-unsuccess.html")
 	if err := r.Run(port); err != nil {
 		log.Panic().Msg(err.Error())
 	}

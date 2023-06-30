@@ -8,6 +8,7 @@ import (
 	authstore "cs_chat_app_server/modules/auth/store"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 	"net/http"
 )
 
@@ -16,16 +17,19 @@ func VerifyEmail(appCtx appcontext.AppContext) gin.HandlerFunc {
 
 		code, ok := context.GetQuery("code")
 		if !ok {
-			panic(common.ErrInvalidRequest(errors.New("invalid verify url")))
+			log.Error().Err(common.ErrInvalidRequest(errors.New("invalid verify url"))).Send()
+			context.Redirect(http.StatusFound, "/verify/failure")
+			return
 		}
 		authStore := authstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		err := authbiz.NewVerifyEmail(authStore, authredis.NewRedisStore(
 			appCtx.RedisClient(),
 		)).Verify(context.Request.Context(), code)
 		if err != nil {
-			panic(err)
+			log.Error().Err(err).Send()
+			context.Redirect(http.StatusFound, "/verify/failure")
 			return
 		}
-		context.JSON(http.StatusOK, gin.H{"data": true})
+		context.Redirect(http.StatusFound, "/verify/success")
 	}
 }

@@ -35,3 +35,5 @@ service-account-key.json
 .cache/
 .config/
 .vscode/
+
+node_modules/
