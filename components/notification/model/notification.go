@@ -12,6 +12,7 @@ type NotificationId byte
 const (
 	AcceptFriendRequestId NotificationId = iota + 1
 	ReceiveFriendRequestId
+	ReceiveGroupRequestId
 )
 
 type ChannelKey string
@@ -30,7 +31,9 @@ const (
 type NotificationObjectType string
 
 const (
-	User NotificationObjectType = "user"
+	User    NotificationObjectType = "user"
+	Request NotificationObjectType = "request"
+	Group   NotificationObjectType = "group"
 )
 
 type NotificationActionType string
@@ -38,6 +41,7 @@ type NotificationActionType string
 const (
 	AcceptRequest        NotificationActionType = "accept-request"
 	ReceiveFriendRequest                        = "receive-friend-request"
+	ReceiveGroupRequest                         = "receive-group-request"
 )
 
 type Notification struct {
@@ -124,6 +128,8 @@ func (n *Notification) GetMessage() (title string, body string) {
 		return "Accept friend request", fmt.Sprintf("%s accept your friend request", n.Subject.Name)
 	case ReceiveFriendRequest:
 		return "Friend request received", fmt.Sprintf("%s want to be friend with you", n.Prep.Name)
+	case ReceiveGroupRequest:
+		return "Group request received", fmt.Sprintf("%s asked you to join group %s", n.Prep.Name, n.Indirect.Name)
 	default:
 		return "", ""
 	}
@@ -177,6 +183,25 @@ func (n *Notification) GetContent() (map[string]interface{}, error) {
 			"body":     body,
 			"locked":   false,
 		}, nil
+	case ReceiveGroupRequest:
+		return map[string]interface{}{
+			"id":                  ReceiveGroupRequestId,
+			"channelKey":          BasicChannel,
+			"displayOnForeground": true,
+			"displayOnBackground": true,
+			"notificationLayout":  "Default",
+			"showWhen":            true,
+			"autoDismissible":     true,
+			"largeIcon":           n.Prep.Image,
+			"privacy":             "Private",
+			"payload": map[string]string{
+				"notification": string(marshaledNotification),
+			},
+			"category": "Social",
+			"title":    title,
+			"body":     body,
+			"locked":   false,
+		}, nil
 	default:
 		return nil, nil
 	}
@@ -189,6 +214,22 @@ func (n *Notification) GetActionButton() []map[string]interface{} {
 	case AcceptRequest:
 		return nil
 	case ReceiveFriendRequest:
+		return []map[string]interface{}{
+			{
+				"key":             Accept,
+				"label":           GetActionKeyLabel(Accept),
+				"autoDismissible": true,
+				"actionType":      "DismissAction",
+			},
+			{
+				"key":               Deny,
+				"label":             GetActionKeyLabel(Deny),
+				"isDangerousOption": true,
+				"autoDismissible":   true,
+				"actionType":        "DismissAction",
+			},
+		}
+	case ReceiveGroupRequest:
 		return []map[string]interface{}{
 			{
 				"key":             Accept,

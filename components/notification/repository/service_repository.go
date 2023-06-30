@@ -39,11 +39,32 @@ func (repo *notificationServiceRepository) CreateReceiveFriendRequestNotificatio
 	ctx context.Context,
 	owner string,
 	subject *notimodel.NotificationObject,
+	direct *notimodel.NotificationObject,
 	prep *notimodel.NotificationObject,
 ) error {
 	noti := notimodel.
 		NewNotificationBuilder(notimodel.ReceiveFriendRequest, owner).
 		SetSubject(subject).
+		SetDirect(direct).
+		SetPrep(prep).
+		Build()
+
+	return repo.createNotification(ctx, noti)
+}
+
+func (repo *notificationServiceRepository) CreateReceiveGroupRequestNotification(
+	ctx context.Context,
+	owner string,
+	subject *notimodel.NotificationObject,
+	direct *notimodel.NotificationObject,
+	indirect *notimodel.NotificationObject,
+	prep *notimodel.NotificationObject,
+) error {
+	noti := notimodel.
+		NewNotificationBuilder(notimodel.ReceiveGroupRequest, owner).
+		SetSubject(subject).
+		SetDirect(direct).
+		SetIndirect(indirect).
 		SetPrep(prep).
 		Build()
 

@@ -18,11 +18,24 @@ type NotificationServiceRepository interface {
 
 	// CreateReceiveFriendRequestNotification is a method that will create, store and push notification
 	//
-	// It should be used when the Subject (aka owner) received the friend request from Prep's
+	// It should be used when the Subject (aka owner) received the friend request (Direct) from Prep's
 	CreateReceiveFriendRequestNotification(
 		ctx context.Context,
 		owner string,
 		subject *notimodel.NotificationObject,
+		direct *notimodel.NotificationObject,
+		prep *notimodel.NotificationObject,
+	) error
+
+	// CreateReceiveGroupRequestNotification is a method that will create, store and push notification
+	//
+	// It should be used when the Subject (aka owner) received the group request (Direct) to Group (Indirect) from Prep's
+	CreateReceiveGroupRequestNotification(
+		ctx context.Context,
+		owner string,
+		subject *notimodel.NotificationObject,
+		direct *notimodel.NotificationObject,
+		indirect *notimodel.NotificationObject,
 		prep *notimodel.NotificationObject,
 	) error
 }

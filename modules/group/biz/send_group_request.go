@@ -3,6 +3,7 @@ package groupbiz
 import (
 	"context"
 	"cs_chat_app_server/common"
+	notimodel "cs_chat_app_server/components/notification/model"
 	notirepo "cs_chat_app_server/components/notification/repository"
 	friendmodel "cs_chat_app_server/modules/friend/model"
 	friendstore "cs_chat_app_server/modules/friend/store"
@@ -12,6 +13,7 @@ import (
 	requeststore "cs_chat_app_server/modules/request/store"
 	userstore "cs_chat_app_server/modules/user/store"
 	"errors"
+	"github.com/rs/zerolog/log"
 )
 
 type sendGroupRequestBiz struct {
@@ -100,22 +102,34 @@ func (biz *sendGroupRequestBiz) SendRequest(ctx context.Context, requester strin
 	}
 
 	go func() {
-		// TODO: Push notification group request
-		//e := biz.notification.CreateReceiveFriendRequestNotification(
-		//	context.Background(), receiverId, &notimodel.NotificationObject{
-		//		Id:    receiverId,
-		//		Name:  receiver.Name,
-		//		Image: &receiver.Avatar,
-		//		Type:  notimodel.User,
-		//	}, &notimodel.NotificationObject{
-		//		Id:    senderId,
-		//		Name:  sender.Name,
-		//		Image: &sender.Avatar,
-		//		Type:  notimodel.User,
-		//	})
-		//if e != nil {
-		//	log.Err(e)
-		//}
+		e := biz.notification.CreateReceiveGroupRequestNotification(context.Background(), user,
+			&notimodel.NotificationObject{
+				Id:    user,
+				Name:  receiver.Name,
+				Image: &receiver.Avatar,
+				Type:  notimodel.User,
+			},
+			&notimodel.NotificationObject{
+				Id:    *req.Id,
+				Name:  "",
+				Image: nil,
+				Type:  notimodel.Request,
+			},
+			&notimodel.NotificationObject{
+				Id:    *group.Id,
+				Name:  group.Name,
+				Image: group.ImageUrl,
+				Type:  notimodel.Group,
+			},
+			&notimodel.NotificationObject{
+				Id:    requester,
+				Name:  sender.Name,
+				Image: &sender.Avatar,
+				Type:  notimodel.User,
+			})
+		if e != nil {
+			log.Err(e)
+		}
 	}()
 
 	return nil

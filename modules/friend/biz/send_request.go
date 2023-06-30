@@ -82,12 +82,19 @@ func (biz *sendRequestBiz) SendRequest(ctx context.Context, senderId string, rec
 			Name:  receiver.Name,
 			Image: &receiver.Avatar,
 			Type:  notimodel.User,
-		}, &notimodel.NotificationObject{
-			Id:    senderId,
-			Name:  sender.Name,
-			Image: &sender.Avatar,
-			Type:  notimodel.User,
-		})
+		},
+			&notimodel.NotificationObject{
+				Id:    *request.Id,
+				Name:  "",
+				Image: nil,
+				Type:  notimodel.Request,
+			},
+			&notimodel.NotificationObject{
+				Id:    senderId,
+				Name:  sender.Name,
+				Image: &sender.Avatar,
+				Type:  notimodel.User,
+			})
 		if e != nil {
 			log.Err(e)
 		}
