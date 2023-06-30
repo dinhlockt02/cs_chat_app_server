@@ -1,40 +1,40 @@
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+	height: 40vmin;
+	pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+	.App-logo {
+		animation: App-logo-spin infinite 20s linear;
+	}
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .reset-password-container {
@@ -46,8 +46,8 @@
 	text-align: center;
 }
 
-.password-input-container{
-	width: 80%
+.password-input-container {
+	width: 80%;
 }
 
 h1 {
@@ -66,7 +66,7 @@ label {
 	margin-bottom: 10px;
 }
 
-input[type="password"] {
+input[type='password'] {
 	padding: 10px;
 	font-size: 19px;
 	border: 1px solid #ccc;
@@ -76,7 +76,7 @@ input[type="password"] {
 	margin-bottom: 20px;
 }
 
-input[type="text"] {
+input[type='text'] {
 	padding: 10px;
 	font-size: 19px;
 	border: 1px solid #ccc;
@@ -86,8 +86,8 @@ input[type="text"] {
 	margin-bottom: 20px;
 }
 
-button[type="submit"] {
-	background-color: #4CAF50;
+button[type='submit'] {
+	background-color: #4caf50;
 	color: white;
 	padding: 10px;
 	border: none;
@@ -96,7 +96,7 @@ button[type="submit"] {
 	cursor: pointer;
 }
 
-button[type="submit"]:hover {
+button[type='submit']:hover {
 	background-color: #3e8e41;
 }
 
@@ -107,3 +107,42 @@ button[type="submit"]:hover {
 	padding: 10px;
 }
 
+.notification-success {
+	border: 2px solid #28a745;
+	background-color: #d4edda;
+	padding: 20em;
+	margin: 0 auto;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.notification-success h2 {
+	font-size: 1.5rem;
+	color: #28a745;
+	margin-top: 0;
+}
+
+.notification-success p {
+	font-size: 1.2rem;
+	margin-bottom: 20px;
+}
+
+.notification-error {
+	border: 2px solid #dc3545;
+	background-color: #f8d7da;
+	padding: 20em;
+	margin: 0 auto;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.notification-error h2 {
+	font-size: 1.5rem;
+	color: #dc3545;
+	margin-top: 0;
+}
+
+.notification-error p {
+	font-size: 1.2rem;
+	margin-bottom: 20px;
+}

@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
 import ForgotPassword from './components/ForgotPassword';
-import ChangePassword from './components/ChangePassword';
+import VerifyEmail from './components/VerifyEmail';
 
 function App() {
 
   return (
-    <div className="App">
-      <ForgotPassword />
-      <ChangePassword />
+    <div>
+      {/* <ForgotPassword /> */}
+      <VerifyEmail />
     </div>
   );
 }

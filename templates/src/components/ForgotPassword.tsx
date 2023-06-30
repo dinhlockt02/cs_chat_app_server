@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom'
 
 interface ResetPasswordFormData {
-    password: string;
+    newPassword: string;
     confirmPassword: string;
+}
+
+function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
 function ForgotPassword() {
     const [formData, setFormData] = useState<ResetPasswordFormData>({
-        password: '',
+        newPassword: '',
         confirmPassword: '',
     });
 
@@ -22,12 +30,25 @@ function ForgotPassword() {
         setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
     };
 
+    let query = useQuery();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (formData.password !== formData.confirmPassword) {
+        if (formData.newPassword !== formData.confirmPassword) {
             alert('Password not match')
         } else {
-            alert('Change password successful')
+            axios.post('http://localhost:8080/v1/auth/reset-password', {
+                password: formData.newPassword,
+                code: query.get("code")
+            })
+                .then(function (response) {
+                    alert('Change password successful')
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    alert('Change password unsuccessful')
+                    console.log(error);
+                });
         }
     };
 
@@ -44,10 +65,10 @@ function ForgotPassword() {
                     <div className="password-input-container">
                         <input
                             type={passwordVisible ? 'text' : 'password'}
-                            id="password"
-                            name="password"
+                            id="newPassword"
+                            name="newPassword"
                             required
-                            value={formData.password}
+                            value={formData.newPassword}
                             onChange={handleInputChange}
                         />
                         <span
