@@ -3,6 +3,7 @@ package friendbiz
 import (
 	"context"
 	"cs_chat_app_server/common"
+	"cs_chat_app_server/components/pubsub"
 	friendmodel "cs_chat_app_server/modules/friend/model"
 	groupmdl "cs_chat_app_server/modules/group/model"
 	grouprepo "cs_chat_app_server/modules/group/repository"
@@ -19,14 +20,17 @@ type UnfriendFriendStore interface {
 type unfriendBiz struct {
 	friendStore     UnfriendFriendStore
 	groupRepository grouprepo.Repository
+	ps              pubsub.PubSub
 }
 
 func NewUnfriendBiz(
 	friendStore UnfriendFriendStore,
-	groupRepository grouprepo.Repository) *unfriendBiz {
+	groupRepository grouprepo.Repository,
+	ps pubsub.PubSub) *unfriendBiz {
 	return &unfriendBiz{
 		friendStore:     friendStore,
 		groupRepository: groupRepository,
+		ps:              ps,
 	}
 }
 
@@ -78,15 +82,13 @@ func (biz *unfriendBiz) Unfriend(ctx context.Context, userId string, friendId st
 		}
 	}
 
-	// Set group inactive
-	filter := common.GetAndFilter(
+	// Delete group
+
+	err = biz.groupRepository.DeleteGroups(ctx, common.GetAndFilter(
 		groupstore.GetMemberIdInGroupMembersFilter(userId),
 		groupstore.GetMemberIdInGroupMembersFilter(friendId),
 		groupstore.GetTypeFilter(groupmdl.TypePersonal),
-	)
-	err = biz.groupRepository.UpdateGroup(ctx, filter, &groupmdl.UpdateGroup{
-		Active: common.GetPointer(false),
-	})
+	))
 	if err != nil {
 		return err
 	}

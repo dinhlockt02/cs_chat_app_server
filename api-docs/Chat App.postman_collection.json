@@ -413,6 +413,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Is Email Verified",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/v1/auth/is-email-verified",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"is-email-verified"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

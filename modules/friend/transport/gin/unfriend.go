@@ -28,7 +28,7 @@ func Unfriend(appCtx appcontext.AppContext) gin.HandlerFunc {
 		requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		groupStore := groupstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
-		unfriendBiz := friendbiz.NewUnfriendBiz(friendStore, groupRepo)
+		unfriendBiz := friendbiz.NewUnfriendBiz(friendStore, groupRepo, appCtx.PubSub())
 		if err := unfriendBiz.Unfriend(context.Request.Context(), userId, friendId); err != nil {
 			panic(err)
 		}

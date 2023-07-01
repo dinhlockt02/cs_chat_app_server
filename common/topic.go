@@ -8,4 +8,5 @@ const (
 	TopicAcceptGroupRequest     = "TopicAcceptGroupRequest"
 	TopicDenyFriendRequest      = "TopicDenyFriendRequest"
 	TopicDenyGroupRequest       = "TopicDenyGroupRequest"
+	TopicGroupDeleted           = "TopicGroupDeleted"
 )

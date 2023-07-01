@@ -21,6 +21,7 @@ RUN update-ca-certificates
 WORKDIR /app
 
 COPY --from=builder /app/main .
+COPY ./templates /app/templates/
 
 ENV SERVER_PORT=8080
 ENV GIN_MODE=release

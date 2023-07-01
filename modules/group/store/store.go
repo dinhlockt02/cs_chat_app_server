@@ -40,6 +40,7 @@ type Store interface {
 		ctx context.Context,
 		filter map[string]interface{},
 		latestMessage *groupmdl.GroupMessage) error
+	DeleteGroups(ctx context.Context, filter map[string]interface{}) error
 }
 
 type mongoStore struct {

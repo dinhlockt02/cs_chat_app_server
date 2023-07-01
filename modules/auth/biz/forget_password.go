@@ -66,6 +66,7 @@ func (biz *forgetPasswordBiz) Execute(ctx context.Context, email string) error {
 	}
 
 	go func() {
+		log.Info().Str("link", link).Msg("send ForgetPasswordEmail")
 		err = biz.mailer.Send(authmodel.ForgetPasswordEmail, receiver.Email, receiverName, authmodel.ForgetPasswordEmailBody(link))
 		if err != nil {
 			log.Error().Err(err).Msg("forget password biz: " + err.Error())
