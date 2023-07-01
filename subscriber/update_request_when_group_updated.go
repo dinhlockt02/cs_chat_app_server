@@ -16,13 +16,13 @@ func UpdateRequestWhenGroupUpdated(appCtx appcontext.AppContext, ctx context.Con
 	requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 	go func() {
 
-		for userId := range ch {
-			go func(uid string) {
+		for groupId := range ch {
+			go func(gid string) {
 				defer common.Recovery()
 
 				filter := make(map[string]interface{})
 
-				err := common.AddIdFilter(filter, uid)
+				err := common.AddIdFilter(filter, gid)
 				if err != nil {
 					panic(err)
 				}
@@ -49,7 +49,7 @@ func UpdateRequestWhenGroupUpdated(appCtx appcontext.AppContext, ctx context.Con
 					return
 				}
 
-			}(userId)
+			}(groupId)
 		}
 	}()
 }

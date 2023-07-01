@@ -12,4 +12,5 @@ func Setup(appCtx appcontext.AppContext, ctx context.Context) {
 	UpdateNotificationWhenUserUpdateProfile(appCtx, ctx)
 	UpdateGroupsWhenUserUpdateProfile(appCtx, ctx)
 	UpdateGroupLatestMessageWhenNewGroupMessageReceived(appCtx, ctx)
+	UpdateNotificationWhenGroupUpdated(appCtx, ctx)
 }

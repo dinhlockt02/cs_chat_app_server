@@ -77,12 +77,13 @@ func (biz *sendRequestBiz) SendRequest(ctx context.Context, senderId string, rec
 	}
 
 	go func() {
-		e := biz.notification.CreateReceiveFriendRequestNotification(context.Background(), receiverId, &notimodel.NotificationObject{
-			Id:    receiverId,
-			Name:  receiver.Name,
-			Image: &receiver.Avatar,
-			Type:  notimodel.User,
-		},
+		e := biz.notification.CreateReceiveFriendRequestNotification(context.Background(), receiverId,
+			&notimodel.NotificationObject{
+				Id:    receiverId,
+				Name:  receiver.Name,
+				Image: &receiver.Avatar,
+				Type:  notimodel.User,
+			},
 			&notimodel.NotificationObject{
 				Id:    *request.Id,
 				Name:  "",

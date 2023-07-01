@@ -4,6 +4,7 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	"cs_chat_app_server/components/appcontext"
+	groupmdl "cs_chat_app_server/modules/group/model"
 	groupstore "cs_chat_app_server/modules/group/store"
 	gchatmdl "cs_chat_app_server/modules/group_chat/model"
 	gchatstore "cs_chat_app_server/modules/group_chat/store"
@@ -91,13 +92,23 @@ func NotifyUserWhenNewGroupMessageReceived(appCtx appcontext.AppContext, ctx con
 
 				t := true
 				f := false
-				for _, member := range group.Members {
+				for i, member := range group.Members {
 
 					if member.Id == message.SenderId {
 						message.IsMe = &t
 					} else {
 						message.IsMe = &f
 					}
+					if message.Group.Type == groupmdl.TypePersonal {
+						if i == 0 {
+							message.Group.Name = group.Members[1].Name
+							message.Group.ImageUrl = &group.Members[1].Avatar
+						} else {
+							message.Group.Name = group.Members[0].Name
+							message.Group.ImageUrl = &group.Members[0].Avatar
+						}
+					}
+
 					err = appCtx.Socket().Send(member.Id, message)
 					if err != nil {
 						log.Err(err).

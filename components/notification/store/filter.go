@@ -1,26 +1,32 @@
 package notistore
 
-func GetSubjectFilter(id string) map[string]interface{} {
+import notimodel "cs_chat_app_server/components/notification/model"
+
+func GetSubjectFilter(id string, typ notimodel.NotificationObjectType) map[string]interface{} {
 	return map[string]interface{}{
-		"subject.id": id,
+		"subject.id":   id,
+		"subject.type": typ,
 	}
 }
 
-func GetDirectFilter(id string) map[string]interface{} {
+func GetDirectFilter(id string, typ notimodel.NotificationObjectType) map[string]interface{} {
 	return map[string]interface{}{
-		"direct.id": id,
+		"direct.id":    id,
+		"subject.type": typ,
 	}
 }
 
-func GetIndirectFilter(id string) map[string]interface{} {
+func GetIndirectFilter(id string, typ notimodel.NotificationObjectType) map[string]interface{} {
 	return map[string]interface{}{
-		"indirect.id": id,
+		"indirect.id":  id,
+		"subject.type": typ,
 	}
 }
 
-func GetPrepFilter(id string) map[string]interface{} {
+func GetPrepFilter(id string, typ notimodel.NotificationObjectType) map[string]interface{} {
 	return map[string]interface{}{
-		"prep.id": id,
+		"prep.id":      id,
+		"subject.type": typ,
 	}
 }
 
