@@ -102,7 +102,8 @@ func (biz *acceptRequestBiz) AcceptRequest(ctx context.Context, senderId string,
 	// Find group
 	group, err := biz.groupRepository.FindGroup(ctx,
 		common.GetAndFilter(
-			groupstore.GetUserIdInIdListFilter(receiverId, senderId),
+			groupstore.GetMemberIdInGroupMembersFilter(receiverId),
+			groupstore.GetMemberIdInGroupMembersFilter(senderId),
 			groupstore.GetTypeFilter(groupmdl.TypePersonal),
 		),
 	)
@@ -131,7 +132,8 @@ func (biz *acceptRequestBiz) AcceptRequest(ctx context.Context, senderId string,
 	} else {
 		group.Active = common.GetPointer(true)
 		err = biz.groupRepository.UpdateGroup(ctx, common.GetAndFilter(
-			groupstore.GetUserIdInIdListFilter(receiverId, senderId),
+			groupstore.GetMemberIdInGroupMembersFilter(receiverId),
+			groupstore.GetMemberIdInGroupMembersFilter(senderId),
 			groupstore.GetTypeFilter(groupmdl.TypePersonal),
 		), &groupmdl.UpdateGroup{Active: common.GetPointer(true)})
 		if err != nil {

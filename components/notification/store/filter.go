@@ -11,22 +11,22 @@ func GetSubjectFilter(id string, typ notimodel.NotificationObjectType) map[strin
 
 func GetDirectFilter(id string, typ notimodel.NotificationObjectType) map[string]interface{} {
 	return map[string]interface{}{
-		"direct.id":    id,
-		"subject.type": typ,
+		"direct.id":   id,
+		"direct.type": typ,
 	}
 }
 
 func GetIndirectFilter(id string, typ notimodel.NotificationObjectType) map[string]interface{} {
 	return map[string]interface{}{
-		"indirect.id":  id,
-		"subject.type": typ,
+		"indirect.id":   id,
+		"indirect.type": typ,
 	}
 }
 
 func GetPrepFilter(id string, typ notimodel.NotificationObjectType) map[string]interface{} {
 	return map[string]interface{}{
-		"prep.id":      id,
-		"subject.type": typ,
+		"prep.id":   id,
+		"prep.type": typ,
 	}
 }
 
