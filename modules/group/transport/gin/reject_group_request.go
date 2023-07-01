@@ -29,7 +29,7 @@ func RejectRequest(appCtx appcontext.AppContext) gin.HandlerFunc {
 			groupStore,
 			requestStore,
 		)
-		rejectRequestBiz := groupbiz.NewRejectGroupRequestBiz(groupRepo)
+		rejectRequestBiz := groupbiz.NewRejectGroupRequestBiz(groupRepo, appCtx.PubSub())
 		if err := rejectRequestBiz.RejectRequest(context.Request.Context(), requesterId, groupId); err != nil {
 			panic(err)
 		}

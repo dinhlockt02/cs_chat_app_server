@@ -30,7 +30,7 @@ func RejectRequest(appCtx appcontext.AppContext) gin.HandlerFunc {
 		friendStore := friendstore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		requestStore := requeststore.NewMongoStore(appCtx.MongoClient().Database(common.AppDatabase))
 		friendRepo := friendrepo.NewFriendRepository(friendStore, requestStore)
-		rejectRequestBiz := friendbiz.NewRejectRequestBiz(friendRepo)
+		rejectRequestBiz := friendbiz.NewRejectRequestBiz(friendRepo, appCtx.PubSub())
 		if err := rejectRequestBiz.RejectRequest(context.Request.Context(), senderId, receiverId); err != nil {
 			panic(err)
 		}

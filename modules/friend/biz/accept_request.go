@@ -5,9 +5,12 @@ import (
 	"cs_chat_app_server/common"
 	notimodel "cs_chat_app_server/components/notification/model"
 	notirepo "cs_chat_app_server/components/notification/repository"
+	"cs_chat_app_server/components/pubsub"
 	friendmodel "cs_chat_app_server/modules/friend/model"
 	friendrepo "cs_chat_app_server/modules/friend/repository"
+	groupmdl "cs_chat_app_server/modules/group/model"
 	grouprepo "cs_chat_app_server/modules/group/repository"
+	groupstore "cs_chat_app_server/modules/group/store"
 	"errors"
 	"github.com/rs/zerolog/log"
 )
@@ -16,17 +19,20 @@ type acceptRequestBiz struct {
 	friendRepository friendrepo.Repository
 	notification     notirepo.NotificationServiceRepository
 	groupRepository  grouprepo.Repository
+	ps               pubsub.PubSub
 }
 
 func NewAcceptRequestBiz(
 	friendRepository friendrepo.Repository,
 	notification notirepo.NotificationServiceRepository,
 	groupRepository grouprepo.Repository,
+	ps pubsub.PubSub,
 ) *acceptRequestBiz {
 	return &acceptRequestBiz{
 		friendRepository: friendRepository,
 		notification:     notification,
 		groupRepository:  groupRepository,
+		ps:               ps,
 	}
 }
 
@@ -59,79 +65,79 @@ func (biz *acceptRequestBiz) AcceptRequest(ctx context.Context, senderId string,
 	if receiver == nil {
 		return common.ErrEntityNotFound("User", errors.New("receiver not found"))
 	}
-	//
-	//// Update Sender
-	//sender.Friends = append(sender.Friends, receiverId)
-	//filter = make(map[string]interface{})
-	//err = common.AddIdFilter(filter, senderId)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//err = biz.friendRepository.UpdateUser(ctx, filter, sender)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//// Update Receiver
-	//receiver.Friends = append(receiver.Friends, senderId)
-	//filter = make(map[string]interface{})
-	//err = common.AddIdFilter(filter, receiverId)
-	//if err != nil {
-	//	return err
-	//}
-	//err = biz.friendRepository.UpdateUser(ctx, filter, receiver)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//// Delete request
-	//filter = make(map[string]interface{})
-	//err = common.AddIdFilter(filter, *existedRequest.Id)
-	//err = biz.friendRepository.DeleteRequest(ctx, filter)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//// Find group
-	//group, err := biz.groupRepository.FindGroup(ctx,
-	//	common.GetAndFilter(
-	//		groupstore.GetUserIdInIdListFilter(receiverId, senderId),
-	//		groupstore.GetTypeFilter(groupmdl.TypePersonal),
-	//	),
-	//)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//if group == nil {
-	//	// Create group
-	//	err = biz.groupRepository.CreateGroup(ctx, &groupmdl.Group{
-	//		Members: []groupmdl.GroupUser{{
-	//			Id:     senderId,
-	//			Name:   sender.Name,
-	//			Avatar: sender.Avatar,
-	//		}, {
-	//			Id:     receiverId,
-	//			Name:   receiver.Name,
-	//			Avatar: receiver.Avatar,
-	//		}},
-	//		Type:   groupmdl.TypePersonal,
-	//		Active: common.GetPointer(true),
-	//	})
-	//	if err != nil {
-	//		return err
-	//	}
-	//} else {
-	//	group.Active = common.GetPointer(true)
-	//	err = biz.groupRepository.UpdateGroup(ctx, common.GetAndFilter(
-	//		groupstore.GetUserIdInIdListFilter(receiverId, senderId),
-	//		groupstore.GetTypeFilter(groupmdl.TypePersonal),
-	//	), &groupmdl.UpdateGroup{Active: common.GetPointer(true)})
-	//	if err != nil {
-	//		return err
-	//	}
-	//}
+
+	// Update Sender
+	sender.Friends = append(sender.Friends, receiverId)
+	filter = make(map[string]interface{})
+	err = common.AddIdFilter(filter, senderId)
+	if err != nil {
+		return err
+	}
+
+	err = biz.friendRepository.UpdateUser(ctx, filter, sender)
+	if err != nil {
+		return err
+	}
+
+	// Update Receiver
+	receiver.Friends = append(receiver.Friends, senderId)
+	filter = make(map[string]interface{})
+	err = common.AddIdFilter(filter, receiverId)
+	if err != nil {
+		return err
+	}
+	err = biz.friendRepository.UpdateUser(ctx, filter, receiver)
+	if err != nil {
+		return err
+	}
+
+	// Delete request
+	filter = make(map[string]interface{})
+	err = common.AddIdFilter(filter, *existedRequest.Id)
+	err = biz.friendRepository.DeleteRequest(ctx, filter)
+	if err != nil {
+		return err
+	}
+
+	// Find group
+	group, err := biz.groupRepository.FindGroup(ctx,
+		common.GetAndFilter(
+			groupstore.GetUserIdInIdListFilter(receiverId, senderId),
+			groupstore.GetTypeFilter(groupmdl.TypePersonal),
+		),
+	)
+	if err != nil {
+		return err
+	}
+
+	if group == nil {
+		// Create group
+		err = biz.groupRepository.CreateGroup(ctx, &groupmdl.Group{
+			Members: []groupmdl.GroupUser{{
+				Id:     senderId,
+				Name:   sender.Name,
+				Avatar: sender.Avatar,
+			}, {
+				Id:     receiverId,
+				Name:   receiver.Name,
+				Avatar: receiver.Avatar,
+			}},
+			Type:   groupmdl.TypePersonal,
+			Active: common.GetPointer(true),
+		})
+		if err != nil {
+			return err
+		}
+	} else {
+		group.Active = common.GetPointer(true)
+		err = biz.groupRepository.UpdateGroup(ctx, common.GetAndFilter(
+			groupstore.GetUserIdInIdListFilter(receiverId, senderId),
+			groupstore.GetTypeFilter(groupmdl.TypePersonal),
+		), &groupmdl.UpdateGroup{Active: common.GetPointer(true)})
+		if err != nil {
+			return err
+		}
+	}
 
 	go func() {
 		e := biz.notification.CreateAcceptFriendNotification(context.Background(), senderId, &notimodel.NotificationObject{
@@ -150,5 +156,7 @@ func (biz *acceptRequestBiz) AcceptRequest(ctx context.Context, senderId string,
 			log.Err(e)
 		}
 	}()
+
+	biz.ps.Publish(ctx, common.TopicAcceptFriendRequest, *existedRequest.Id)
 	return nil
 }

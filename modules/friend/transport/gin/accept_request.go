@@ -35,7 +35,7 @@ func AcceptRequest(appCtx appcontext.AppContext) gin.HandlerFunc {
 		groupRepo := grouprepo.NewGroupRepository(groupStore, requestStore)
 
 		friendRepo := friendrepo.NewFriendRepository(friendStore, requestStore)
-		acceptRequestBiz := friendbiz.NewAcceptRequestBiz(friendRepo, appCtx.Notification(), groupRepo)
+		acceptRequestBiz := friendbiz.NewAcceptRequestBiz(friendRepo, appCtx.Notification(), groupRepo, appCtx.PubSub())
 		if err := acceptRequestBiz.AcceptRequest(context.Request.Context(), senderId, receiverId); err != nil {
 			panic(err)
 		}

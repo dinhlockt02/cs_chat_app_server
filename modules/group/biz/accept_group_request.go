@@ -4,6 +4,7 @@ import (
 	"context"
 	"cs_chat_app_server/common"
 	notirepo "cs_chat_app_server/components/notification/repository"
+	"cs_chat_app_server/components/pubsub"
 	friendmodel "cs_chat_app_server/modules/friend/model"
 	groupmdl "cs_chat_app_server/modules/group/model"
 	grouprepo "cs_chat_app_server/modules/group/repository"
@@ -14,10 +15,11 @@ import (
 type acceptGroupRequestBiz struct {
 	groupRepo    grouprepo.Repository
 	notification notirepo.NotificationServiceRepository
+	ps           pubsub.PubSub
 }
 
-func NewAcceptGroupRequestBiz(groupRepo grouprepo.Repository) *acceptGroupRequestBiz {
-	return &acceptGroupRequestBiz{groupRepo: groupRepo}
+func NewAcceptGroupRequestBiz(groupRepo grouprepo.Repository, ps pubsub.PubSub) *acceptGroupRequestBiz {
+	return &acceptGroupRequestBiz{groupRepo: groupRepo, ps: ps}
 }
 
 // AcceptRequest send a group invitation request to user.
@@ -91,6 +93,7 @@ func (biz *acceptGroupRequestBiz) AcceptRequest(ctx context.Context, requesterId
 	if err != nil {
 		return err
 	}
-	// TODO: send push notification new member joined
+
+	biz.ps.Publish(ctx, common.TopicAcceptGroupRequest, *existedRequest.Id)
 	return nil
 }

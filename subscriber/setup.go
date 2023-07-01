@@ -13,4 +13,8 @@ func Setup(appCtx appcontext.AppContext, ctx context.Context) {
 	UpdateGroupsWhenUserUpdateProfile(appCtx, ctx)
 	UpdateGroupLatestMessageWhenNewGroupMessageReceived(appCtx, ctx)
 	UpdateNotificationWhenGroupUpdated(appCtx, ctx)
+	DeleteNotificationWhenUserAcceptFriendRequest(appCtx, ctx)
+	DeleteNotificationWhenUserDenyFriendRequest(appCtx, ctx)
+	DeleteNotificationWhenUserAcceptGroupRequest(appCtx, ctx)
+	DeleteNotificationWhenUserDenyGroupRequest(appCtx, ctx)
 }

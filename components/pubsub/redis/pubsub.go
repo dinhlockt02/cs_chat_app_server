@@ -34,7 +34,7 @@ func (ps *RedisPubSub) Subscribe(ctx context.Context, topic pubsub.Topic) <-chan
 	go func() {
 		for msg := range ch {
 
-			log.Debug().Msgf("New %v Received", string(topic))
+			log.Debug().Any("Topic", topic).Str("msg", msg.Payload).Msg("new event received")
 
 			var data string
 			err := json.Unmarshal([]byte(msg.Payload), &data)
